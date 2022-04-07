@@ -11,6 +11,10 @@ import Firebase
 struct NewChatView: View {
     @State private var showChatView = false
     let db = Firestore.firestore()
+    @ObservedObject var firestoreContactDao = FirestoreContactDao()
+
+    
+    
     @State private var chatName: String = ""
     
     var body: some View {
@@ -18,14 +22,16 @@ struct NewChatView: View {
         HStack {
             Text("To:")
             TextField("Type a name or group", text: $chatName)
+        }.onAppear() {
+            firestoreContactDao.listenToFirestore()
         }
             List{
-                Text("Billy")
-                Text("Sammy")
-                Text(chatName)
+                ForEach(firestoreContactDao.contacts) { contact in
+                    Text(contact.user_name)
+                }
             }
             .onTapGesture {
-                db.collection("tmp").addDocument(data: ["name" : "testtmpLuca"])
+               // db.collection("tmp").addDocument(data: ["name" : "testtmpLuca"])
                 showChatView = true
             }
         Spacer()
