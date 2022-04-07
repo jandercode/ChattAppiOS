@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+struct Contact : Codable {
+    var id : String = UUID().uuidString
+    var name : String
+    var lastName : String
+    var username : String
+    var email : String    
+}

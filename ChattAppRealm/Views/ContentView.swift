@@ -10,7 +10,8 @@ import Firebase
 
 struct ContentView: View {
     @State private var showNewChatView = false
-   // let db = Firestore.firestore()
+    let db = Firestore.firestore()
+    let firestoreContactDao = FirestoreContactDao()
     
     var body: some View {
         NavigationView {
@@ -23,6 +24,7 @@ struct ContentView: View {
                     HStack {
                         Spacer()
                         Button {
+                            firestoreContactDao.saveContact()
                             showNewChatView = true
                            
                         } label: {
