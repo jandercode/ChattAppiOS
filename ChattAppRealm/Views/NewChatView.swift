@@ -25,7 +25,7 @@ struct NewChatView: View {
                 Text(chatName)
             }
             .onTapGesture {
-                db.collection("tmp").addDocument(data: ["name" : chatName])
+                db.collection("tmp").addDocument(data: ["name" : "testtmpLuca"])
                 showChatView = true
             }
         Spacer()
