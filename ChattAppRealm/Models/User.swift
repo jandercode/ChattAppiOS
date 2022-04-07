@@ -6,14 +6,16 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct User {
-    var id : String = UUID().uuidString
-    var name : String
-    var lastName : String
-    var username : String
-    var email : String
-    var password : String
+class User: Object {
+    
+    @Persisted(primaryKey: true) var id : String = UUID().uuidString
+    @Persisted var name : String = ""
+    @Persisted var lastName : String = "none"
+    @Persisted var username : String = ""
+    @Persisted var email : String = ""
+    @Persisted var password : String = ""
     
 }
 

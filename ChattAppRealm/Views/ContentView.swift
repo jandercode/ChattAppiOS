@@ -9,48 +9,29 @@ import SwiftUI
 import Firebase
 
 struct ContentView: View {
-    @State private var showNewChatView = false
+    @State var showNewChatView = false
+    @State var isLoggedIn = false
     let db = Firestore.firestore()
     @ObservedObject var firestoreContactDao = FirestoreContactDao()
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.white
-                    .ignoresSafeArea()
-                VStack {
-                    Text("Chats")
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Button {
-                            showNewChatView = true
-                           
-                        } label: {
-                            ZStack {
-                                Circle()
-                                    .fill(.green)
-                                    .frame(width: 50)
-                                Image(systemName: "pencil")
-                                    .foregroundColor(.white)
-                            }
-                            .frame(height: 50)
-                        }.padding(.trailing, 30)
-//                        .onTapGesture {
-//                            self.showNewChatView = true
-//                        }
-                    }
-                    NavigationLink(destination: NewChatView(), isActive: $showNewChatView) {
-                        EmptyView()
-                    }.isDetailLink(false)
-                }
-            }
+        
+        if isLoggedIn{
+            
+            ChatsView(showNewChatView: $showNewChatView)
+            
+        }else{
+            
+            LoginView(isLoggedIn: $isLoggedIn)
+            
         }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+
+
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}
