@@ -10,7 +10,7 @@ import Firebase
 
 struct ContentView: View {
     @State private var showNewChatView = false
-    let db = Firestore.firestore()
+   // let db = Firestore.firestore()
     
     var body: some View {
         NavigationView {

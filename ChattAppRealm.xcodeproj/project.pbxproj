@@ -22,6 +22,8 @@
 		C805C22E27FDBA2D00544537 /* FirebaseFirestoreSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = C805C22D27FDBA2D00544537 /* FirebaseFirestoreSwift-Beta */; };
 		C805C23027FDBA2D00544537 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = C805C22F27FDBA2D00544537 /* FirebaseStorage */; };
 		C805C23227FDBC5600544537 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C805C23127FDBC5600544537 /* GoogleService-Info.plist */; };
+		C805C23427FDD6C900544537 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C805C23327FDD6C900544537 /* User.swift */; };
+		C805C23727FEC08300544537 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = C805C23627FEC08300544537 /* Contact.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		C805C22127FC6F4700544537 /* NewChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewChatView.swift; sourceTree = "<group>"; };
 		C805C22427FC71AC00544537 /* ChatRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRow.swift; sourceTree = "<group>"; };
 		C805C23127FDBC5600544537 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C805C23327FDD6C900544537 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C805C23627FEC08300544537 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +77,7 @@
 		C805C1D327FC370D00544537 /* ChattAppRealm */ = {
 			isa = PBXGroup;
 			children = (
+				C805C23527FEC06C00544537 /* Models */,
 				C805C22327FC719200544537 /* Components */,
 				C805C21E27FC686500544537 /* Views */,
 				C805C1D427FC370D00544537 /* ChattAppRealmApp.swift */,
@@ -107,6 +112,15 @@
 				C805C22427FC71AC00544537 /* ChatRow.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		C805C23527FEC06C00544537 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C805C23327FDD6C900544537 /* User.swift */,
+				C805C23627FEC08300544537 /* Contact.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -195,9 +209,11 @@
 			files = (
 				C805C1D727FC370D00544537 /* ContentView.swift in Sources */,
 				C805C22227FC6F4700544537 /* NewChatView.swift in Sources */,
+				C805C23427FDD6C900544537 /* User.swift in Sources */,
 				C805C1D527FC370D00544537 /* ChattAppRealmApp.swift in Sources */,
 				C805C22527FC71AC00544537 /* ChatRow.swift in Sources */,
 				C805C22027FC6EC400544537 /* ChatView.swift in Sources */,
+				C805C23727FEC08300544537 /* Contact.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
