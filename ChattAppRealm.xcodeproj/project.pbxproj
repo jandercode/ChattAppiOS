@@ -24,6 +24,7 @@
 		C805C23227FDBC5600544537 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C805C23127FDBC5600544537 /* GoogleService-Info.plist */; };
 		C805C23427FDD6C900544537 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C805C23327FDD6C900544537 /* User.swift */; };
 		C805C23727FEC08300544537 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = C805C23627FEC08300544537 /* Contact.swift */; };
+		C805C23927FEC8F000544537 /* FirestoreContactDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = C805C23827FEC8F000544537 /* FirestoreContactDao.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		C805C23127FDBC5600544537 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C805C23327FDD6C900544537 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C805C23627FEC08300544537 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		C805C23827FEC8F000544537 /* FirestoreContactDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreContactDao.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 		C805C1D327FC370D00544537 /* ChattAppRealm */ = {
 			isa = PBXGroup;
 			children = (
+				C805C23A27FEC8F500544537 /* Firestore */,
 				C805C23527FEC06C00544537 /* Models */,
 				C805C22327FC719200544537 /* Components */,
 				C805C21E27FC686500544537 /* Views */,
@@ -121,6 +124,14 @@
 				C805C23627FEC08300544537 /* Contact.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		C805C23A27FEC8F500544537 /* Firestore */ = {
+			isa = PBXGroup;
+			children = (
+				C805C23827FEC8F000544537 /* FirestoreContactDao.swift */,
+			);
+			path = Firestore;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -214,6 +225,7 @@
 				C805C22527FC71AC00544537 /* ChatRow.swift in Sources */,
 				C805C22027FC6EC400544537 /* ChatView.swift in Sources */,
 				C805C23727FEC08300544537 /* Contact.swift in Sources */,
+				C805C23927FEC8F000544537 /* FirestoreContactDao.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
