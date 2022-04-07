@@ -8,10 +8,12 @@
 import Foundation
 import Firebase
 import FirebaseFirestoreSwift
+import SwiftUI
 
-class FirestoreContactDao {
+class FirestoreContactDao : ObservableObject {
     
     let db = Firestore.firestore()
+    @Published var contacts = [Contact]()
     
     private let ID_KEY = "id"
     private let USERNAME_KEY = "username"
@@ -20,7 +22,8 @@ class FirestoreContactDao {
     
     func saveContact() {
         
-        let newContact = Contact(name: "test_name", lastName: "test_last_name", username: "test_username", email: "test_email")
+       // let newContact = Contact(name: "test_name", lastName: "test_last_name", username: "test_username", email: "test_email")
+        let newContact = Contact(e_mail: "test@test.com", user_name: "Teddy")
         
         do {
             _ = try db.collection(USERS_COLLECTION)
@@ -30,5 +33,27 @@ class FirestoreContactDao {
         }
         
         
+    }
+    
+    func listenToFirestore() {
+        db.collection(USERS_COLLECTION).addSnapshotListener { snapshot, err in
+            guard let snapshot = snapshot else { return }
+            if let err = err {
+                print("Error getting document \(err)")
+            } else {
+                self.contacts.removeAll()
+                for document in snapshot.documents {
+                    let result = Result {
+                        try document.data(as: Contact.self)
+                    }
+                    switch result {
+                    case .success(let contact) :
+                        self.contacts.append(contact)
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
+                    }
+                }
+            }
+        }
     }
 }

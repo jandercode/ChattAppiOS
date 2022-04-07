@@ -11,7 +11,7 @@ import Firebase
 struct ContentView: View {
     @State private var showNewChatView = false
     let db = Firestore.firestore()
-    let firestoreContactDao = FirestoreContactDao()
+    @ObservedObject var firestoreContactDao = FirestoreContactDao()
     
     var body: some View {
         NavigationView {
