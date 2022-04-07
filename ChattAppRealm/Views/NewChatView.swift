@@ -19,21 +19,35 @@ struct NewChatView: View {
     
     var body: some View {
         VStack {
-        HStack {
-            Text("To:")
-            TextField("Type a name or group", text: $chatName)
-        }.onAppear() {
-            firestoreContactDao.listenToFirestore()
-        }
+            HStack {
+                Text("To:")
+                TextField("Type a name or group", text: $chatName)
+                Button {
+                    if chatName != "" {
+                        firestoreContactDao.saveContact(username: chatName)
+                        chatName = ""
+                    }
+                } label: {
+                    Text("Save")
+                }
+
+            }.onAppear() {
+                firestoreContactDao.listenToFirestore()
+            }
             List{
                 ForEach(firestoreContactDao.contacts) { contact in
                     Text(contact.user_name)
                 }
+                .onDelete { indexSet in
+                    firestoreContactDao.deleteContact(at: indexSet)
+                        
+                }
+                .onTapGesture {
+                    // db.collection("tmp").addDocument(data: ["name" : "testtmpLuca"])
+                    showChatView = true
+                }
             }
-            .onTapGesture {
-               // db.collection("tmp").addDocument(data: ["name" : "testtmpLuca"])
-                showChatView = true
-            }
+            
         Spacer()
             NavigationLink(destination: ChatView(), isActive: $showChatView) {
                 EmptyView()

@@ -24,7 +24,6 @@ struct ContentView: View {
                     HStack {
                         Spacer()
                         Button {
-                            firestoreContactDao.saveContact()
                             showNewChatView = true
                            
                         } label: {

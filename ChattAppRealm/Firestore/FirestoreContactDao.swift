@@ -20,21 +20,24 @@ class FirestoreContactDao : ObservableObject {
     private let EMAIL_KEY = "email"
     private let USERS_COLLECTION = "contacts"
     
-    func saveContact() {
+    func saveContact(username: String) {
         
-       // let newContact = Contact(name: "test_name", lastName: "test_last_name", username: "test_username", email: "test_email")
-        let newContact = Contact(e_mail: "test@test.com", user_name: "Teddy")
+        let newContact = Contact(e_mail: "test@test.com", user_name: username)
         
         do {
-            _ = try db.collection(USERS_COLLECTION)
-                .addDocument(from: newContact)
+            _ = try db.collection(USERS_COLLECTION).document(newContact.id).setData(from: newContact)
         } catch {
             print("error saving to db")
         }
-        
-        
     }
     
+    func deleteContact(at indexSet: IndexSet) {
+        for index in indexSet {
+            let contact = contacts[index]
+                db.collection(USERS_COLLECTION).document(contact.id).delete()
+        }
+    }
+
     func listenToFirestore() {
         db.collection(USERS_COLLECTION).addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else { return }
