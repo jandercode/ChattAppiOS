@@ -22,7 +22,7 @@ class FirestoreContactDao : ObservableObject {
     
     func saveContact(username: String) {
         
-        let newContact = Contact(e_mail: "test@test.com", user_name: username)
+        let newContact = Contact(user_name: username, e_mail: "test@test.com")
         
         do {
             _ = try db.collection(USERS_COLLECTION).document(newContact.id).setData(from: newContact)

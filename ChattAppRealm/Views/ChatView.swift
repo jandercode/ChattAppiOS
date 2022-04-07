@@ -10,6 +10,8 @@ import Firebase
 
 struct ChatView: View {
     let db = Firestore.firestore()
+    @ObservedObject var firestoreContactDao = FirestoreMessageDao()
+    
     @State private var messageText: String = ""
     
     var body: some View {
