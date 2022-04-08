@@ -67,6 +67,33 @@ class FirestoreContactDao : ObservableObject {
         }
     }
     
+    func checkForSameEmail(email: String){
+        
+        var mailExists = false
+        
+       db.collection(USERS_COLLECTION).whereField(EMAIL_KEY, isEqualTo: email).getDocuments(){ querySnapshot, err in
+           
+           guard let snapshot = querySnapshot else {return}
+           
+           if let e = err{
+               print("error \(e)")
+           }else{
+               if !snapshot.isEmpty{
+                   
+                   mailExists = false
+                   
+               }else{
+                   
+                   mailExists = true
+               }
+           }
+       
+       }
+        
+        return mailExists
+        
+    }
+    
     func saveNewUser(user: User){
         
         let newUser : [String : String] = [

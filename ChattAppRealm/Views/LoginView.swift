@@ -147,19 +147,21 @@ struct registerView: View{
                 
                 Button(action: {
                     
+                    
+                                        
                     if textFieldValidatorPassword(password, repeatPassword) && textFieldValidatorEmail(eMail)
-                        && !userName.isEmpty && !eMail.isEmpty && !firstName.isEmpty{
-                        
+                        && !userName.isEmpty && !eMail.isEmpty && !firstName.isEmpty && !firestoreContactDao.checkForSameEmail(email: eMail){
+
                         let user = User()
                         user.username = userName
                         user.email = eMail
                         user.firstName = firstName
                         user.lastName = lastName
                         user.password = password
-                        
+
                         userDao.saveUser(user: user)
                         firestoreContactDao.saveNewUser(user: user)
-                        
+
                         showSuccessAlert = true
                         
                     }else{
