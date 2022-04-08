@@ -11,7 +11,7 @@ struct LoginView: View {
     
     @Binding var isLoggedIn: Bool
     
-    @State var userName: String = ""
+    @State var eMail: String = ""
     @State var password: String = ""
     @State private var showRegisterAccount = false
     @State private var loginErrorAlert = false
@@ -20,6 +20,7 @@ struct LoginView: View {
     var body: some View {
         
         let userDao = UserDao()
+        let firestoreContactDao = FirestoreContactDao()
 
             
             VStack{
@@ -28,7 +29,7 @@ struct LoginView: View {
                     .font(.largeTitle)
                         
                     
-                    TextField("Username", text: $userName)
+                    TextField("E-mail", text: $eMail)
                             .padding()
                             .textFieldStyle(.roundedBorder)
                             .autocapitalization(.none)
@@ -46,8 +47,7 @@ struct LoginView: View {
                     
                     Button(action: {
                         
-                        if userDao.getUser(userName: userName, password: password){
-                            
+                        if firestoreContactDao.checkLogin(mail: eMail, password: password){
                             isLoggedIn = true
                             
                         }else{
@@ -77,7 +77,7 @@ struct LoginView: View {
                         
                     })
                     .sheet(isPresented: $showRegisterAccount, content: {
-                        registerView(userName: $userName, password: $password, userDao: userDao)
+                        registerView(eMail: $eMail, password: $password, userDao: userDao, firestoreContactDao: firestoreContactDao)
                     })
                     
                     Spacer()
@@ -87,6 +87,7 @@ struct LoginView: View {
                 .padding(.top)
             }
     }
+    
 }
 
 
@@ -94,13 +95,14 @@ struct registerView: View{
     
     @Environment(\.dismiss) var dismiss
     
-    @Binding var userName: String
+    @Binding var eMail: String
     @Binding var password: String
     var userDao: UserDao
+    var firestoreContactDao: FirestoreContactDao
     
     @State var firstName = ""
     @State var lastName = ""
-    @State var mail = ""
+    @State var userName = ""
     @State var repeatPassword = ""
     
     @State var showSuccessAlert = false
@@ -114,7 +116,7 @@ struct registerView: View{
             TextField("username", text: $userName)
                 .autocapitalization(.none)
             
-            TextField("mail", text: $mail)
+            TextField("mail", text: $eMail)
                 .autocapitalization(.none)
             
             HStack{
@@ -137,16 +139,17 @@ struct registerView: View{
                 
                 Button(action: {
                     
-                    if password == repeatPassword && textFieldValidatorEmail(mail) && !userName.isEmpty && !mail.isEmpty && !firstName.isEmpty && !password.isEmpty{
+                    if password == repeatPassword && textFieldValidatorEmail(eMail) && !userName.isEmpty && !eMail.isEmpty && !firstName.isEmpty && !password.isEmpty{
                         
                         let user = User()
                         user.username = userName
-                        user.email = mail
-                        user.name = firstName
+                        user.email = eMail
+                        user.firstName = firstName
                         user.lastName = lastName
                         user.password = password
                         showSuccessAlert = true
                         userDao.saveUser(user: user)
+                        firestoreContactDao.saveNewUser(user: user)
                         
                     }else{
                         showFailureAlert = true
@@ -183,11 +186,6 @@ struct registerView: View{
             }
             .buttonStyle(.bordered)
             .padding(.top)
-            
-            
-            
-            
-            
             
         }
         .textFieldStyle(.roundedBorder)
