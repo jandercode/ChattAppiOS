@@ -15,14 +15,11 @@ struct LoginView: View {
     @State var password: String = ""
     @State private var showRegisterAccount = false
     @State private var loginErrorAlert = false
-    
+    let userDao = UserDao()
+    let firestoreContactDao = FirestoreContactDao()
     
     var body: some View {
-        
-        let userDao = UserDao()
-        let firestoreContactDao = FirestoreContactDao()
-
-            
+                    
             VStack{
                 
                 Text("LOGIN")
@@ -33,6 +30,7 @@ struct LoginView: View {
                             .padding()
                             .textFieldStyle(.roundedBorder)
                             .autocapitalization(.none)
+                            .disableAutocorrection(true)
                 
                 
                     
@@ -40,6 +38,7 @@ struct LoginView: View {
                             .padding()
                             .textFieldStyle(.roundedBorder)
                             .autocapitalization(.none)
+                            .disableAutocorrection(true)
                 
                 HStack{
                     
@@ -94,6 +93,8 @@ struct LoginView: View {
                 .buttonStyle(.bordered)
                 .padding(.top)
             }
+            .onAppear(){firestoreContactDao.getUsers()}
+            .onDisappear(perform: {firestoreContactDao.eraseUsers()})
     }
     
 }
@@ -115,6 +116,9 @@ struct registerView: View{
     
     @State var showSuccessAlert = false
     @State var showFailureAlert = false
+    @State var showSameMailAlert = false
+    
+    @State var isEmailSame = true
     
     
     var body: some View{
@@ -126,6 +130,7 @@ struct registerView: View{
             
             TextField("mail", text: $eMail)
                 .autocapitalization(.none)
+                .disableAutocorrection(true)
             
             HStack{
                 
@@ -137,9 +142,11 @@ struct registerView: View{
             
             SecureInputView("password", text: $password)
                 .autocapitalization(.none)
+                .disableAutocorrection(true)
             
             SecureInputView("repeat password", text: $repeatPassword)
                 .autocapitalization(.none)
+                .disableAutocorrection(true)
             
             HStack{
                 
@@ -147,11 +154,13 @@ struct registerView: View{
                 
                 Button(action: {
                     
-                    
-                                        
-                    if textFieldValidatorPassword(password, repeatPassword) && textFieldValidatorEmail(eMail)
-                        && !userName.isEmpty && !eMail.isEmpty && !firstName.isEmpty && !firestoreContactDao.checkForSameEmail(email: eMail){
-
+                    if !firestoreContactDao.checkForSameEmail(email: eMail){
+                        
+                        showSameMailAlert = true
+                        
+                    }else if textFieldValidatorPassword(password, repeatPassword) && textFieldValidatorEmail(eMail)
+                        && !userName.isEmpty && !eMail.isEmpty && !firstName.isEmpty{
+                        
                         let user = User()
                         user.username = userName
                         user.email = eMail
@@ -177,10 +186,12 @@ struct registerView: View{
                 .alert("Account created", isPresented: $showSuccessAlert) {
                     Button("Great!", role: .cancel){
                         dismiss()
-
                     }
                 }
                 .alert("Something went wrong, check again", isPresented: $showFailureAlert) {
+                    Button("Ok", role: .cancel){}
+                }
+                .alert("An account with the same E-mail already exists", isPresented: $showSameMailAlert) {
                     Button("Ok", role: .cancel){}
                 }
                 

@@ -14,6 +14,7 @@ class FirestoreContactDao : ObservableObject {
     
     let db = Firestore.firestore()
     @Published var contacts = [Contact]()
+    private var registeredUsers = [User]()
     
     private let ID_KEY = "id"
     private let USERNAME_KEY = "username"
@@ -67,30 +68,25 @@ class FirestoreContactDao : ObservableObject {
         }
     }
     
-    func checkForSameEmail(email: String){
+    func checkForSameEmail(email: String) -> Bool{
         
-        var mailExists = false
-        
-       db.collection(USERS_COLLECTION).whereField(EMAIL_KEY, isEqualTo: email).getDocuments(){ querySnapshot, err in
-           
-           guard let snapshot = querySnapshot else {return}
-           
-           if let e = err{
-               print("error \(e)")
-           }else{
-               if !snapshot.isEmpty{
-                   
-                   mailExists = false
-                   
-               }else{
-                   
-                   mailExists = true
-               }
-           }
-       
-       }
-        
-        return mailExists
+        if !registeredUsers.isEmpty{
+            
+            for user in registeredUsers{
+                
+                if user.email == email{
+                    
+                    return true
+                    
+                }else{
+                    
+                    return false
+                }
+            }
+            
+        }
+            
+            return false
         
     }
     
@@ -136,18 +132,11 @@ class FirestoreContactDao : ObservableObject {
                             
                             self.setCurrentUsert(data: data)
                     }
-                    
-                    
-                    
                         print("success")
                         
                     }
-                    
-                    
                 }
-                
             }
-            
     }
     
     func setCurrentUsert(data: [String:Any]){
@@ -163,7 +152,33 @@ class FirestoreContactDao : ObservableObject {
         
     }
     
+    func getUsers(){
+        
+        db.collection(USERS_COLLECTION).getDocuments(){ querySnapshot, err in
+            
+            if let e = err{
+                print("ERROR \(e)")
+            }else{
+                for doc in querySnapshot!.documents{
+                    
+                    let data = doc.data()
+                    let user = User()
+                    user.id = data[self.ID_KEY] as! String
+                    user.username = data[self.USERNAME_KEY] as! String
+                    user.email = data[self.EMAIL_KEY] as! String
+                    
+                    self.registeredUsers.append(user)
+                    
+                }
+            }
+        }
+    }
     
+    func eraseUsers(){
+        
+        registeredUsers.removeAll()
+        
+    }
     
     
     
