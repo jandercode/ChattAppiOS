@@ -10,24 +10,47 @@ import Firebase
 
 class FirestoreMessageDao : ObservableObject {
     let db = Firestore.firestore()
+    @Published var messages = [Message]()
     
     private let ID_KEY = "id"
     private let SENDER_KEY = "sender"
-    private let RECEIVER_KEY = "receiver"
+   // private let RECEIVER_KEY = "receiver"
     private let TEXT_KEY = "text"
     private let TIMESTAMP_KEY = "timestamp"
 
     private let MESSAGES_COLLECTION = "messages"
-    private let USERS_COLLECTION = "contacts"
+    private let CHATS_COLLECTION = "chats"
     
-    func saveMessage() {
-        let newMessage = Message()
+    func saveMessage(message: Message, chatId : String) {
         
         do {
-            try db.collection(USERS_COLLECTION).document(newMessage.receiver).collection(MESSAGES_COLLECTION).document(newMessage.id).setData(from: newMessage)
+            try db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).document(message.id).setData(from: message)
         } catch {
             print("Error saving newMessage to db")
         }
     }
     
+    func listenToFirestore(chatId : String) {
+        if chatId != "" {
+            db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).addSnapshotListener { snapshot, err in
+                guard let snapshot = snapshot else { return }
+                if let err = err {
+                    print("Error getting document \(err)")
+                } else {
+                    self.messages.removeAll()
+                    for document in snapshot.documents {
+                        let result = Result {
+                            try document.data(as: Message.self)
+                        }
+                        switch result {
+                        case .success(let message) :
+                            self.messages.append(message)
+                        case .failure(let error) :
+                            print("Error decoding item: \(error)")
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

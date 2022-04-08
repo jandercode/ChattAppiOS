@@ -8,9 +8,9 @@
 import Foundation
 
 struct Message : Codable, Identifiable {
-    var id : String = UUID().uuidString
-    var sender : String = "dave"
-    var receiver : String = ""
-    var text : String = ""
+    var sender : String
+   // var receiver : String = ""
+    var text : String
     var timestamp : Date = Date()
+    var id : String = UUID().uuidString
 }
