@@ -10,7 +10,7 @@ import Firebase
 
 struct ChatView: View {
     let db = Firestore.firestore()
-    @ObservedObject var firestoreContactDao = FirestoreMessageDao()
+    @ObservedObject var firestoreChatDao = FirestoreChatDao()
     
     @State private var messageText: String = ""
     
@@ -25,9 +25,11 @@ struct ChatView: View {
                 TextField("Aa", text: $messageText)
                 Button {
                     // create a new chat in firestore if it doesn't already exist
-                   // db.collection("tmp").addDocument(data: ["chatName" : "chat1"])
-                    // add new message to firestore
-                   // db.collection("tmp").addDocument(data: ["messageText": messageText])
+                    var chat = Chat()
+                    chat.usersInChat = ["Billy", "Dave"]
+                    firestoreChatDao.saveNewChat(chat: chat)
+                    // TODO: add new message to firestore
+                    
                 } label: {
                     Text("Send")
                 }
