@@ -83,7 +83,6 @@ class FirestoreContactDao : ObservableObject {
                     return false
                 }
             }
-            
         }
             
             return false
