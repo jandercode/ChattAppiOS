@@ -11,28 +11,46 @@ import Firebase
 struct ChatView: View {
     let db = Firestore.firestore()
     @ObservedObject var firestoreChatDao = FirestoreChatDao()
+    @ObservedObject var firestoreMessageDao = FirestoreMessageDao()
     
     @State private var messageText: String = ""
+    @State var chatId = ""
     
     var body: some View {
         VStack {
             List {
-                Text("hello")
-                Text("hey! how are you?")
-                Text("pretty good thanks")
+                ForEach(firestoreMessageDao.messages) { message in
+                    Text(message.text)
+
+                }
             }
+            
             HStack {
                 TextField("Aa", text: $messageText)
                 Button {
                     // create a new chat in firestore if it doesn't already exist
-                    var chat = Chat()
-                    chat.usersInChat = ["Billy", "Dave"]
-                    firestoreChatDao.saveNewChat(chat: chat)
-                    // TODO: add new message to firestore
                     
+                    if messageText != "" {
+                        if chatId == "" {
+                            var chat = Chat()
+                            chatId = chat.id
+                            chat.usersInChat = ["Billy", "Dave"]
+                            firestoreChatDao.saveNewChat(chat: chat)
+                        }
+                        // add new message to firestore
+                        let sender = UserManager.userManager.currentUser?.id ?? "anonymous"
+                        let message = Message(sender: sender, text: messageText)
+                        
+                        firestoreMessageDao.saveMessage(message: message, chatId: chatId)
+                        messageText = ""
+                        firestoreMessageDao.listenToFirestore(chatId: chatId)
+                    }
                 } label: {
                     Text("Send")
                 }
+            }
+            .onAppear {
+                firestoreMessageDao.listenToFirestore(chatId: chatId)
             }
         }
     }
