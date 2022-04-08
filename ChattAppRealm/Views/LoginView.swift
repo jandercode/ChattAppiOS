@@ -118,9 +118,6 @@ struct registerView: View{
     @State var showFailureAlert = false
     @State var showSameMailAlert = false
     
-    @State var isEmailSame = true
-    
-    
     var body: some View{
         
         VStack{
@@ -154,28 +151,32 @@ struct registerView: View{
                 
                 Button(action: {
                     
-                    if !firestoreContactDao.checkForSameEmail(email: eMail){
+                    if firestoreContactDao.checkForSameEmail(email: eMail){
                         
                         showSameMailAlert = true
                         
-                    }else if textFieldValidatorPassword(password, repeatPassword) && textFieldValidatorEmail(eMail)
-                        && !userName.isEmpty && !eMail.isEmpty && !firstName.isEmpty{
-                        
-                        let user = User()
-                        user.username = userName
-                        user.email = eMail
-                        user.firstName = firstName
-                        user.lastName = lastName
-                        user.password = password
-
-                        userDao.saveUser(user: user)
-                        firestoreContactDao.saveNewUser(user: user)
-
-                        showSuccessAlert = true
-                        
                     }else{
                         
-                        showFailureAlert = true
+                        if textFieldValidatorPassword(password, repeatPassword) && textFieldValidatorEmail(eMail)
+                            && !userName.isEmpty && !eMail.isEmpty && !firstName.isEmpty{
+                            
+                            let user = User()
+                            user.username = userName
+                            user.email = eMail
+                            user.firstName = firstName
+                            user.lastName = lastName
+                            user.password = password
+
+                            userDao.saveUser(user: user)
+                            firestoreContactDao.saveNewUser(user: user)
+
+                            showSuccessAlert = true
+                            
+                        }else{
+                            
+                            showFailureAlert = true
+                        }
+                        
                     }
                     
                     
