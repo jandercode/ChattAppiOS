@@ -47,13 +47,21 @@ struct LoginView: View {
                     
                     Button(action: {
                         
-                        if firestoreContactDao.checkLogin(mail: eMail, password: password){
-                            isLoggedIn = true
+                        firestoreContactDao.checkLogin(mail: eMail, password: password)
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                             
-                        }else{
+                            if UserManager.userManager.currentUser != nil{
+                                
+                                isLoggedIn = true
+                                
+                            }else{
+                                
+                                loginErrorAlert = true
+                            }
                             
-                            loginErrorAlert = true
-                        }
+                        })
+                        
                         
                     }, label: {
                         

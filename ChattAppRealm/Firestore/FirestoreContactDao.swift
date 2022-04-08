@@ -89,31 +89,38 @@ class FirestoreContactDao : ObservableObject {
     }
     
     
-    func checkLogin(mail: String, password: String) -> Bool{
+    func checkLogin(mail: String, password: String){
         
         db.collection(USERS_COLLECTION).whereField(EMAIL_KEY, isEqualTo: mail)
             .getDocuments(){(querysnapshot, err) in
-                if let err = err{
+                if let err = err {
                     
                     print(err)
                     
                 }else{
                     
-                    self.setCurrentUsert(data: (querysnapshot!.documents.first?.data())!)
-                    print("success")
+                    var data : [String : Any]
+                    
+                    for doc in querysnapshot!.documents{
+                        
+                        data = doc.data()
+                        
+                        if data[self.PASSWORD_KEY] as! String == password{
+                            
+                            self.setCurrentUsert(data: data)
+                    }
+                    
+                    
+                    
+                        print("success")
+                        
+                    }
+                    
                     
                 }
                 
             }
-        
-        if UserManager.userManager.currentUser != nil{
             
-            return true
-            
-        }else{
-            
-            return false
-        }
     }
     
     func setCurrentUsert(data: [String:Any]){
