@@ -147,7 +147,8 @@ struct registerView: View{
                 
                 Button(action: {
                     
-                    if password == repeatPassword && textFieldValidatorEmail(eMail) && !userName.isEmpty && !eMail.isEmpty && !firstName.isEmpty && !password.isEmpty{
+                    if textFieldValidatorPassword(password, repeatPassword) && textFieldValidatorEmail(eMail)
+                        && !userName.isEmpty && !eMail.isEmpty && !firstName.isEmpty{
                         
                         let user = User()
                         user.username = userName
@@ -155,11 +156,14 @@ struct registerView: View{
                         user.firstName = firstName
                         user.lastName = lastName
                         user.password = password
-                        showSuccessAlert = true
+                        
                         userDao.saveUser(user: user)
                         firestoreContactDao.saveNewUser(user: user)
                         
+                        showSuccessAlert = true
+                        
                     }else{
+                        
                         showFailureAlert = true
                     }
                     
@@ -199,6 +203,20 @@ struct registerView: View{
         .textFieldStyle(.roundedBorder)
         .padding(.leading)
         .padding(.trailing)
+        
+    }
+    
+    func textFieldValidatorPassword(_ password: String, _ repeatePassword: String) -> Bool{
+        
+        if password == "" || password.contains(" ") || password != repeatPassword {
+            
+            return false
+            
+        }else{
+            
+            return true
+        }
+        
         
     }
     
