@@ -16,7 +16,6 @@ struct LoginView: View {
     @State private var showRegisterAccount = false
     @State private var loginErrorAlert = false
     let userDao = UserDao()
-    let firestoreContactDao = FirestoreContactDao()
     
     var body: some View {
                     
@@ -46,7 +45,7 @@ struct LoginView: View {
                     
                     Button(action: {
                         
-                        firestoreContactDao.checkLogin(mail: eMail, password: password)
+                        FirestoreContactDao.firestoreContactDao.checkLogin(mail: eMail, password: password)
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                             
@@ -84,7 +83,7 @@ struct LoginView: View {
                         
                     })
                     .sheet(isPresented: $showRegisterAccount, content: {
-                        registerView(eMail: $eMail, password: $password, userDao: userDao, firestoreContactDao: firestoreContactDao)
+                        registerView(eMail: $eMail, password: $password, userDao: userDao)
                     })
                     
                     Spacer()
@@ -93,8 +92,8 @@ struct LoginView: View {
                 .buttonStyle(.bordered)
                 .padding(.top)
             }
-            .onAppear(){firestoreContactDao.getUsers()}
-            .onDisappear(perform: {firestoreContactDao.eraseUsers()})
+            .onAppear(){FirestoreContactDao.firestoreContactDao.getUsers()}
+            //.onDisappear(perform: {firestoreContactDao.eraseUsers()})
     }
     
 }
@@ -107,7 +106,6 @@ struct registerView: View{
     @Binding var eMail: String
     @Binding var password: String
     var userDao: UserDao
-    var firestoreContactDao: FirestoreContactDao
     
     @State var firstName = ""
     @State var lastName = ""
@@ -151,7 +149,7 @@ struct registerView: View{
                 
                 Button(action: {
                     
-                    if firestoreContactDao.checkForSameEmail(email: eMail){
+                    if FirestoreContactDao.firestoreContactDao.checkForSameEmail(email: eMail){
                         
                         showSameMailAlert = true
                         
@@ -168,7 +166,7 @@ struct registerView: View{
                             user.password = password
 
                             userDao.saveUser(user: user)
-                            firestoreContactDao.saveNewUser(user: user)
+                            FirestoreContactDao.firestoreContactDao.saveNewUser(user: user)
 
                             showSuccessAlert = true
                             

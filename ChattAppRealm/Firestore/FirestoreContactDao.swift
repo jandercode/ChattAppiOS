@@ -12,9 +12,13 @@ import SwiftUI
 
 class FirestoreContactDao : ObservableObject {
     
+    static let firestoreContactDao = FirestoreContactDao()
+    
+    private init(){}
+    
     let db = Firestore.firestore()
     @Published var contacts = [Contact]()
-    private var registeredUsers = [User]()
+    var registeredUsers = [User]()
     
     private let ID_KEY = "id"
     private let USERNAME_KEY = "username"

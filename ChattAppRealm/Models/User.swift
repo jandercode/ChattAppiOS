@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class User: Object {
+class User: Object, Codable, Identifiable {
     
     @Persisted(primaryKey: true) var id : String = UUID().uuidString
     @Persisted var firstName : String = ""

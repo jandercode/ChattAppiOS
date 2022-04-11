@@ -11,8 +11,6 @@ import Firebase
 struct NewChatView: View {
     @State private var showChatView = false
     let db = Firestore.firestore()
-    @ObservedObject var firestoreContactDao = FirestoreContactDao()
-
     
     
     @State private var chatName: String = ""
@@ -24,7 +22,7 @@ struct NewChatView: View {
                 TextField("Type a name or group", text: $chatName)
                 Button {
                     if chatName != "" {
-                        firestoreContactDao.saveContact(username: chatName)
+                        //firestoreContactDao.saveContact(username: chatName)
                         chatName = ""
                     }
                 } label: {
@@ -32,15 +30,13 @@ struct NewChatView: View {
                 }
 
             }.onAppear() {
-                firestoreContactDao.listenToFirestore()
+                //firestoreContactDao.listenToFirestore()
             }
             List{
-                ForEach(firestoreContactDao.contacts) { contact in
-                    Text(contact.user_name)
-                }
-                .onDelete { indexSet in
-                    firestoreContactDao.deleteContact(at: indexSet)
-                        
+                ForEach(FirestoreContactDao.firestoreContactDao.registeredUsers){ user in
+                    
+                    Text(user.username)
+                    
                 }
                 .onTapGesture {
                     // db.collection("tmp").addDocument(data: ["name" : "testtmpLuca"])
