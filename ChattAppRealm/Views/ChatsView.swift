@@ -11,6 +11,7 @@ struct ChatsView: View{
     
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     @Binding var showNewChatView: Bool
+    @State var presentUserInfo = false
     
     var body: some View{
         
@@ -18,8 +19,31 @@ struct ChatsView: View{
             ZStack {
                 Color.white
                     .ignoresSafeArea()
+                
                 VStack {
-                    Text("Chats")
+                    
+                    HStack{
+                        
+                        Text("Chats")
+                            .font(.largeTitle)
+                            .padding()
+                        
+                        
+                        Button {
+                            
+                            presentUserInfo.toggle()
+                            
+                        } label: {
+                            Image(systemName: "person.circle")
+                                .resizable()
+                                .frame(width: 32.0, height: 32.0)
+                        }.padding()
+
+
+                        
+                        
+                    }
+                    
                     List{
                         ForEach(firestoreChatDao.chats) { chat in
                             Text(chat.id)
@@ -51,6 +75,11 @@ struct ChatsView: View{
                     FirestoreContactDao.firestoreContactDao.getUsers()
                     
                 }
+                .sheet(isPresented: $presentUserInfo, content: {
+                    
+                    UserInfoView()
+                    
+                })
             }
         }
     }
