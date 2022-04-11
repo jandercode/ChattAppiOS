@@ -16,6 +16,7 @@ struct LoginView: View {
     @State private var showRegisterAccount = false
     @State private var loginErrorAlert = false
     let userDao = UserDao()
+    let userDefault = UserDefaults.standard
     
     var body: some View {
                     
@@ -50,6 +51,7 @@ struct LoginView: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                             
                             if UserManager.userManager.currentUser != nil{
+                                
                                 
                                 isLoggedIn = true
                                 

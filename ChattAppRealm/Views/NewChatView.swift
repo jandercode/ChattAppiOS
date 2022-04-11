@@ -30,6 +30,7 @@ struct NewChatView: View {
                 }
 
             }.onAppear() {
+                print("LUCA: \(FirestoreContactDao.firestoreContactDao.registeredUsers.count)")
                 //firestoreContactDao.listenToFirestore()
             }
             List{
