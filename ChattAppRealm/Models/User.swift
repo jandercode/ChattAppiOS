@@ -19,13 +19,3 @@ class User: Object, Codable, Identifiable {
     
 }
 
-//SINGLETON
-class UserManager: ObservableObject{
-    
-    static let userManager = UserManager()
-    @Published var currentUser: User? = nil
-    
-    private init(){}
-    
-}
-

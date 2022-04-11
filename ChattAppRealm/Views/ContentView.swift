@@ -14,7 +14,7 @@ struct ContentView: View {
     
     var body: some View {
         
-        if !isLoggedIn{
+        if isLoggedIn{
             
             ChatsView(showNewChatView: $showNewChatView)
             
