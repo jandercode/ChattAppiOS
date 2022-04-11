@@ -31,6 +31,7 @@ struct NewChatView: View {
                 
             }.onAppear() {
                 print("LUCA: \(FirestoreContactDao.firestoreContactDao.registeredUsers.count)")
+                print("NEWCHATVIEW messages-innehåll: \(FirestoreMessageDao.firestoreMessageDao.messages)")
                 //firestoreContactDao.listenToFirestore()
             }
             List{
@@ -40,14 +41,14 @@ struct NewChatView: View {
                     
                     
                         .onTapGesture {
-                            usersInChat = FirestoreChatDao.firestoreChatDao.updateUsersInChatList(existingUserList: [], usersToAddToList: [UserManager.userManager.currentUser?.username ?? "", user.username])
+                            usersInChat = FirestoreChatDao.firestoreChatDao.updateUsersInChatList(existingUserList: usersInChat, usersToAddToList: [user.username])
                             showChatView = true
                         }
                 }
             }
             
         Spacer()
-            NavigationLink(destination: ChatView(chatId: "", usersInChat: usersInChat), isActive: $showChatView) {
+            NavigationLink(destination: MessagesView(chatId: "", usersInChat: usersInChat), isActive: $showChatView) {
                 EmptyView()
             }.isDetailLink(false)
         }
