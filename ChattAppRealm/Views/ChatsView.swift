@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ChatsView: View{
     
+    @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     @Binding var showNewChatView: Bool
     
     var body: some View{
@@ -19,6 +20,11 @@ struct ChatsView: View{
                     .ignoresSafeArea()
                 VStack {
                     Text("Chats")
+                    List{
+                        ForEach(firestoreChatDao.chats) { chat in
+                            Text(chat.id)
+                        }
+                    }
                     Spacer()
                     HStack {
                         Spacer()
@@ -35,17 +41,12 @@ struct ChatsView: View{
                             }
                             .frame(height: 50)
                         }.padding(.trailing, 30)
-    //                        .onTapGesture {
-    //                            self.showNewChatView = true
-    //                        }
                     }
                     NavigationLink(destination: NewChatView(), isActive: $showNewChatView) {
                         EmptyView()
                     }.isDetailLink(false)
-                }
+                }.onAppear(perform: firestoreChatDao.listenToFirestore)
             }
         }
-        
     }
-    
 }
