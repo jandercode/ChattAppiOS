@@ -163,6 +163,7 @@ class FirestoreContactDao : ObservableObject {
             if let e = err{
                 print("ERROR \(e)")
             }else{
+                self.registeredUsers.removeAll()
                 for doc in querySnapshot!.documents{
                     
                     let data = doc.data()

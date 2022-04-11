@@ -14,7 +14,8 @@ struct ChatView: View {
     @ObservedObject var firestoreMessageDao = FirestoreMessageDao.firestoreMessageDao
     
     @State private var messageText: String = ""
-    @State var chatId = ""
+    @State var chatId : String
+    @State var usersInChat : [String]
     
     var body: some View {
         VStack {
@@ -34,7 +35,7 @@ struct ChatView: View {
                         if chatId == "" {
                             var chat = Chat()
                             chatId = chat.id
-                            chat.users_in_chat = ["Billy", "Dave"]
+                            chat.users_in_chat = usersInChat
                             firestoreChatDao.saveNewChat(chat: chat)
                         }
                         // add new message to firestore
@@ -58,6 +59,6 @@ struct ChatView: View {
 
 struct ChatView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatView()
+        ChatView(chatId: "", usersInChat: [String]())
     }
 }

@@ -20,6 +20,18 @@ class FirestoreChatDao : ObservableObject {
     private let USERS_IN_CHAT_KEY = "users_in_chat"
     private let ID_KEY = "id"
     
+    func updateUsersInChatList(existingUserList: [String], usersToAddToList: [String]) -> [String] {
+        var usersInChatList = [String]()
+        for userInList in existingUserList {
+            usersInChatList.append(userInList)
+        }
+        for userToAdd in usersToAddToList {
+            usersInChatList.append(userToAdd)
+        }
+        print(usersInChatList)
+        return usersInChatList
+    }
+    
     func saveNewChat(chat: Chat){
                 
         let newChat : [String : Any] = [

@@ -11,7 +11,7 @@ import Firebase
 struct NewChatView: View {
     @State private var showChatView = false
     let db = Firestore.firestore()
-    
+    @State var usersInChat : [String] = [UserManager.userManager.currentUser?.username ?? User().username]
     
     @State private var chatName: String = ""
     
@@ -28,7 +28,7 @@ struct NewChatView: View {
                 } label: {
                     Text("Save")
                 }
-
+                
             }.onAppear() {
                 print("LUCA: \(FirestoreContactDao.firestoreContactDao.registeredUsers.count)")
                 //firestoreContactDao.listenToFirestore()
@@ -38,15 +38,16 @@ struct NewChatView: View {
                     
                     Text(user.username)
                     
-                }
-                .onTapGesture {
-                    // db.collection("tmp").addDocument(data: ["name" : "testtmpLuca"])
-                    showChatView = true
+                    
+                        .onTapGesture {
+                            usersInChat = FirestoreChatDao.firestoreChatDao.updateUsersInChatList(existingUserList: [], usersToAddToList: [UserManager.userManager.currentUser?.username ?? "", user.username])
+                            showChatView = true
+                        }
                 }
             }
             
         Spacer()
-            NavigationLink(destination: ChatView(), isActive: $showChatView) {
+            NavigationLink(destination: ChatView(chatId: "", usersInChat: usersInChat), isActive: $showChatView) {
                 EmptyView()
             }.isDetailLink(false)
         }
@@ -58,3 +59,4 @@ struct NewChatView_Previews: PreviewProvider {
         NewChatView()
     }
 }
+
