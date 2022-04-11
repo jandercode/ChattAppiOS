@@ -45,7 +45,12 @@ struct ChatsView: View{
                     NavigationLink(destination: NewChatView(), isActive: $showNewChatView) {
                         EmptyView()
                     }.isDetailLink(false)
-                }.onAppear(perform: firestoreChatDao.listenToFirestore)
+                }.onAppear{
+                    
+                    firestoreChatDao.listenToFirestore()
+                    FirestoreContactDao.firestoreContactDao.getUsers()
+                    
+                }
             }
         }
     }
