@@ -7,6 +7,7 @@
 
 import Foundation
 
+//data for userDefault
 enum UserData{
     
     static let userDefault = UserDefaults.standard
@@ -14,6 +15,7 @@ enum UserData{
     static let KEY_PASSWORD_LOGIN = "password"
 }
 
+//methods for saving and reading users loginData
 class manageLoginInfo{
     
     static func saveLogin(mail: String, password: String){
