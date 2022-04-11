@@ -10,8 +10,8 @@ import Firebase
 
 struct ChatView: View {
     let db = Firestore.firestore()
-    @ObservedObject var firestoreChatDao = FirestoreChatDao()
-    @ObservedObject var firestoreMessageDao = FirestoreMessageDao()
+    @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
+    @ObservedObject var firestoreMessageDao = FirestoreMessageDao.firestoreMessageDao
     
     @State private var messageText: String = ""
     @State var chatId = ""
@@ -34,7 +34,7 @@ struct ChatView: View {
                         if chatId == "" {
                             var chat = Chat()
                             chatId = chat.id
-                            chat.usersInChat = ["Billy", "Dave"]
+                            chat.users_in_chat = ["Billy", "Dave"]
                             firestoreChatDao.saveNewChat(chat: chat)
                         }
                         // add new message to firestore
