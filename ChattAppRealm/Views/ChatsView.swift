@@ -11,6 +11,9 @@ struct ChatsView: View{
     
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     @Binding var showNewChatView: Bool
+    @State private var showChatView = false
+    @State var usersInChat = [String]()
+    @State var chatId = ""
     
     var body: some View{
         
@@ -22,8 +25,14 @@ struct ChatsView: View{
                     Text("Chats")
                     List{
                         ForEach(firestoreChatDao.chats) { chat in
-                            Text(chat.id)
+                            Text("\(chat.users_in_chat[0]), \(chat.users_in_chat[1])")
+                        .onTapGesture {
+                            usersInChat = chat.users_in_chat
+                            chatId = chat.id
+                            print(usersInChat)
+                            showChatView = true
                         }
+                    }
                     }
                     Spacer()
                     HStack {
@@ -43,6 +52,9 @@ struct ChatsView: View{
                         }.padding(.trailing, 30)
                     }
                     NavigationLink(destination: NewChatView(), isActive: $showNewChatView) {
+                        EmptyView()
+                    }.isDetailLink(false)
+                    NavigationLink(destination: ChatView(chatId: chatId, usersInChat: usersInChat), isActive: $showChatView) {
                         EmptyView()
                     }.isDetailLink(false)
                 }.onAppear{
