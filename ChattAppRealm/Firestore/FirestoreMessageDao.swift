@@ -29,6 +29,7 @@ class FirestoreMessageDao : ObservableObject {
         
         do {
             try db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).document(message.id).setData(from: message)
+            messages.removeAll()
         } catch {
             print("Error saving newMessage to db")
         }
