@@ -54,14 +54,14 @@ struct ChatsView: View{
                     NavigationLink(destination: NewChatView(), isActive: $showNewChatView) {
                         EmptyView()
                     }.isDetailLink(false)
-                    NavigationLink(destination: ChatView(chatId: chatId, usersInChat: usersInChat), isActive: $showChatView) {
+                    NavigationLink(destination: MessagesView(chatId: chatId, usersInChat: usersInChat), isActive: $showChatView) {
                         EmptyView()
                     }.isDetailLink(false)
                 }.onAppear{
                     
                     firestoreChatDao.listenToFirestore()
                     FirestoreContactDao.firestoreContactDao.getUsers()
-                    
+                    print("CHATSVIEW messages-innehåll: \(FirestoreMessageDao.firestoreMessageDao.messages)")
                 }
             }
         }
