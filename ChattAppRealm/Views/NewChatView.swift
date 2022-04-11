@@ -20,14 +20,14 @@ struct NewChatView: View {
             HStack {
                 Text("To:")
                 TextField("Type a name or group", text: $chatName)
-                Button {
-                    if chatName != "" {
-                        //firestoreContactDao.saveContact(username: chatName)
-                        chatName = ""
-                    }
-                } label: {
-                    Text("Save")
-                }
+//                Button {
+//                    if chatName != "" {
+//                        //firestoreContactDao.saveContact(username: chatName)
+//                        chatName = ""
+//                    }
+//                } label: {
+//                    Text("Save")
+//                }
                 
             }.onAppear() {
                 print("LUCA: \(FirestoreContactDao.firestoreContactDao.registeredUsers.count)")
