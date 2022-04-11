@@ -8,7 +8,7 @@
 import SwiftUI
 import Firebase
 
-struct ChatView: View {
+struct MessagesView: View {
     let db = Firestore.firestore()
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     @ObservedObject var firestoreMessageDao = FirestoreMessageDao.firestoreMessageDao
@@ -51,7 +51,9 @@ struct ChatView: View {
                 }
             }
             .onAppear {
+                firestoreMessageDao.messages.removeAll()
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
+                print("MESSAGESVIEW messages-innehåll: \(FirestoreMessageDao.firestoreMessageDao.messages)")
             }
         }
     }
@@ -59,6 +61,6 @@ struct ChatView: View {
 
 struct ChatView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatView(chatId: "", usersInChat: [String]())
+        MessagesView(chatId: "", usersInChat: [String]())
     }
 }
