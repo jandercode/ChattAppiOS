@@ -9,6 +9,10 @@ import Foundation
 import Firebase
 
 class FirestoreMessageDao : ObservableObject {
+    static let firestoreMessageDao = FirestoreMessageDao()
+    
+    private init(){}
+    
     let db = Firestore.firestore()
     @Published var messages = [Message]()
     

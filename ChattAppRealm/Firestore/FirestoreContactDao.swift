@@ -51,6 +51,7 @@ class FirestoreContactDao : ObservableObject {
     }
 
     func listenToFirestore() {
+        
         db.collection(CONTACT_COLLECTION).addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else { return }
             if let err = err {

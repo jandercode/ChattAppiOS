@@ -10,6 +10,9 @@ import Firebase
 
 class FirestoreChatDao : ObservableObject {
     static let firestoreChatDao = FirestoreChatDao()
+    
+    private init(){}
+    
     let db = Firestore.firestore()
     @Published var chats = [Chat]()
     
@@ -21,7 +24,7 @@ class FirestoreChatDao : ObservableObject {
                 
         let newChat : [String : Any] = [
             ID_KEY : chat.id,
-            USERS_IN_CHAT_KEY : chat.usersInChat]
+            USERS_IN_CHAT_KEY : chat.users_in_chat]
         
         do{
             _ = try db.collection(CHATS_COLLECTION).document(chat.id).setData(newChat)

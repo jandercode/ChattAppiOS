@@ -9,5 +9,5 @@ import Foundation
 
 struct Chat : Codable, Identifiable {
     var id : String = UUID().uuidString
-    var usersInChat : [String] = [String]()
+    var users_in_chat : [String] = [String]()
 }
