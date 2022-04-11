@@ -117,7 +117,7 @@ struct LoginView: View {
         
         FirestoreContactDao.firestoreContactDao.checkLogin(mail: eMail, password: password)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
             
             if UserManager.userManager.currentUser != nil{
                 
