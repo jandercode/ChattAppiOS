@@ -7,6 +7,13 @@
 
 import Foundation
 
+
+enum ActionType: Int{
+    
+    case email = 0, userName
+    
+}
+
 //data for userDefault
 enum UserData{
     

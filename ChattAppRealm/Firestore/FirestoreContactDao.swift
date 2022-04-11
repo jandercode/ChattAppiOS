@@ -158,6 +158,8 @@ class FirestoreContactDao : ObservableObject {
     
     func getUsers(){
         
+        self.registeredUsers.removeAll()
+        
         db.collection(USERS_COLLECTION).getDocuments(){ querySnapshot, err in
             
             if let e = err{
@@ -182,6 +184,26 @@ class FirestoreContactDao : ObservableObject {
     func eraseUsers(){
         
         registeredUsers.removeAll()
+        
+    }
+    
+    
+    func upadateCurrentUserData(data: String, operation: ActionType){
+        
+        switch operation{
+            
+        case .userName:
+            db.collection(USERS_COLLECTION).document(UserManager.userManager.currentUser!.id).updateData([USERNAME_KEY : data])
+            UserManager.userManager.currentUser?.username = data
+            
+        case .email:
+            db.collection(USERS_COLLECTION).document(UserManager.userManager.currentUser!.id).updateData([EMAIL_KEY : data])
+            UserManager.userManager.currentUser?.email = data
+
+            
+            
+            
+        }
         
     }
     
