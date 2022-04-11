@@ -9,6 +9,7 @@ import Foundation
 import Firebase
 
 class FirestoreChatDao : ObservableObject {
+    static let firestoreChatDao = FirestoreChatDao()
     let db = Firestore.firestore()
     @Published var chats = [Chat]()
     
