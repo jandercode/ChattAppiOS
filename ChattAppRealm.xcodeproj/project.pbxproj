@@ -32,6 +32,7 @@
 		C827276327FF0BF400ABF4B7 /* UserDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276227FF0BF400ABF4B7 /* UserDao.swift */; };
 		C827276527FF0C7600ABF4B7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276427FF0C7600ABF4B7 /* LoginView.swift */; };
 		C827276727FF0D9D00ABF4B7 /* ChatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276627FF0D9D00ABF4B7 /* ChatsView.swift */; };
+		C8DDC641280414CF003987F7 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DDC640280414CF003987F7 /* AppData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		C827276227FF0BF400ABF4B7 /* UserDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDao.swift; sourceTree = "<group>"; };
 		C827276427FF0C7600ABF4B7 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C827276627FF0D9D00ABF4B7 /* ChatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsView.swift; sourceTree = "<group>"; };
+		C8DDC640280414CF003987F7 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				C827276227FF0BF400ABF4B7 /* UserDao.swift */,
+				C8DDC640280414CF003987F7 /* AppData.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 				C827276327FF0BF400ABF4B7 /* UserDao.swift in Sources */,
 				C827276727FF0D9D00ABF4B7 /* ChatsView.swift in Sources */,
 				C805C240280053AC00544537 /* FirestoreChatDao.swift in Sources */,
+				C8DDC641280414CF003987F7 /* AppData.swift in Sources */,
 				C805C1D727FC370D00544537 /* ContentView.swift in Sources */,
 				C805C22227FC6F4700544537 /* NewChatView.swift in Sources */,
 				C805C23427FDD6C900544537 /* User.swift in Sources */,

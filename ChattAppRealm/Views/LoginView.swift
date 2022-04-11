@@ -15,6 +15,8 @@ struct LoginView: View {
     @State var password: String = ""
     @State private var showRegisterAccount = false
     @State private var loginErrorAlert = false
+    @State var saveLogin = false
+    @State var loginInfo : [String:String] = [:]
     let userDao = UserDao()
     
     var body: some View {
@@ -45,20 +47,12 @@ struct LoginView: View {
                     
                     Button(action: {
                         
-                        FirestoreContactDao.firestoreContactDao.checkLogin(mail: eMail, password: password)
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                        if saveLogin{
                             
-                            if UserManager.userManager.currentUser != nil{
-                                
-                                isLoggedIn = true
-                                
-                            }else{
-                                
-                                loginErrorAlert = true
-                            }
+                            manageLoginInfo.saveLogin(mail: eMail, password: password)
                             
-                        })
+                        }
+                       login()
                         
                         
                     }, label: {
@@ -91,9 +85,52 @@ struct LoginView: View {
                 }
                 .buttonStyle(.bordered)
                 .padding(.top)
+                
+                
+                HStack(){
+                    
+                    
+                    Toggle("Remember Me?", isOn: $saveLogin)
+                        .padding(.leading, CGFloat(70))
+                        .padding(.trailing, CGFloat(70))
+                    
+                    
+                }
+                .padding()
+                .ignoresSafeArea()
             }
-            .onAppear(){FirestoreContactDao.firestoreContactDao.getUsers()}
-            //.onDisappear(perform: {firestoreContactDao.eraseUsers()})
+            .onAppear(){
+                
+                loginInfo = manageLoginInfo.loadLogin()
+                FirestoreContactDao.firestoreContactDao.getUsers()
+                
+                if(!loginInfo.isEmpty){
+                    eMail = loginInfo[UserData.KEY_EMAIL_LOGIN]!
+                    password = loginInfo[UserData.KEY_PASSWORD_LOGIN]!
+                    login()
+                }
+                
+            }
+    }
+    
+    func login(){
+        
+        FirestoreContactDao.firestoreContactDao.checkLogin(mail: eMail, password: password)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            
+            if UserManager.userManager.currentUser != nil{
+                
+                
+                isLoggedIn = true
+                
+            }else{
+                
+                loginErrorAlert = true
+            }
+            
+        })
+        
     }
     
 }
