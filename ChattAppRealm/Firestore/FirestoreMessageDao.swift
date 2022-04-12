@@ -37,7 +37,10 @@ class FirestoreMessageDao : ObservableObject {
     
     func listenToFirestore(chatId : String) {
         if chatId != "" {
-            db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).addSnapshotListener { snapshot, err in
+          //  db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).addSnapshotListener { snapshot, err in
+                
+                db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).order(by: "timestamp", descending: false).addSnapshotListener { snapshot, err in
+                
                 guard let snapshot = snapshot else { return }
                 if let err = err {
                     print("Error getting document \(err)")
