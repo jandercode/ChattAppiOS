@@ -29,6 +29,7 @@
 		C805C23E27FF17E900544537 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = C805C23D27FF17E800544537 /* Message.swift */; };
 		C805C240280053AC00544537 /* FirestoreChatDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = C805C23F280053AC00544537 /* FirestoreChatDao.swift */; };
 		C805C24228005A5100544537 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = C805C24128005A5100544537 /* Chat.swift */; };
+		C805C244280575B800544537 /* MessageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C805C243280575B800544537 /* MessageRow.swift */; };
 		C827276327FF0BF400ABF4B7 /* UserDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276227FF0BF400ABF4B7 /* UserDao.swift */; };
 		C827276527FF0C7600ABF4B7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276427FF0C7600ABF4B7 /* LoginView.swift */; };
 		C827276727FF0D9D00ABF4B7 /* ChatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276627FF0D9D00ABF4B7 /* ChatsView.swift */; };
@@ -53,6 +54,7 @@
 		C805C23D27FF17E800544537 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		C805C23F280053AC00544537 /* FirestoreChatDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreChatDao.swift; sourceTree = "<group>"; };
 		C805C24128005A5100544537 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
+		C805C243280575B800544537 /* MessageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRow.swift; sourceTree = "<group>"; };
 		C827276227FF0BF400ABF4B7 /* UserDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDao.swift; sourceTree = "<group>"; };
 		C827276427FF0C7600ABF4B7 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C827276627FF0D9D00ABF4B7 /* ChatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsView.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				C805C22427FC71AC00544537 /* ChatRow.swift */,
+				C805C243280575B800544537 /* MessageRow.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -253,6 +256,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C805C244280575B800544537 /* MessageRow.swift in Sources */,
 				C827276327FF0BF400ABF4B7 /* UserDao.swift in Sources */,
 				C827276727FF0D9D00ABF4B7 /* ChatsView.swift in Sources */,
 				C805C240280053AC00544537 /* FirestoreChatDao.swift in Sources */,

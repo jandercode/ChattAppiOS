@@ -21,10 +21,15 @@ struct MessagesView: View {
         VStack {
             List {
                 ForEach(firestoreMessageDao.messages) { message in
-                    Text(message.text)
-
+                    MessageRow(message: message)
+                        .listRowSeparator(.hidden)
+                        
+//                    Text(message.text)
+//                        .padding(10)
+//                        .background(message.sender == UserManager.userManager.currentUser?.id ? Color(UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)) : Color.blue)
+//                        .cornerRadius(10)
                 }
-            }
+            }.listStyle(.plain)
             
             HStack {
                 TextField("Aa", text: $messageText)
@@ -50,10 +55,10 @@ struct MessagesView: View {
                     Text("Send")
                 }
             }
+            .padding()
             .onAppear {
                 firestoreMessageDao.messages.removeAll()
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
-                print("MESSAGESVIEW messages-innehåll: \(FirestoreMessageDao.firestoreMessageDao.messages)")
             }
         }
     }
