@@ -199,11 +199,30 @@ class FirestoreContactDao : ObservableObject {
         case .email:
             db.collection(USERS_COLLECTION).document(UserManager.userManager.currentUser!.id).updateData([EMAIL_KEY : data])
             UserManager.userManager.currentUser?.email = data
-
-            
-            
             
         }
+    }
+    
+    func removeCurrentUser(){
+        
+        var index = -1
+        
+        for user in registeredUsers{
+            
+            if user.username == UserManager.userManager.currentUser?.username{
+                
+                index = registeredUsers.firstIndex(of: user)!
+                
+            }
+            
+        }
+        
+        if index > -1{
+            
+            registeredUsers.remove(at: index)
+            
+        }
+        
         
     }
     
