@@ -24,15 +24,17 @@ struct NewChatView: View {
                 HStack {
                     Text("To:")
                     TextField("Type a name or group", text: $searchTerm)
+                        .autocapitalization(.none)
 
                 }
                 NavigationView{
                     
-                    List(FirestoreContactDao.firestoreContactDao.registeredUsers, id: \.self, selection: $selection){ user in
+                    List(searchResult(), id: \.self, selection: $selection){ user in
                             
                             Text(user.username)
 
                     }
+                    .searchable(text: $searchTerm)
                     .toolbar {
                         Button {
                             
@@ -78,6 +80,34 @@ struct NewChatView: View {
                 
             }
     }
+    
+    func searchResult() -> [User]{
+        
+        var result = [User]()
+        
+        if searchTerm.isEmpty{
+            
+            result.append(contentsOf: FirestoreContactDao.firestoreContactDao.registeredUsers)
+        
+        }else{
+            
+            for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
+                                
+                if user.username.contains(searchTerm){
+                    
+                    result.append(user)
+                    
+                }
+                
+            }
+            
+        }
+        
+        return result
+        
+    }
+    
+    
 }
 
 struct NewChatView_Previews: PreviewProvider {
