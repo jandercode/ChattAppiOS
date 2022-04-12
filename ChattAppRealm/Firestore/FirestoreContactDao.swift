@@ -18,7 +18,7 @@ class FirestoreContactDao : ObservableObject {
     
     let db = Firestore.firestore()
     @Published var contacts = [Contact]()
-    var registeredUsers = [User]()
+    @Published var registeredUsers = [User]()
     
     private let ID_KEY = "id"
     private let USERNAME_KEY = "username"
@@ -209,6 +209,12 @@ class FirestoreContactDao : ObservableObject {
         
         for user in registeredUsers{
             
+            print(user.username)
+            
+        }
+        
+        for user in registeredUsers{
+            
             if user.username == UserManager.userManager.currentUser?.username{
                 
                 index = registeredUsers.firstIndex(of: user)!
@@ -219,7 +225,13 @@ class FirestoreContactDao : ObservableObject {
         
         if index > -1{
             
-            registeredUsers.remove(at: index)
+            self.registeredUsers.remove(at: index)
+            
+        }
+        
+        for user in registeredUsers{
+            
+            print(user.username)
             
         }
         

@@ -10,48 +10,73 @@ import Firebase
 
 struct NewChatView: View {
     @State private var showChatView = false
-    let db = Firestore.firestore()
     @State var usersInChat : [String] = [UserManager.userManager.currentUser?.username ?? User().username]
     
-    @State private var chatName: String = ""
+    @State private var searchTerm: String = ""
+    @State private var selection = Set<User>()
+    @State private var isEditMode: EditMode = .inactive
+    @State private var label = "Add Contact"
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("To:")
-                TextField("Type a name or group", text: $chatName)
-//                Button {
-//                    if chatName != "" {
-//                        //firestoreContactDao.saveContact(username: chatName)
-//                        chatName = ""
-//                    }
-//                } label: {
-//                    Text("Save")
-//                }
-                
-            }.onAppear() {
-                print("LUCA: \(FirestoreContactDao.firestoreContactDao.registeredUsers.count)")
-                print("NEWCHATVIEW messages-innehåll: \(FirestoreMessageDao.firestoreMessageDao.messages)")
-                //firestoreContactDao.listenToFirestore()
-            }
-            List{
-                ForEach(FirestoreContactDao.firestoreContactDao.registeredUsers){ user in
-                    
-                    Text(user.username)
-                    
-                    
-                        .onTapGesture {
-                            usersInChat = FirestoreChatDao.firestoreChatDao.updateUsersInChatList(existingUserList: usersInChat, usersToAddToList: [user.username])
-                            showChatView = true
-                        }
-                }
-            }
             
-        Spacer()
-            NavigationLink(destination: MessagesView(chatId: "", usersInChat: usersInChat), isActive: $showChatView) {
-                EmptyView()
-            }.isDetailLink(false)
-        }
+            VStack {
+                
+                HStack {
+                    Text("To:")
+                    TextField("Type a name or group", text: $searchTerm)
+
+                }
+                NavigationView{
+                    
+                    List(FirestoreContactDao.firestoreContactDao.registeredUsers, id: \.self, selection: $selection){ user in
+                            
+                            Text(user.username)
+
+                    }
+                    .toolbar {
+                        Button {
+                            
+                            if isEditMode == .active{
+                                label = "Add Contact"
+                                isEditMode = .inactive
+                            }else{
+                                label = "Done"
+                                isEditMode = .active
+                            }
+                            
+                        } label: {
+                            Text(label)
+                        }
+
+                    }
+                }
+                .environment(\.editMode, self.$isEditMode)
+                
+            Spacer()
+                
+                HStack{
+                    
+                    Button {
+                        
+                        for user in selection{
+                            
+                            usersInChat.append(user.username)
+                            
+                        }
+                        
+                        showChatView = true
+                        
+                    } label: {
+                        Text("Start Chatting!!")
+                    }
+
+                    
+                }
+                NavigationLink(destination: MessagesView(chatId: "", usersInChat: usersInChat), isActive: $showChatView) {
+                    EmptyView()
+                }.isDetailLink(false)
+                
+            }
     }
 }
 

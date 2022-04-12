@@ -57,7 +57,8 @@ struct ChatsView: View{
                     }.isDetailLink(false)
                 }.onAppear{
                     firestoreChatDao.listenToFirestore()
-                    FirestoreContactDao.firestoreContactDao.getUsers()
+                    FirestoreContactDao.firestoreContactDao.removeCurrentUser()
+                        
                 }
                 .sheet(isPresented: $presentUserInfo, content: {
                     UserInfoView()
