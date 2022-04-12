@@ -7,8 +7,8 @@
 import SwiftUI
 
 struct ChatRow: View {
-    var chat: String
-    var time: String
+    var chat: Chat
+   // var time: String
     var read: Bool
     
     var body: some View {
@@ -16,21 +16,26 @@ struct ChatRow: View {
             ZStack {
                 Circle()
                     .fill(Color.green)
-                    .frame(width: 50, height: 50)
+                    .frame(width: 45, height: 45)
                 Image(systemName: "person")
                     .foregroundColor(.white)
             }
-            Text(chat)
+            VStack(alignment: .leading) {
+                Text("\(chat.users_in_chat[0]), \(chat.users_in_chat[1])")
+                Text("last message...")
+                    .font(.system(size: 15))
+            }
+            
             Spacer()
-            Text(time)
-            Image(systemName: read ? "circle" : "circle.fill")
+           // Text(time)
+           // Image(systemName: read ? "circle" : "circle.fill")
         }
-        .padding()
+        .padding(3)
     }
 }
 
-struct ChatRow_Previews: PreviewProvider {
-    static var previews: some View {
-        ChatRow(chat: "Betty Sanders", time: "timestamp", read: false)
-    }
-}
+//struct ChatRow_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ChatRow(chat: "Betty Sanders", time: "timestamp", read: false)
+//    }
+//}
