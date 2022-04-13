@@ -14,7 +14,7 @@ struct NewChatView: View {
     
     @State private var searchTerm: String = ""
     @State private var selection = Set<User>()
-    @State private var isEditMode: EditMode = .inactive
+    @State private var isEditMode: EditMode = .active
     @State private var label = "Add Contact"
     
     var body: some View {
@@ -35,21 +35,6 @@ struct NewChatView: View {
 
                     }
                     .searchable(text: $searchTerm)
-                    .toolbar {
-                        Button {
-                            
-                            if isEditMode == .active{
-                                label = "Add Contact"
-                                isEditMode = .inactive
-                            }else{
-                                label = "Done"
-                                isEditMode = .active
-                            }
-                            
-                        } label: {
-                            Text(label)
-                        }
-                    }
                 }
                 .environment(\.editMode, self.$isEditMode)
                 
