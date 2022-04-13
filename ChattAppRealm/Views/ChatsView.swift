@@ -58,7 +58,7 @@ struct ChatsView: View{
                 }.onAppear{
                     firestoreChatDao.listenToFirestore()
                     FirestoreContactDao.firestoreContactDao.removeCurrentUser()
-                        
+                    
                 }
                 .sheet(isPresented: $presentUserInfo, content: {
                     UserInfoView()
@@ -68,19 +68,19 @@ struct ChatsView: View{
                     Spacer()
                     HStack {
                         Spacer()
-                    Button {
-                        showNewChatView = true
-                    } label: {
-                        ZStack {
-                            Circle()
-                                .fill(.green)
-                                .frame(width: 50)
-                            Image(systemName: "pencil")
-                                .foregroundColor(.white)
-                        }
-                        .frame(height: 50)
-                    }.padding(.trailing, 30)
-                }
+                        Button {
+                            showNewChatView = true
+                        } label: {
+                            ZStack {
+                                Circle()
+                                    .fill(.green)
+                                    .frame(width: 50)
+                                Image(systemName: "pencil")
+                                    .foregroundColor(.white)
+                            }
+                            .frame(height: 50)
+                        }.padding(.trailing, 30)
+                    }
                 }
             }
         }

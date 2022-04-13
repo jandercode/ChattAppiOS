@@ -13,10 +13,7 @@ struct MessageRow: View {
     var body: some View {
         HStack {
             if message.sender != UserManager.userManager.currentUser?.id {
-                Image("profile-pic")
-                    .resizable()
-                    .frame(width: 40, height: 40, alignment: .center)
-                    .cornerRadius(20)
+                ProfilePic(size: 40)
             } else {
                 Spacer()
             }

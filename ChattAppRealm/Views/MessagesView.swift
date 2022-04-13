@@ -16,28 +16,23 @@ struct MessagesView: View {
     @State private var messageText: String = ""
     @State var chatId : String
     @State var usersInChat : [String]
+    @State var chatName : String = ""
     
     var body: some View {
         VStack {
             ScrollViewReader { proxy in
                 ScrollView {
                     ForEach(Array(firestoreMessageDao.messages.enumerated()), id: \.offset) { index, message in
-                            MessageRow(message: message)
+                        MessageRow(message: message)
                             .id(index)
-                               // .listRowSeparator(.hidden)
-                            
-                            //                    Text(message.text)
-                            //                        .padding(10)
-                            //                        .background(message.sender == UserManager.userManager.currentUser?.id ? Color(UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)) : Color.blue)
-                            //                        .cornerRadius(10)
-                        }
-                    }//.listStyle(.plain)
-                    .onAppear {
-                        proxy.scrollTo(firestoreMessageDao.messages.count - 1, anchor: .bottom)
-            }
-                    .onChange(of: firestoreMessageDao.messages.count) { newValue in
-                        proxy.scrollTo(firestoreMessageDao.messages.count - 1, anchor: .bottom)
                     }
+                }
+                .onAppear {
+                    proxy.scrollTo(firestoreMessageDao.messages.count - 1, anchor: .bottom)
+                }
+                .onChange(of: firestoreMessageDao.messages.count) { newValue in
+                    proxy.scrollTo(firestoreMessageDao.messages.count - 1, anchor: .bottom)
+                }
             }
             
             HStack {
@@ -66,10 +61,21 @@ struct MessagesView: View {
             }
             .padding()
             .onAppear {
+                usersInChat.remove(at: 0)
+                chatName = usersInChat.joined(separator: ", ")
+                print(chatName)
                 firestoreMessageDao.messages.removeAll()
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
             }
         }
+        // .navigationTitle("User's name")
+        // .navigationBarTitle("User's name")
+        // .navigationBarTitleDisplayMode(.inline)
+        .navigationBarItems(leading:
+                                HStack {
+            ProfilePic(size: 30)
+            Text(chatName)}.padding())
+        
     }
 }
 

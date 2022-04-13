@@ -27,7 +27,7 @@ struct NewChatView: View {
                         .autocapitalization(.none)
 
                 }
-                NavigationView{
+               // NavigationView{
                     
                     List(searchResult(), id: \.self, selection: $selection){ user in
                             
