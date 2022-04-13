@@ -19,17 +19,26 @@ struct MessagesView: View {
     
     var body: some View {
         VStack {
-            List {
-                ForEach(firestoreMessageDao.messages) { message in
-                    MessageRow(message: message)
-                        .listRowSeparator(.hidden)
-                        
-//                    Text(message.text)
-//                        .padding(10)
-//                        .background(message.sender == UserManager.userManager.currentUser?.id ? Color(UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)) : Color.blue)
-//                        .cornerRadius(10)
-                }
-            }.listStyle(.plain)
+            ScrollViewReader { proxy in
+                ScrollView {
+                    ForEach(Array(firestoreMessageDao.messages.enumerated()), id: \.offset) { index, message in
+                            MessageRow(message: message)
+                            .id(index)
+                               // .listRowSeparator(.hidden)
+                            
+                            //                    Text(message.text)
+                            //                        .padding(10)
+                            //                        .background(message.sender == UserManager.userManager.currentUser?.id ? Color(UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)) : Color.blue)
+                            //                        .cornerRadius(10)
+                        }
+                    }//.listStyle(.plain)
+                    .onAppear {
+                        proxy.scrollTo(firestoreMessageDao.messages.count - 1, anchor: .bottom)
+            }
+                    .onChange(of: firestoreMessageDao.messages.count) { newValue in
+                        proxy.scrollTo(firestoreMessageDao.messages.count - 1, anchor: .bottom)
+                    }
+            }
             
             HStack {
                 TextField("Aa", text: $messageText)
