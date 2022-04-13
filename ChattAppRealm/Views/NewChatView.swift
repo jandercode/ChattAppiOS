@@ -27,7 +27,7 @@ struct NewChatView: View {
                         .autocapitalization(.none)
 
                 }
-                NavigationView{
+               // NavigationView{
                     
                     List(searchResult(), id: \.self, selection: $selection){ user in
                             
@@ -50,7 +50,7 @@ struct NewChatView: View {
                             Text(label)
                         }
                     }
-                }
+               // }
                 .environment(\.editMode, self.$isEditMode)
                 
             Spacer()

@@ -33,6 +33,7 @@
 		C827276327FF0BF400ABF4B7 /* UserDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276227FF0BF400ABF4B7 /* UserDao.swift */; };
 		C827276527FF0C7600ABF4B7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276427FF0C7600ABF4B7 /* LoginView.swift */; };
 		C827276727FF0D9D00ABF4B7 /* ChatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276627FF0D9D00ABF4B7 /* ChatsView.swift */; };
+		C8DD355D2806B8A600DE7F75 /* ProfilePic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DD355C2806B8A600DE7F75 /* ProfilePic.swift */; };
 		C8DDC641280414CF003987F7 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DDC640280414CF003987F7 /* AppData.swift */; };
 		C8DDC643280426B8003987F7 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DDC642280426B8003987F7 /* UserInfoView.swift */; };
 /* End PBXBuildFile section */
@@ -58,6 +59,7 @@
 		C827276227FF0BF400ABF4B7 /* UserDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDao.swift; sourceTree = "<group>"; };
 		C827276427FF0C7600ABF4B7 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C827276627FF0D9D00ABF4B7 /* ChatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsView.swift; sourceTree = "<group>"; };
+		C8DD355C2806B8A600DE7F75 /* ProfilePic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePic.swift; sourceTree = "<group>"; };
 		C8DDC640280414CF003987F7 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		C8DDC642280426B8003987F7 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -138,6 +140,7 @@
 			children = (
 				C805C22427FC71AC00544537 /* ChatRow.swift */,
 				C805C243280575B800544537 /* MessageRow.swift */,
+				C8DD355C2806B8A600DE7F75 /* ProfilePic.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 				C8DDC641280414CF003987F7 /* AppData.swift in Sources */,
 				C805C1D727FC370D00544537 /* ContentView.swift in Sources */,
 				C805C22227FC6F4700544537 /* NewChatView.swift in Sources */,
+				C8DD355D2806B8A600DE7F75 /* ProfilePic.swift in Sources */,
 				C805C23427FDD6C900544537 /* User.swift in Sources */,
 				C805C1D527FC370D00544537 /* ChattAppRealmApp.swift in Sources */,
 				C805C22527FC71AC00544537 /* ChatRow.swift in Sources */,
