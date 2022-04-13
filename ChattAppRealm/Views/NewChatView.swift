@@ -69,7 +69,6 @@ struct NewChatView: View {
                 }.isDetailLink(false)
                 
             }
-    }
     
     
     func removeDoubles(){
