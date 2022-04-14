@@ -16,7 +16,6 @@ struct MessageRow: View {
                 ProfilePic(size: 40, image: UIImage(imageLiteralResourceName: "profile-pic"))
             } else {
                 Spacer()
-                ProfilePic(size: 40, image: UserManager.userManager.userImage!)
             }
             Text(message.text)
                 .padding(10)
