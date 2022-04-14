@@ -14,9 +14,12 @@ struct ChatsView: View{
     @State private var showChatView = false
     @State var usersInChat = [String]()
     @State var chatId = ""
+    @State var chatName = ""
+    @State var chatNameMinusCurrent = ""
     @State var presentUserInfo = false
     @State var userImage = UIImage(systemName: "person.circle")
     let storage = StorageManager()
+    
     
     var body: some View{
         
@@ -38,11 +41,12 @@ struct ChatsView: View{
                     
                     List{
                         ForEach(firestoreChatDao.chats) { chat in
-                            ChatRow(chat: chat, read: false)
+                            ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), read: false)
                                 .listRowSeparator(.hidden)
                                 .onTapGesture {
                                     usersInChat = chat.users_in_chat
                                     chatId = chat.id
+                                    chatName = chat.chat_name
                                     print(usersInChat)
                                     showChatView = true
                                 }
@@ -52,11 +56,11 @@ struct ChatsView: View{
                     NavigationLink(destination: NewChatView(), isActive: $showNewChatView) {
                         EmptyView()
                     }.isDetailLink(false)
-                    NavigationLink(destination: MessagesView(chatId: chatId, usersInChat: usersInChat), isActive: $showChatView) {
+                    NavigationLink(destination: MessagesView(chatId: chatId, usersInChat: usersInChat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
                         EmptyView()
                     }.isDetailLink(false)
                 }.onAppear{
-                    
+                   // chatNameMinusCurrent = firestoreChatDao.removeCurrentFromChatName(chatName: chatName)
                     imageChangeQueue {
                         changeUserImage()
                     }

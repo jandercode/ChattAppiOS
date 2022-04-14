@@ -10,12 +10,13 @@ import Firebase
 
 struct NewChatView: View {
     @State private var showChatView = false
-    @State var usersInChat : [String] = [UserManager.userManager.currentUser?.username ?? User().username]
+    @State var usersInChat : [String] = [UserManager.userManager.currentUser?.id ?? User().id]
     
     @State private var searchTerm: String = ""
     @State private var selection = Set<User>()
     @State private var isEditMode: EditMode = .active
     @State private var label = "Add Contact"
+    @State var chatName : String = ""
     
     var body: some View {
             
@@ -45,7 +46,7 @@ struct NewChatView: View {
                     
                         for user in selection{
                             
-                            usersInChat.append(user.username)
+                            usersInChat.append(user.id)
                         }
                         
                         removeDoubles()
@@ -58,12 +59,13 @@ struct NewChatView: View {
                             
                             print("exists!!")
                         }
+                        chatName = FirestoreChatDao.firestoreChatDao.createChatName(usersInChat: usersInChat)
                         
                     } label: {
                         Text("Start Chatting!!")
                     }
                 }
-                NavigationLink(destination: MessagesView(chatId: "", usersInChat: usersInChat), isActive: $showChatView) {
+        NavigationLink(destination: MessagesView(chatId: "", usersInChat: usersInChat,chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
                     EmptyView()
                 }.isDetailLink(false)
                 
