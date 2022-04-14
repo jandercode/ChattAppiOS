@@ -78,6 +78,11 @@ struct MessagesView: View {
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
             }
         }
+        .onAppear{
+            
+            
+            
+        }
         
 //        .padding(.bottom, keyboardManager.keyboardHeight)
 //        .edgesIgnoringSafeArea(keyboardManager.isVisible ? .bottom : [])
