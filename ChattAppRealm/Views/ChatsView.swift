@@ -60,7 +60,7 @@ struct ChatsView: View{
                 }.onAppear{
                     
                     imageChangeQueue {
-                        userImage = UserManager.userManager.userImage
+                        changeUserImage()
                     }
                     firestoreChatDao.listenToFirestore()
                     FirestoreContactDao.firestoreContactDao.removeCurrentUser()
@@ -69,6 +69,10 @@ struct ChatsView: View{
                 .sheet(isPresented: $presentUserInfo, content: {
                     UserInfoView(storage: storage)
                 })
+                .onDisappear {
+                    
+                    changeUserImage()
+                }
                 
                 VStack {
                     Spacer()
@@ -90,11 +94,21 @@ struct ChatsView: View{
                 }
             }
         }.onAppear{
-            storage.loadImageFromStorage(name: UserManager.userManager.currentUser!.username)
+            
+            storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
 
         }
     }
     
+    func changeUserImage(){
+        
+        if UserManager.userManager.userImage != nil{
+            userImage = UserManager.userManager.userImage
+        }
+        
+    }
+    
+    // creates an async process that changes the user profile image as soon as it's avalable
         func imageChangeQueue(onComplete: @escaping () -> Void){
     
             let queue = DispatchQueue(label: "myQueue")

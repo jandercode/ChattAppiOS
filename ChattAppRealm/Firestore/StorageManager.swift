@@ -11,12 +11,14 @@ import SwiftUI
 
 class StorageManager: ObservableObject{
     let storage = Storage.storage()
+    //storage reference for default image
+    let defaultUserImageKey = "defaultimg"
     
     
     
-    func upload(image: UIImage, name: String){
+    func upload(image: UIImage, id: String){
         
-        let storageRef = storage.reference().child("images/\(name)")
+        let storageRef = storage.reference().child("images/\(id)")
         
         
         // Resize the image to 200px in height with a custom extension
@@ -92,14 +94,14 @@ class StorageManager: ObservableObject{
     
     
     
-    func loadImageFromStorage(name: String){
+    func loadImageFromStorage(id: String){
         
-        let imageRef = storage.reference().child("images/\(name)")
+        let imageRef = storage.reference().child("images/\(id)")
         
         imageRef.getData(maxSize: 1*1024*1024){ data, error in
             
             if let _ = error{
-                print("Download Failed")
+                UserManager.userManager.userImage = UIImage(systemName: "person.circle")
                 
             }else{
                 

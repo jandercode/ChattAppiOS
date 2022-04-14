@@ -42,7 +42,9 @@ struct UserInfoView: View {
                             if let images = imagesOrNil{
                                 if let first = images.first{
                                     selectedImage = first
-                                    storage.upload(image: selectedImage!, name: UserManager.userManager.currentUser!.username)
+                                    UserManager.userManager.userImage = selectedImage
+                                    userImage = selectedImage!
+                                    storage.upload(image: selectedImage!, id: UserManager.userManager.currentUser!.id)
                                 }
                             }
                         }
