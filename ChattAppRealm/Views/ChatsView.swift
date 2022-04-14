@@ -55,7 +55,8 @@ struct ChatsView: View{
                     NavigationLink(destination: MessagesView(chatId: chatId, usersInChat: usersInChat), isActive: $showChatView) {
                         EmptyView()
                     }.isDetailLink(false)
-                }.onAppear{
+                }
+                .onAppear{
                     
                     imageChangeQueue {
                         changeUserImage()
@@ -94,6 +95,7 @@ struct ChatsView: View{
         }.onAppear{
             
             storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
+            storage.loadChatProfilePics()
 
         }
     }

@@ -92,6 +92,30 @@ class StorageManager: ObservableObject{
         storageRef.list(maxResults: 1, completion: handler)
     }
     
+    func loadChatProfilePics(){
+        
+        let allUsers = FirestoreContactDao.firestoreContactDao.registeredUsers
+        
+            for user in allUsers{
+                    
+                let imageRef = storage.reference().child("images/\(user.id)")
+                imageRef.getData(maxSize: 1*1024*1024){ data, error in
+                    
+                    if let _ = error{
+                        
+                        UserManager.imageArray[user.id] = UIImage(imageLiteralResourceName: "profile-pic")
+                        
+                    }else{
+                        
+                        UserManager.imageArray[user.id] = UIImage(data: data!)!
+                        print(UserManager.imageArray.count)
+                        
+                    }
+                }
+            }
+    }
+    
+    
     
     
     func loadImageFromStorage(id: String){
@@ -101,11 +125,14 @@ class StorageManager: ObservableObject{
         imageRef.getData(maxSize: 1*1024*1024){ data, error in
             
             if let _ = error{
-                UserManager.userManager.userImage = UIImage(systemName: "person.circle")
+                
+                    UserManager.userManager.userImage = UIImage(systemName: "person.circle")
+                
                 
             }else{
                 
-                UserManager.userManager.userImage = UIImage(data: data!)
+                    UserManager.userManager.userImage = UIImage(data: data!)
+                
             }
         }
     }

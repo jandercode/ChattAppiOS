@@ -21,6 +21,7 @@ enum UserData{
     static let userDefault = UserDefaults.standard
     static let KEY_EMAIL_LOGIN = "email"
     static let KEY_PASSWORD_LOGIN = "password"
+    
 }
 
 //methods for saving and reading users loginData
@@ -50,7 +51,6 @@ class manageLoginInfo{
         return loginData
         
     }
-    
 }
 
 //SINGLETON
@@ -59,6 +59,7 @@ class UserManager: ObservableObject{
     static let userManager = UserManager()
     @Published var currentUser: User? = nil
     var userImage: UIImage? = nil
+    static var imageArray : [String:UIImage] = [:]
     
     private init(){}
     
