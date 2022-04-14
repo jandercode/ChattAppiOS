@@ -9,15 +9,15 @@ import SwiftUI
 
 struct UserInfoView: View {
     
+    var storage: StorageManager
+    
     @Environment(\.dismiss) var dismiss
     @State var userName = UserManager.userManager.currentUser!.username
     @State var eMail = UserManager.userManager.currentUser!.email
-    
-    let storage = StorageManager()
-    
+        
     @State private var showPhotoPicker = false
     @State private var selectedImage: UIImage? = nil
-    @State private var userImage = "person.circle"
+    @State private var userImage: UIImage = UIImage(systemName: "person.circle")!
     
     var body: some View {
         
@@ -29,7 +29,7 @@ struct UserInfoView: View {
                     showPhotoPicker = true
                     
                 } label: {
-                    Image(systemName: userImage)
+                    Image(uiImage: userImage)
                         .resizable()
                         .frame(width: 46.0, height: 46.0)
                 }
@@ -49,10 +49,6 @@ struct UserInfoView: View {
                     }
                         .edgesIgnoringSafeArea(.all)
                 }
-                
-                
-
-                
                 
                 HStack{
                     
@@ -101,6 +97,11 @@ struct UserInfoView: View {
                     
                 }
             }
+        }.onAppear{
+            
+            if UserManager.userManager.userImage != nil{
+                userImage = UserManager.userManager.userImage!
+            }
         }
     }
     
@@ -123,8 +124,4 @@ struct UserInfoView: View {
     
 }
 
-struct UserInfoView_Previews: PreviewProvider {
-    static var previews: some View {
-        UserInfoView()
-    }
-}
+

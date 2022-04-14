@@ -15,6 +15,8 @@ struct ChatsView: View{
     @State var usersInChat = [String]()
     @State var chatId = ""
     @State var presentUserInfo = false
+    @State var userImage = UIImage(systemName: "person.circle")
+    let storage = StorageManager()
     
     var body: some View{
         
@@ -30,7 +32,7 @@ struct ChatsView: View{
                         Button {
                             presentUserInfo.toggle()
                         } label: {
-                            Image(systemName: "person.circle")
+                            Image(uiImage: userImage!)
                                 .resizable()
                                 .frame(width: 32.0, height: 32.0)
                         }.padding()
@@ -56,12 +58,16 @@ struct ChatsView: View{
                         EmptyView()
                     }.isDetailLink(false)
                 }.onAppear{
+                    
+                    imageChangeQueue {
+                        userImage = UserManager.userManager.userImage
+                    }
                     firestoreChatDao.listenToFirestore()
                     FirestoreContactDao.firestoreContactDao.removeCurrentUser()
                     
                 }
                 .sheet(isPresented: $presentUserInfo, content: {
-                    UserInfoView()
+                    UserInfoView(storage: storage)
                 })
                 
                 VStack {
@@ -83,6 +89,23 @@ struct ChatsView: View{
                     }
                 }
             }
+        }.onAppear{
+            storage.loadImageFromStorage(name: UserManager.userManager.currentUser!.username)
+
         }
     }
+    
+        func imageChangeQueue(onComplete: @escaping () -> Void){
+    
+            let queue = DispatchQueue(label: "myQueue")
+            queue.async {
+                
+                while UserManager.userManager.userImage == nil{
+                    continue
+                }
+                
+                onComplete()
+            }
+        }
+    
 }

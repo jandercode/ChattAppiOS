@@ -11,6 +11,7 @@ import Firebase
 struct ContentView: View {
     @State var showNewChatView = false
     @State var isLoggedIn = false
+    let storage = StorageManager()
     
     var body: some View {
         

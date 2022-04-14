@@ -13,6 +13,7 @@ class StorageManager: ObservableObject{
     let storage = Storage.storage()
     
     
+    
     func upload(image: UIImage, name: String){
         
         let storageRef = storage.reference().child("images/\(name)")
@@ -71,9 +72,9 @@ class StorageManager: ObservableObject{
         }
     }
     
-    func listItem() {
+    func listItem(name: String){
         // Create a reference
-        let storageRef = storage.reference().child("images")
+        let storageRef = storage.reference().child("images/\(name)")
 
         // Create a completion handler - aka what the function should do after it listed all the items
         let handler: (StorageListResult, Error?) -> Void = { (result, error) in
@@ -82,11 +83,29 @@ class StorageManager: ObservableObject{
             }
 
             let item = result.items
-            print("item: ", item)
+            print(item)
         }
 
         // List the items
         storageRef.list(maxResults: 1, completion: handler)
+    }
+    
+    
+    
+    func loadImageFromStorage(name: String){
+        
+        let imageRef = storage.reference().child("images/\(name)")
+        
+        imageRef.getData(maxSize: 1*1024*1024){ data, error in
+            
+            if let _ = error{
+                print("Download Failed")
+                
+            }else{
+                
+                UserManager.userManager.userImage = UIImage(data: data!)
+            }
+        }
     }
 
         // You can use the listItem() function above to get the StorageReference of the item you want to delete
