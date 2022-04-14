@@ -12,6 +12,8 @@ struct MessagesView: View {
     let db = Firestore.firestore()
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     @ObservedObject var firestoreMessageDao = FirestoreMessageDao.firestoreMessageDao
+    @ObservedObject var keyboardManager = KeyboardManager()
+    @State private var keyboardHeight: CGFloat = 0
     
     @State private var messageText: String = ""
     @State var chatId : String
@@ -33,6 +35,14 @@ struct MessagesView: View {
                 .onChange(of: firestoreMessageDao.messages.count) { newValue in
                     proxy.scrollTo(firestoreMessageDao.messages.count - 1, anchor: .bottom)
                 }
+                .onChange(of: keyboardManager.isVisible, perform: { newValue in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        withAnimation {
+                            proxy.scrollTo(firestoreMessageDao.messages.count - 1, anchor: .bottom)
+                        }
+                        keyboardManager.isVisible = false
+                    }
+                })
             }
             
             HStack {
@@ -68,9 +78,10 @@ struct MessagesView: View {
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
             }
         }
-        // .navigationTitle("User's name")
-        // .navigationBarTitle("User's name")
-        // .navigationBarTitleDisplayMode(.inline)
+        
+//        .padding(.bottom, keyboardManager.keyboardHeight)
+//        .edgesIgnoringSafeArea(keyboardManager.isVisible ? .bottom : [])
+       // .padding(.bottom, keyboardHeight)
         .navigationBarItems(leading:
                                 HStack {
             ProfilePic(size: 30)
