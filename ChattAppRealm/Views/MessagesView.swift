@@ -18,7 +18,7 @@ struct MessagesView: View {
     @State private var messageText: String = ""
     @State var chatId : String
     @State var usersInChat : [String]
-    @State var chatName : String = ""
+    @State var chatName : String
     @State var usersInChatMinusCurrent = [String]()
     
     var body: some View {
@@ -56,6 +56,7 @@ struct MessagesView: View {
                             var chat = Chat()
                             chatId = chat.id
                             chat.users_in_chat = usersInChat
+                            chat.chat_name = firestoreChatDao.createChatName(usersInChat: usersInChat)
                             firestoreChatDao.saveNewChat(chat: chat)
                         }
                         // add new message to firestore
@@ -72,14 +73,6 @@ struct MessagesView: View {
             }
             .padding()
             .onAppear {
-               // usersInChatMinusCurrent = [String]()
-                for user in usersInChat {
-                    if user != UserManager.userManager.currentUser?.username {
-                        usersInChatMinusCurrent.append(user)
-                    }
-                }
-                chatName = usersInChatMinusCurrent.joined(separator: ", ")
-                print(chatName)
                 firestoreMessageDao.messages.removeAll()
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
             }
@@ -95,6 +88,6 @@ struct MessagesView: View {
 
 struct ChatView_Previews: PreviewProvider {
     static var previews: some View {
-        MessagesView(chatId: "", usersInChat: [String]())
+        MessagesView(chatId: "", usersInChat: [String](), chatName: "chat name")
     }
 }
