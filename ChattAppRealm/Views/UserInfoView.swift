@@ -27,10 +27,6 @@ struct UserInfoView: View {
                 Button {
                    
                     showPhotoPicker = true
-                    if let image = selectedImage{
-                        
-                        storage.upload(image: image, name: UserManager.userManager.currentUser!.username)
-                    }
                     
                 } label: {
                     Image(systemName: userImage)
@@ -38,7 +34,19 @@ struct UserInfoView: View {
                         .frame(width: 46.0, height: 46.0)
                 }
                 .fullScreenCover(isPresented: $showPhotoPicker) {
-                    PhotoPicker(filter: .images, limit: 1)
+                    PhotoPicker(filter: .images, limit: 1){results in
+                        PhotoPicker.convertToUIImageArray(fromResults: results){ imagesOrNil, errorOrNil in
+                            if let error = errorOrNil{
+                                print(error)
+                            }
+                            if let images = imagesOrNil{
+                                if let first = images.first{
+                                    selectedImage = first
+                                    storage.upload(image: selectedImage!, name: UserManager.userManager.currentUser!.username)
+                                }
+                            }
+                        }
+                    }
                         .edgesIgnoringSafeArea(.all)
                 }
                 
