@@ -19,6 +19,7 @@ struct MessagesView: View {
     @State var chatId : String
     @State var usersInChat : [String]
     @State var chatName : String = ""
+    @State var usersInChatMinusCurrent = [String]()
     
     var body: some View {
         VStack {
@@ -71,17 +72,19 @@ struct MessagesView: View {
             }
             .padding()
             .onAppear {
-                usersInChat.remove(at: 0)
-                chatName = usersInChat.joined(separator: ", ")
+               // usersInChatMinusCurrent = [String]()
+                for user in usersInChat {
+                    if user != UserManager.userManager.currentUser?.username {
+                        usersInChatMinusCurrent.append(user)
+                    }
+                }
+                chatName = usersInChatMinusCurrent.joined(separator: ", ")
                 print(chatName)
                 firestoreMessageDao.messages.removeAll()
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
             }
         }
         
-//        .padding(.bottom, keyboardManager.keyboardHeight)
-//        .edgesIgnoringSafeArea(keyboardManager.isVisible ? .bottom : [])
-       // .padding(.bottom, keyboardHeight)
         .navigationBarItems(leading:
                                 HStack {
             ProfilePic(size: 30, image: UIImage(imageLiteralResourceName: "profile-pic"))
