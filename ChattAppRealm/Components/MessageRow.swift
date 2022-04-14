@@ -9,11 +9,12 @@ import SwiftUI
 
 struct MessageRow: View {
     var message : Message
+    var image: UIImage
     
     var body: some View {
         HStack {
             if message.sender != UserManager.userManager.currentUser?.id {
-                ProfilePic(size: 40, image: UIImage(imageLiteralResourceName: "profile-pic"))
+                ProfilePic(size: 40, image: image)
             } else {
                 Spacer()
             }

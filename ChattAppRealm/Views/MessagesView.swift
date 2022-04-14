@@ -26,7 +26,7 @@ struct MessagesView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     ForEach(Array(firestoreMessageDao.messages.enumerated()), id: \.offset) { index, message in
-                        MessageRow(message: message)
+                        MessageRow(message: message, image: getUserImage(message: message))
                             .id(index)
                     }
                 }
@@ -77,16 +77,26 @@ struct MessagesView: View {
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
             }
         }
-        .onAppear{
-            
-            
-            
-        }
         
         .navigationBarItems(leading:
                                 HStack {
             ProfilePic(size: 30, image: UIImage(imageLiteralResourceName: "profile-pic"))
             Text(chatName)}.padding())
+        
+    }
+    
+    
+    func getUserImage(message: Message) -> UIImage{
+        
+        if !UserManager.imageArray.isEmpty{
+            for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
+                if user.id == message.sender{
+                    return UserManager.imageArray[user.id]!
+                }
+            }
+        }
+        
+        return UIImage(imageLiteralResourceName: "profile-pic")
         
     }
 }

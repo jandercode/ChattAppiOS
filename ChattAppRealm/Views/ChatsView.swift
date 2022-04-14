@@ -98,6 +98,7 @@ struct ChatsView: View{
         }.onAppear{
             
             storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
+            storage.loadChatProfilePics()
 
         }
     }
