@@ -29,9 +29,7 @@ struct UserInfoView: View {
                     showPhotoPicker = true
                     
                 } label: {
-                    Image(uiImage: userImage)
-                        .resizable()
-                        .frame(width: 46.0, height: 46.0)
+                    ProfilePic(size: 46, image: userImage)
                 }
                 .fullScreenCover(isPresented: $showPhotoPicker) {
                     PhotoPicker(filter: .images, limit: 1){results in

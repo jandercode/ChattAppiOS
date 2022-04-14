@@ -32,9 +32,7 @@ struct ChatsView: View{
                         Button {
                             presentUserInfo.toggle()
                         } label: {
-                            Image(uiImage: userImage!)
-                                .resizable()
-                                .frame(width: 32.0, height: 32.0)
+                            ProfilePic(size: 32, image: userImage!)
                         }.padding()
                     }
                     
