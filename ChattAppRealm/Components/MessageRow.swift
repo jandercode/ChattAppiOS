@@ -13,9 +13,10 @@ struct MessageRow: View {
     var body: some View {
         HStack {
             if message.sender != UserManager.userManager.currentUser?.id {
-                ProfilePic(size: 40)
+                ProfilePic(size: 40, image: UIImage(imageLiteralResourceName: "profile-pic"))
             } else {
                 Spacer()
+                ProfilePic(size: 40, image: UserManager.userManager.userImage!)
             }
             Text(message.text)
                 .padding(10)

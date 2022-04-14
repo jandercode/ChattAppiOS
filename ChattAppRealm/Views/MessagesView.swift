@@ -84,7 +84,7 @@ struct MessagesView: View {
        // .padding(.bottom, keyboardHeight)
         .navigationBarItems(leading:
                                 HStack {
-            ProfilePic(size: 30)
+            ProfilePic(size: 30, image: UIImage(imageLiteralResourceName: "profile-pic"))
             Text(chatName)}.padding())
         
     }

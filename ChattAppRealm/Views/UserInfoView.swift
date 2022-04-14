@@ -9,19 +9,48 @@ import SwiftUI
 
 struct UserInfoView: View {
     
+    var storage: StorageManager
+    
     @Environment(\.dismiss) var dismiss
     @State var userName = UserManager.userManager.currentUser!.username
     @State var eMail = UserManager.userManager.currentUser!.email
+        
+    @State private var showPhotoPicker = false
+    @State private var selectedImage: UIImage? = nil
+    @State private var userImage: UIImage = UIImage(systemName: "person.circle")!
     
     var body: some View {
         
         ZStack(alignment: .center){
             
             VStack{
-                
-                Image(systemName: "person.circle")
-                    .resizable()
-                    .frame(width: 46.0, height: 46.0)
+                Button {
+                   
+                    showPhotoPicker = true
+                    
+                } label: {
+                    Image(uiImage: userImage)
+                        .resizable()
+                        .frame(width: 46.0, height: 46.0)
+                }
+                .fullScreenCover(isPresented: $showPhotoPicker) {
+                    PhotoPicker(filter: .images, limit: 1){results in
+                        PhotoPicker.convertToUIImageArray(fromResults: results){ imagesOrNil, errorOrNil in
+                            if let error = errorOrNil{
+                                print(error)
+                            }
+                            if let images = imagesOrNil{
+                                if let first = images.first{
+                                    selectedImage = first
+                                    UserManager.userManager.userImage = selectedImage
+                                    userImage = selectedImage!
+                                    storage.upload(image: selectedImage!, id: UserManager.userManager.currentUser!.id)
+                                }
+                            }
+                        }
+                    }
+                        .edgesIgnoringSafeArea(.all)
+                }
                 
                 HStack{
                     
@@ -70,6 +99,11 @@ struct UserInfoView: View {
                     
                 }
             }
+        }.onAppear{
+            
+            if UserManager.userManager.userImage != nil{
+                userImage = UserManager.userManager.userImage!
+            }
         }
     }
     
@@ -92,8 +126,4 @@ struct UserInfoView: View {
     
 }
 
-struct UserInfoView_Previews: PreviewProvider {
-    static var previews: some View {
-        UserInfoView()
-    }
-}
+

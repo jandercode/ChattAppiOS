@@ -30,6 +30,8 @@
 		C805C240280053AC00544537 /* FirestoreChatDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = C805C23F280053AC00544537 /* FirestoreChatDao.swift */; };
 		C805C24228005A5100544537 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = C805C24128005A5100544537 /* Chat.swift */; };
 		C805C244280575B800544537 /* MessageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C805C243280575B800544537 /* MessageRow.swift */; };
+		C81FFB032806F91900B89F49 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81FFB022806F91900B89F49 /* StorageManager.swift */; };
+		C81FFB052806FED700B89F49 /* PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81FFB042806FED700B89F49 /* PhotoPicker.swift */; };
 		C827276327FF0BF400ABF4B7 /* UserDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276227FF0BF400ABF4B7 /* UserDao.swift */; };
 		C827276527FF0C7600ABF4B7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276427FF0C7600ABF4B7 /* LoginView.swift */; };
 		C827276727FF0D9D00ABF4B7 /* ChatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276627FF0D9D00ABF4B7 /* ChatsView.swift */; };
@@ -57,6 +59,8 @@
 		C805C23F280053AC00544537 /* FirestoreChatDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreChatDao.swift; sourceTree = "<group>"; };
 		C805C24128005A5100544537 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		C805C243280575B800544537 /* MessageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRow.swift; sourceTree = "<group>"; };
+		C81FFB022806F91900B89F49 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		C81FFB042806FED700B89F49 /* PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPicker.swift; sourceTree = "<group>"; };
 		C827276227FF0BF400ABF4B7 /* UserDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDao.swift; sourceTree = "<group>"; };
 		C827276427FF0C7600ABF4B7 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C827276627FF0D9D00ABF4B7 /* ChatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsView.swift; sourceTree = "<group>"; };
@@ -165,6 +169,7 @@
 				C805C23827FEC8F000544537 /* FirestoreContactDao.swift */,
 				C805C23F280053AC00544537 /* FirestoreChatDao.swift */,
 				C805C23B27FF169B00544537 /* FirestoreMessageDao.swift */,
+				C81FFB022806F91900B89F49 /* StorageManager.swift */,
 			);
 			path = Firestore;
 			sourceTree = "<group>";
@@ -174,6 +179,7 @@
 			children = (
 				C827276227FF0BF400ABF4B7 /* UserDao.swift */,
 				C8DDC640280414CF003987F7 /* AppData.swift */,
+				C81FFB042806FED700B89F49 /* PhotoPicker.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -269,6 +275,7 @@
 				C8DDC641280414CF003987F7 /* AppData.swift in Sources */,
 				C805C1D727FC370D00544537 /* ContentView.swift in Sources */,
 				C805C22227FC6F4700544537 /* NewChatView.swift in Sources */,
+				C81FFB032806F91900B89F49 /* StorageManager.swift in Sources */,
 				C8DD355D2806B8A600DE7F75 /* ProfilePic.swift in Sources */,
 				C805C23427FDD6C900544537 /* User.swift in Sources */,
 				C805C1D527FC370D00544537 /* ChattAppRealmApp.swift in Sources */,
@@ -276,6 +283,7 @@
 				C805C22027FC6EC400544537 /* MessagesView.swift in Sources */,
 				C86EA7822806FF3400CDEE79 /* KeyboardManager.swift in Sources */,
 				C805C23C27FF169C00544537 /* FirestoreMessageDao.swift in Sources */,
+				C81FFB052806FED700B89F49 /* PhotoPicker.swift in Sources */,
 				C805C23E27FF17E900544537 /* Message.swift in Sources */,
 				C805C23727FEC08300544537 /* Contact.swift in Sources */,
 				C827276527FF0C7600ABF4B7 /* LoginView.swift in Sources */,

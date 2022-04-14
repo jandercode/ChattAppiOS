@@ -15,6 +15,8 @@ struct ChatsView: View{
     @State var usersInChat = [String]()
     @State var chatId = ""
     @State var presentUserInfo = false
+    @State var userImage = UIImage(systemName: "person.circle")
+    let storage = StorageManager()
     
     var body: some View{
         
@@ -30,7 +32,7 @@ struct ChatsView: View{
                         Button {
                             presentUserInfo.toggle()
                         } label: {
-                            Image(systemName: "person.circle")
+                            Image(uiImage: userImage!)
                                 .resizable()
                                 .frame(width: 32.0, height: 32.0)
                         }.padding()
@@ -56,13 +58,21 @@ struct ChatsView: View{
                         EmptyView()
                     }.isDetailLink(false)
                 }.onAppear{
+                    
+                    imageChangeQueue {
+                        changeUserImage()
+                    }
                     firestoreChatDao.listenToFirestore()
                     FirestoreContactDao.firestoreContactDao.removeCurrentUser()
                     
                 }
                 .sheet(isPresented: $presentUserInfo, content: {
-                    UserInfoView()
+                    UserInfoView(storage: storage)
                 })
+                .onDisappear {
+                    
+                    changeUserImage()
+                }
                 
                 VStack {
                     Spacer()
@@ -83,6 +93,33 @@ struct ChatsView: View{
                     }
                 }
             }
+        }.onAppear{
+            
+            storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
+
         }
     }
+    
+    func changeUserImage(){
+        
+        if UserManager.userManager.userImage != nil{
+            userImage = UserManager.userManager.userImage
+        }
+        
+    }
+    
+    // creates an async process that changes the user profile image as soon as it's avalable
+        func imageChangeQueue(onComplete: @escaping () -> Void){
+    
+            let queue = DispatchQueue(label: "myQueue")
+            queue.async {
+                
+                while UserManager.userManager.userImage == nil{
+                    continue
+                }
+                
+                onComplete()
+            }
+        }
+    
 }

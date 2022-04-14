@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 
 enum ActionType: Int{
@@ -57,6 +58,7 @@ class UserManager: ObservableObject{
     
     static let userManager = UserManager()
     @Published var currentUser: User? = nil
+    var userImage: UIImage? = nil
     
     private init(){}
     
