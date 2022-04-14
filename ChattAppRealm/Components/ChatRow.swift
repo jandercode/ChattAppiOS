@@ -8,6 +8,8 @@ import SwiftUI
 
 struct ChatRow: View {
     var chat: Chat
+    var chatName: String
+   // var currentUserName = UserManager.userManager.currentUser?.username
    // var time: String
     var read: Bool
     
@@ -21,7 +23,7 @@ struct ChatRow: View {
                     .foregroundColor(.white)
             }
             VStack(alignment: .leading) {
-                Text("\(chat.users_in_chat[0]), \(chat.users_in_chat[1])")
+                Text(chatName)
                 Text("last message...")
                     .font(.system(size: 15))
             }
@@ -31,6 +33,7 @@ struct ChatRow: View {
            // Image(systemName: read ? "circle" : "circle.fill")
         }
         .padding(3)
+        
     }
 }
 
