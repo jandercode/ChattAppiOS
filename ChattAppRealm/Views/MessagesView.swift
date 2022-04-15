@@ -44,6 +44,9 @@ struct MessagesView: View {
                         keyboardManager.isVisible = false
                     }
                 })
+                .onTapGesture {
+                    self.endTextEditing()
+                }
             }
             
             HStack {
@@ -98,6 +101,12 @@ struct MessagesView: View {
         
         return UIImage(imageLiteralResourceName: "profile-pic")
         
+    }
+}
+
+extension View {
+    func endTextEditing() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
