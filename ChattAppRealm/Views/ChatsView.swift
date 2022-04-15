@@ -61,6 +61,11 @@ struct ChatsView: View{
                     }.isDetailLink(false)
                 }.onAppear{
                    // chatNameMinusCurrent = firestoreChatDao.removeCurrentFromChatName(chatName: chatName)
+                    if Reachability.isConnectedToNetwork(){
+                        print("Internet Connection Available!")
+                    } else {
+                        print("Internet Connection Not Available!")
+                    }
                     imageChangeQueue {
                         changeUserImage()
                     }
