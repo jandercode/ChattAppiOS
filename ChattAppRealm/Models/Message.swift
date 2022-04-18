@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct Message : Codable, Identifiable {
-    var sender : String
+class Message : Object, Codable, Identifiable {
+    
+    @Persisted var sender : String
    // var receiver : String = ""
-    var text : String
+    @Persisted var text : String
     var timestamp : Date = Date() // NSDate().timeIntervalSince1970
-    var id : String = UUID().uuidString
+    @Persisted var id : String = UUID().uuidString
   //  var date = Date().timeIntervalSinceReferenceDate
 }

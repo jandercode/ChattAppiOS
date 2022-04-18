@@ -64,7 +64,9 @@ struct MessagesView: View {
                         }
                         // add new message to firestore
                         let sender = UserManager.userManager.currentUser?.id ?? "anonymous"
-                        let message = Message(sender: sender, text: messageText)
+                        let message = Message()
+                        message.sender = sender
+                        message.text = messageText
                         
                         firestoreMessageDao.saveMessage(message: message, chatId: chatId)
                         messageText = ""
