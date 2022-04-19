@@ -20,8 +20,8 @@ struct MessageRow: View {
             }
             Text(message.text)
                 .padding(10)
-                .foregroundColor(message.sender == UserManager.userManager.currentUser?.id ? Color.black : Color.white)
-                .background(message.sender == UserManager.userManager.currentUser?.id ? Color(UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)) : Color.blue)
+                .foregroundColor(message.sender == UserManager.userManager.currentUser?.id ? Color.white : Color.black)
+                .background(message.sender == UserManager.userManager.currentUser?.id ? Color.blue : Color(UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)))
                 .cornerRadius(10)
             if message.sender != UserManager.userManager.currentUser?.id {
                 Spacer()
