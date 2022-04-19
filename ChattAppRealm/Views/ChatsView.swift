@@ -103,7 +103,8 @@ struct ChatsView: View{
         }.onAppear{
             
             storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
-            storage.loadChatProfilePics()
+            loadUsersImages()
+            //storage.loadChatProfilePics()
 
         }
     }
@@ -113,6 +114,29 @@ struct ChatsView: View{
         if UserManager.userManager.userImage != nil{
             userImage = UserManager.userManager.userImage
         }
+        
+    }
+    
+    
+    func loadUsersImages(){
+        
+        let group = DispatchGroup()
+        
+        DispatchQueue.global(qos: .default).async {
+            storage.loadChatProfilePics()
+                
+                for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
+                    group.enter()
+                    storage.loadImageFromStorageToArray(id: user.id)
+                    group.leave()
+                }
+            
+                        
+            group.notify(queue: .main){
+                print(UserManager.imageArray.count)
+            }
+        }
+        
         
     }
     

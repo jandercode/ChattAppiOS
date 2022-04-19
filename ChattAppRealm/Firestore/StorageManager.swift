@@ -136,6 +136,25 @@ class StorageManager: ObservableObject{
             }
         }
     }
+    
+    func loadImageFromStorageToArray(id: String){
+        
+        let imageRef = storage.reference().child("images/\(id)")
+        
+        imageRef.getData(maxSize: 1*1024*1024){ data, error in
+            
+            if let _ = error{
+                
+                    UserManager.imageArray[id] = UIImage(systemName: "person.circle")
+                
+                
+            }else{
+                
+                    UserManager.imageArray[id] = UIImage(data: data!)
+                
+            }
+        }
+    }
 
         // You can use the listItem() function above to get the StorageReference of the item you want to delete
     func deleteItem(item: StorageReference) {
