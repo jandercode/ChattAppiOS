@@ -15,6 +15,7 @@ class FirestoreMessageDao : ObservableObject {
     
     let db = Firestore.firestore()
     @Published var messages = [Message]()
+   // @Published var latestMessage = Message(sender: "", text: "")
     
     private let ID_KEY = "id"
     private let SENDER_KEY = "sender"
@@ -25,6 +26,7 @@ class FirestoreMessageDao : ObservableObject {
     private let MESSAGES_COLLECTION = "messages"
     private let CHATS_COLLECTION = "chats"
     
+
     func saveMessage(message: Message, chatId : String) {
         
         do {
@@ -53,6 +55,8 @@ class FirestoreMessageDao : ObservableObject {
                         switch result {
                         case .success(let message) :
                             self.messages.append(message)
+//                            self.latestMessage = message
+//                            print("latestMessage = \(self.latestMessage)")
                         case .failure(let error) :
                             print("Error decoding item: \(error)")
                         }

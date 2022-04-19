@@ -46,9 +46,9 @@ class FirestoreChatDao : ObservableObject {
             }
         }
         
-        print(chatNameArray)
+       // print(chatNameArray)
         chatName = chatNameArray.joined(separator: ", ")
-        print(chatName)
+       // print(chatName)
         return chatName
     }
     
