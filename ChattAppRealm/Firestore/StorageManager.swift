@@ -112,6 +112,7 @@ class StorageManager: ObservableObject{
                         
                     }
                 }
+                print("loading done!!")
             }
     }
     

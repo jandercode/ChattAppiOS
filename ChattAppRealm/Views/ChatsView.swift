@@ -41,7 +41,8 @@ struct ChatsView: View{
                     
                     List{
                         ForEach(firestoreChatDao.chats) { chat in
-                            ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), read: false)
+                            ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name)
+                                    , profilePic: getProfilePic(chat: chat) ,read: false)
                                 .listRowSeparator(.hidden)
                                 .onTapGesture {
                                     usersInChat = chat.users_in_chat
@@ -51,7 +52,10 @@ struct ChatsView: View{
                                     showChatView = true
                                 }
                         }
-                    }.listStyle(.plain)
+                    }.refreshable {
+                        
+                    }
+                    .listStyle(.plain)
                     Spacer()
                     NavigationLink(destination: NewChatView(), isActive: $showNewChatView) {
                         EmptyView()
@@ -59,8 +63,9 @@ struct ChatsView: View{
                     NavigationLink(destination: MessagesView(chatId: chatId, usersInChat: usersInChat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
                         EmptyView()
                     }.isDetailLink(false)
+                        
                 }.onAppear{
-                   // chatNameMinusCurrent = firestoreChatDao.removeCurrentFromChatName(chatName: chatName)
+                    
                     if Reachability.isConnectedToNetwork(){
                         print("Internet Connection Available!")
                     } else {
@@ -101,42 +106,25 @@ struct ChatsView: View{
                 }
             }
         }.onAppear{
-            
             storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
-            loadUsersImages()
-            //storage.loadChatProfilePics()
+            storage.loadChatProfilePics()
 
         }
     }
+    
+    func getProfilePic(chat: Chat) -> UIImage{
+        
+        let userId = chat.users_in_chat[1]
+        return UserManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
+        
+    }
+
     
     func changeUserImage(){
         
         if UserManager.userManager.userImage != nil{
             userImage = UserManager.userManager.userImage
         }
-        
-    }
-    
-    
-    func loadUsersImages(){
-        
-        let group = DispatchGroup()
-        
-        DispatchQueue.global(qos: .default).async {
-            storage.loadChatProfilePics()
-                
-                for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
-                    group.enter()
-                    storage.loadImageFromStorageToArray(id: user.id)
-                    group.leave()
-                }
-            
-                        
-            group.notify(queue: .main){
-                print(UserManager.imageArray.count)
-            }
-        }
-        
         
     }
     
