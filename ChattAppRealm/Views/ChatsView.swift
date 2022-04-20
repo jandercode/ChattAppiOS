@@ -10,6 +10,7 @@ import SwiftUI
 struct ChatsView: View{
     
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
+    @ObservedObject var profilePicArray = UserManager.userManager
     @Binding var showNewChatView: Bool
     @State private var showChatView = false
     @State var usersInChat = [String]()
@@ -38,7 +39,6 @@ struct ChatsView: View{
                             ProfilePic(size: 32, image: userImage!)
                         }.padding()
                     }
-                    
                     List{
                         ForEach(firestoreChatDao.chats) { chat in
 
@@ -54,7 +54,9 @@ struct ChatsView: View{
                                     showChatView = true
                                 }
                         }
-                    }.refreshable {}
+                    }.refreshable {
+                        print("refreshing")
+                    }
                     .listStyle(.plain)
                     Spacer()
                     NavigationLink(destination: NewChatView(), isActive: $showNewChatView) {

@@ -59,7 +59,7 @@ class UserManager: ObservableObject{
     static let userManager = UserManager()
     @Published var currentUser: User? = nil
     var userImage: UIImage? = nil
-    static var imageArray : [String:UIImage] = [:]
+    @Published var imageArray : [String:UIImage] = [:]
     
     private init(){
         loadStandardProfilePicture()
@@ -69,7 +69,7 @@ class UserManager: ObservableObject{
         
         for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
             
-            UserManager.imageArray[user.id] = UIImage(imageLiteralResourceName: "person.circle")
+            imageArray[user.id] = UIImage(imageLiteralResourceName: "person.circle")
             
         }
         
