@@ -41,8 +41,10 @@ struct ChatsView: View{
                     
                     List{
                         ForEach(firestoreChatDao.chats) { chat in
+
                             ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name)
                                     , profilePic: getProfilePic(chat: chat) ,read: false)
+
                                 .listRowSeparator(.hidden)
                                 .onTapGesture {
                                     usersInChat = chat.users_in_chat

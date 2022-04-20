@@ -11,4 +11,5 @@ struct Chat : Codable, Identifiable {
     var id : String = UUID().uuidString
     var users_in_chat : [String] = [String]()
     var chat_name = ""
+//    var lastMessage = Message()
 }

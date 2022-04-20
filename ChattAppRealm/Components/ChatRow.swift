@@ -13,6 +13,7 @@ struct ChatRow: View {
    // var currentUserName = UserManager.userManager.currentUser?.username
    // var time: String
     var read: Bool
+    @State var lastMessage : Message
     
     var body: some View {
         HStack {
@@ -26,6 +27,7 @@ struct ChatRow: View {
             VStack(alignment: .leading) {
                 Text(chatName)
                 Text("last message...")
+               // Text(lastMessage.text)
                     .font(.system(size: 15))
             }
             
@@ -34,7 +36,13 @@ struct ChatRow: View {
            // Image(systemName: read ? "circle" : "circle.fill")
         }
         .padding(3)
-        
+        .onAppear{
+           // FirestoreMessageDao.firestoreMessageDao.listenToFirestore(chatId: chat.id)
+           // lastMessage = FirestoreMessageDao.firestoreMessageDao.messages.last ?? Message()
+            FirestoreMessageDao.firestoreMessageDao.readLastMessage(chatId: chat.id)
+            lastMessage = FirestoreMessageDao.firestoreMessageDao.lastMessage
+            print("lastMessage: \(lastMessage)")
+        }
     }
     
 }
