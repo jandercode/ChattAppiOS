@@ -13,7 +13,7 @@ class Message : Object, Codable, Identifiable {
     @Persisted var sender : String
    // var receiver : String = ""
     @Persisted var text : String
-    var timestamp : Date = Date() // NSDate().timeIntervalSince1970
+    @Persisted var timestamp : Date? = nil // NSDate().timeIntervalSince1970
     @Persisted var id : String = UUID().uuidString
   //  var date = Date().timeIntervalSinceReferenceDate
 }
