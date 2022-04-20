@@ -67,7 +67,8 @@ struct MessagesView: View {
                         let message = Message()
                         message.sender = sender
                         message.text = messageText
-                        
+                        message.timestamp = Date()
+
                         firestoreMessageDao.saveMessage(message: message, chatId: chatId)
                         messageText = ""
                         firestoreMessageDao.listenToFirestore(chatId: chatId)
