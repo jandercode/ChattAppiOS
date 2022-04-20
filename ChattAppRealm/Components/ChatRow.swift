@@ -9,6 +9,7 @@ import SwiftUI
 struct ChatRow: View {
     var chat: Chat
     var chatName: String
+    var profilePic: UIImage
    // var currentUserName = UserManager.userManager.currentUser?.username
    // var time: String
     var read: Bool
@@ -17,10 +18,10 @@ struct ChatRow: View {
     var body: some View {
         HStack {
             ZStack {
-                Circle()
-                    .fill(Color.green)
+                Image(uiImage: profilePic)
+                    .resizable()
                     .frame(width: 45, height: 45)
-                Image(systemName: "person")
+                    .clipShape(Circle())
                     .foregroundColor(.white)
             }
             VStack(alignment: .leading) {
@@ -43,6 +44,7 @@ struct ChatRow: View {
             print("lastMessage: \(lastMessage)")
         }
     }
+    
 }
 
 //struct ChatRow_Previews: PreviewProvider {

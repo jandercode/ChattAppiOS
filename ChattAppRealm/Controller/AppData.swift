@@ -61,6 +61,20 @@ class UserManager: ObservableObject{
     var userImage: UIImage? = nil
     static var imageArray : [String:UIImage] = [:]
     
-    private init(){}
+    private init(){
+        loadStandardProfilePicture()
+    }
+    
+    func loadStandardProfilePicture(){
+        
+        for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
+            
+            UserManager.imageArray[user.id] = UIImage(imageLiteralResourceName: "profile-pic")
+            
+        }
+        
+    }
+    
+    
     
 }

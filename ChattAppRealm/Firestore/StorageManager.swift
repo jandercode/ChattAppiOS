@@ -112,6 +112,7 @@ class StorageManager: ObservableObject{
                         
                     }
                 }
+                print("loading done!!")
             }
     }
     
@@ -132,6 +133,25 @@ class StorageManager: ObservableObject{
             }else{
                 
                     UserManager.userManager.userImage = UIImage(data: data!)
+                
+            }
+        }
+    }
+    
+    func loadImageFromStorageToArray(id: String){
+        
+        let imageRef = storage.reference().child("images/\(id)")
+        
+        imageRef.getData(maxSize: 1*1024*1024){ data, error in
+            
+            if let _ = error{
+                
+                    UserManager.imageArray[id] = UIImage(systemName: "person.circle")
+                
+                
+            }else{
+                
+                    UserManager.imageArray[id] = UIImage(data: data!)
                 
             }
         }
