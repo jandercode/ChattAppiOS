@@ -15,6 +15,7 @@ class FirestoreMessageDao : ObservableObject {
     
     let db = Firestore.firestore()
     @Published var messages = [Message]()
+    @Published var lastMessage = Message()
    // @Published var latestMessage = Message(sender: "", text: "")
     
     private let ID_KEY = "id"
@@ -60,6 +61,31 @@ class FirestoreMessageDao : ObservableObject {
                         case .failure(let error) :
                             print("Error decoding item: \(error)")
                         }
+                    }
+                }
+            }
+        }
+    }
+    
+    func readLastMessage(chatId : String) {
+        db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).order(by: "timestamp", descending: true).limit(to: 1).addSnapshotListener { snapshot, err in
+            
+            guard let snapshot = snapshot else { return }
+            if let err = err {
+                print("Error getting last message \(err)")
+            } else {
+                for document in snapshot.documents {
+                    let result = Result {
+                        try document.data(as: Message.self)
+                    }
+                    switch result {
+                    case .success(let message) :
+                        self.lastMessage = message
+                        print("message in readLastMessage: \(message)")
+                        print("lastMessage in readLastMessage: \(self.lastMessage)")
+
+                    case .failure(let error) :
+                        print("Error decoding item: \(error)")
                     }
                 }
             }
