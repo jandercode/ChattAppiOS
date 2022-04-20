@@ -52,9 +52,7 @@ struct ChatsView: View{
                                     showChatView = true
                                 }
                         }
-                    }.refreshable {
-                        
-                    }
+                    }.refreshable {}
                     .listStyle(.plain)
                     Spacer()
                     NavigationLink(destination: NewChatView(), isActive: $showNewChatView) {
