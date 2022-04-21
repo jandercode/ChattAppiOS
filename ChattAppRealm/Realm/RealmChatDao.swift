@@ -24,7 +24,7 @@ class RealmChatDao{
         
         let chats = realm.objects(Chat.self)
         print(chats)
-        print(chats[0].RealmMessagesList)
+        //print(chats[0].RealmMessagesList)
         
     }
     
