@@ -53,7 +53,13 @@ class FirestoreChatDao : ObservableObject {
     }
     
     func removeCurrentFromChatName(chatName: String) -> String {
-        let chatNameMinusCurrent = chatName.replacingOccurrences(of: "\(UserManager.userManager.currentUser?.username ?? ""), ", with: "")
+        var chatNameMinusCurrent = chatName.replacingOccurrences(of: "\(UserManager.userManager.currentUser?.username ?? "")", with: "")
+        if chatNameMinusCurrent.hasSuffix(", ") {
+            chatNameMinusCurrent.removeLast(2)
+        }
+        if chatNameMinusCurrent.hasPrefix(", ") {
+            chatNameMinusCurrent.removeFirst(2)
+        }
         return chatNameMinusCurrent
     }
     
