@@ -12,6 +12,7 @@ struct MessagesView: View {
     let db = Firestore.firestore()
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     @ObservedObject var firestoreMessageDao = FirestoreMessageDao.firestoreMessageDao
+    @ObservedObject var userManager = UserManager.userManager
     @ObservedObject var keyboardManager = KeyboardManager()
     @State private var keyboardHeight: CGFloat = 0
     
@@ -94,10 +95,10 @@ struct MessagesView: View {
     
     func getUserImage(message: Message) -> UIImage{
         
-        if !UserManager.imageArray.isEmpty{
+        if !userManager.imageArray.isEmpty{
             for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
                 if user.id == message.sender{
-                    return UserManager.imageArray[user.id]!
+                    return userManager.imageArray[user.id]!
                 }
             }
         }

@@ -10,7 +10,7 @@ import SwiftUI
 struct ChatsView: View{
     
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
-    @ObservedObject var profilePicArray = UserManager.userManager
+    @ObservedObject var userManager = UserManager.userManager
     @Binding var showNewChatView: Bool
     @State private var showChatView = false
     @State var usersInChat = [String]()
@@ -55,7 +55,7 @@ struct ChatsView: View{
                                 }
                         }
                     }.refreshable {
-                        print("refreshing")
+                        
                     }
                     .listStyle(.plain)
                     Spacer()
@@ -117,7 +117,7 @@ struct ChatsView: View{
     func getProfilePic(chat: Chat) -> UIImage{
         
         let userId = chat.users_in_chat[1]
-        return UserManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
+        return userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
         
     }
 

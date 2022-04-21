@@ -15,7 +15,6 @@ class StorageManager: ObservableObject{
     let defaultUserImageKey = "defaultimg"
     
     
-    
     func upload(image: UIImage, id: String){
         
         let storageRef = storage.reference().child("images/\(id)")
@@ -103,12 +102,11 @@ class StorageManager: ObservableObject{
                     
                     if let _ = error{
                         
-                        UserManager.imageArray[user.id] = UIImage(imageLiteralResourceName: "profile-pic")
+                        UserManager.userManager.imageArray[user.id] = UIImage(imageLiteralResourceName: "profile-pic")
                         
                     }else{
                         
-                        UserManager.imageArray[user.id] = UIImage(data: data!)!
-                        print(UserManager.imageArray.count)
+                        UserManager.userManager.imageArray[user.id] = UIImage(data: data!)!
                         
                     }
                 }
