@@ -10,12 +10,9 @@ struct ChatRow: View {
     var chat: Chat
     var chatName: String
     var profilePic: UIImage
-   // var currentUserName = UserManager.userManager.currentUser?.username
-   // var time: String
     var read: Bool
-   // @State var lastMessage = Message()
-  //  @State var lastMessage = Message()
-    @ObservedObject var firestoreMessageDao = FirestoreMessageDao.firestoreMessageDao
+    var timestampFormatter = TimestampFormatter()
+    @State var stringToPrint = ""
     
     var body: some View {
         HStack {
@@ -28,25 +25,21 @@ struct ChatRow: View {
             }
             VStack(alignment: .leading) {
                 Text(chatName)
-               // Text("last message...")
-                Text(chat.lastMessage)
-              //  Text(firestoreMessageDao.lastMessage?.text ?? "default last message")
+                Text(chat.last_message)
                     .font(.system(size: 15))
             }
             
             Spacer()
-           // Text(time)
+           // Text(chat.timestamp ?? Date.now, format: .dateTime.day().month().hour().minute())
+            Text(stringToPrint)
+                .font(.system(size: 12))
            // Image(systemName: read ? "circle" : "circle.fill")
         }
         .padding(3)
         .onAppear{
             FirestoreMessageDao.firestoreMessageDao.listenToFirestore(chatId: chat.id)
-           // lastMessage = FirestoreMessageDao.firestoreMessageDao.messages.last ?? Message()
-           // FirestoreMessageDao.firestoreMessageDao.readLastMessage(chatId: chat.id) { message in
-            //    self.lastMessage = message
-           // }
-           // lastMessage = FirestoreMessageDao.firestoreMessageDao.lastMessage
-          //  print("lastMessage in ChatRow: \(lastMessage)")
+            stringToPrint = timestampFormatter.formatTimestamp(timestamp: chat.timestamp ?? Date())
+           // print(stringToPrint)
         }
     }
     
