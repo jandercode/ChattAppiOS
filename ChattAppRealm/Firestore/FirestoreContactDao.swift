@@ -23,55 +23,11 @@ class FirestoreContactDao : ObservableObject {
     private let ID_KEY = "id"
     private let USERNAME_KEY = "username"
     private let EMAIL_KEY = "email"
-    private let CONTACT_COLLECTION = "contacts"
     
     private let USERS_COLLECTION = "users"
     private let FIRST_NAME_KEY = "first_name"
     private let LAST_NAME_KEY = "last_name"
     private let PASSWORD_KEY = "password"
-    
-    
-    
-    func saveContact(username: String) {
-        
-        let newContact = Contact(user_name: username, e_mail: "test@test.com")
-        
-        do {
-            _ = try db.collection(CONTACT_COLLECTION).document(newContact.id).setData(from: newContact)
-        } catch {
-            print("error saving to db")
-        }
-    }
-    
-    func deleteContact(at indexSet: IndexSet) {
-        for index in indexSet {
-            let contact = contacts[index]
-                db.collection(CONTACT_COLLECTION).document(contact.id).delete()
-        }
-    }
-
-    func listenToFirestore() {
-        
-        db.collection(CONTACT_COLLECTION).addSnapshotListener { snapshot, err in
-            guard let snapshot = snapshot else { return }
-            if let err = err {
-                print("Error getting document \(err)")
-            } else {
-                self.contacts.removeAll()
-                for document in snapshot.documents {
-                    let result = Result {
-                        try document.data(as: Contact.self)
-                    }
-                    switch result {
-                    case .success(let contact) :
-                        self.contacts.append(contact)
-                    case .failure(let error) :
-                        print("Error decoding item: \(error)")
-                    }
-                }
-            }
-        }
-    }
     
     func checkForSameUsername(username: String) -> Bool{
         
@@ -158,6 +114,8 @@ class FirestoreContactDao : ObservableObject {
                         if data[self.PASSWORD_KEY] as! String == password{
                             
                             self.setCurrentUsert(data: data)
+                            
+                            
                     }
                         print("success")
                         

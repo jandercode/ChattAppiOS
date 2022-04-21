@@ -20,11 +20,33 @@ class RealmChatDao{
         
     }
     
-    func loadChats(){
+    func loadChats() -> [Chat]{
         
         let chats = realm.objects(Chat.self)
-        print(chats)
-        //print(chats[0].RealmMessagesList)
+        var chatsArray = [Chat]()
+        
+        for chat in chats{
+            chatsArray.append(chat)
+        }
+        
+        return chatsArray
+    }
+    
+    func deleteChat(chat: Chat){
+        
+        let chatId = chat.id
+        try! realm.write({
+            realm.delete(chat)
+        })
+        
+        let messagesToDelete = realm.objects(Message.self).where {
+            
+            $0.referenceChatId == chatId
+        }
+        
+        try! realm.write({
+            realm.delete(messagesToDelete)
+        })
         
     }
     

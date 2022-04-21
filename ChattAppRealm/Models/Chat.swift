@@ -14,6 +14,4 @@ class Chat : Object, Codable, Identifiable {
     var last_message : String = ""
     var timestamp : Date? = nil
     @Persisted var chat_name = ""
-    
-    //@Persisted var RealmMessagesList = List<Message>()
 }

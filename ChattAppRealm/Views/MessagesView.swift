@@ -22,6 +22,9 @@ struct MessagesView: View {
     @State var chatName : String
     @State var usersInChatMinusCurrent = [String]()
     
+    let chatDao = RealmChatDao()
+    let messageDao = RealmMessagedao()
+    
     var body: some View {
         VStack {
             ScrollViewReader { proxy in
@@ -62,6 +65,7 @@ struct MessagesView: View {
                             chat.users_in_chat = usersInChat
                             chat.chat_name = firestoreChatDao.createChatName(usersInChat: usersInChat)
                             firestoreChatDao.saveNewChat(chat: chat)
+                            chatDao.saveChat(chat: chat)
                             
                         }
                         // add new message to firestore
@@ -70,9 +74,10 @@ struct MessagesView: View {
                         message.sender = sender
                         message.text = messageText
                         message.timestamp = Date()
+                        message.referenceChatId = chatId
                         
-
                         firestoreMessageDao.saveMessage(message: message, chatId: chatId)
+                        messageDao.saveMessage(message: message)
                         messageText = ""
                         firestoreMessageDao.listenToFirestore(chatId: chatId)
                     }

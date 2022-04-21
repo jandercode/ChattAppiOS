@@ -28,6 +28,7 @@ class FirestoreMessageDao : ObservableObject {
     private let MESSAGES_COLLECTION = "messages"
     private let CHATS_COLLECTION = "chats"
     
+    
 
     func saveMessage(message: Message, chatId : String) {
         
@@ -36,7 +37,9 @@ class FirestoreMessageDao : ObservableObject {
             db.collection(CHATS_COLLECTION).document(chatId).setData([ "last_message": message.text ], merge: true)
             db.collection(CHATS_COLLECTION).document(chatId).setData([ "timestamp": message.timestamp ?? Date() ], merge: true)
             messages.removeAll()
-        } catch {
+            
+        } catch{
+            
             print("Error saving newMessage to db")
         }
             
@@ -65,5 +68,8 @@ class FirestoreMessageDao : ObservableObject {
                 }
             }
         }
+        completionHandler(lastMessage)
+        print("lastMessage in readLastMessage: \(String(describing: self.lastMessage))")
+
     }
 }

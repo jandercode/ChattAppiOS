@@ -10,14 +10,16 @@ import SwiftUI
 struct UserInfoView: View {
     
     var storage: StorageManager
+    @State var imageChanged: Bool
     
     @Environment(\.dismiss) var dismiss
-    @State var userName = UserManager.userManager.currentUser!.username
+    let userName = UserManager.userManager.currentUser!.username
     @State var eMail = UserManager.userManager.currentUser!.email
         
     @State private var showPhotoPicker = false
     @State private var selectedImage: UIImage? = nil
     @State private var userImage: UIImage = UIImage(systemName: "person.circle")!
+    @State private var logOut: Bool = false
     
     var body: some View {
         
@@ -43,6 +45,7 @@ struct UserInfoView: View {
                                     UserManager.userManager.userImage = selectedImage
                                     userImage = selectedImage!
                                     storage.upload(image: selectedImage!, id: UserManager.userManager.currentUser!.id)
+                                    imageChanged = true
                                 }
                             }
                         }
@@ -54,9 +57,8 @@ struct UserInfoView: View {
                     
                     Spacer()
                     
-                    Text("Username:")
-                    TextField("UserName", text: $userName)
-                        .textFieldStyle(.roundedBorder)
+                    Text(userName)
+                        .padding()
                     
                     Spacer()
                     
@@ -88,21 +90,41 @@ struct UserInfoView: View {
                 .padding()
                 
                 HStack{
+                    
                     Button {
                         updateUser()
                     } label: {
                         Text("Save Changes")
                     }
-
+                    .padding()
+                    
+                    Button {
+                        logUserOut()
+                        dismiss()
+                    } label: {
+                        Text("Logout")
+                    }
+                    .padding()
                     
                 }
             }
-        }.onAppear{
+        }
+        .onAppear{
             
             if UserManager.userManager.userImage != nil{
                 userImage = UserManager.userManager.userImage!
             }
         }
+        
+    }
+    
+    func logUserOut(){
+        
+//        let userDao = UserDao()
+//        userDao.eraseUserData()
+        manageLoginInfo.saveLogin(saveInfo: false)
+        UserData.loggedOut = true
+        
     }
     
     func updateUser(){
@@ -111,13 +133,6 @@ struct UserInfoView: View {
             
             FirestoreContactDao.firestoreContactDao.upadateCurrentUserData(data: eMail, operation: ActionType.email)
         }
-        
-        if userName != UserManager.userManager.currentUser?.username{
-            
-            FirestoreContactDao.firestoreContactDao.upadateCurrentUserData(data: userName, operation: ActionType.userName)
-            
-        }
-        
         
         dismiss()
     }

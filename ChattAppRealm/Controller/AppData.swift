@@ -22,6 +22,7 @@ enum UserData{
     static let KEY_EMAIL_LOGIN = "email"
     static let KEY_PASSWORD_LOGIN = "password"
     static let KEY_AUTOLOGIN = "remember"
+    static var loggedOut = true
     
 }
 
