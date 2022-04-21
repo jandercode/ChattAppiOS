@@ -12,25 +12,19 @@ class UserDao{
     
     let realm = try! Realm()
     
-    func getUser(userName: String, password: String) -> Bool{
+    func getUser() -> [String: String]{
         
         let users = realm.objects(User.self)
+        var userLoginData : [String:String] = [:]
         
         if !users.isEmpty{
             
-            for user in users{
-                
-                if user.username == userName && user.password == password{
-                    
-                    return true
-                    
-                }
-                
-            }
+            userLoginData[UserData.KEY_EMAIL_LOGIN] = users[0].email
+            userLoginData[UserData.KEY_PASSWORD_LOGIN] = users[0].password
             
         }
         
-        return false
+        return userLoginData
         
     }
     

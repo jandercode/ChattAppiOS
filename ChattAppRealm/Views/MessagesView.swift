@@ -57,7 +57,7 @@ struct MessagesView: View {
                     
                     if messageText != "" {
                         if chatId == "" {
-                            var chat = Chat()
+                            let chat = Chat()
                             chatId = chat.id
                             chat.users_in_chat = usersInChat
                             chat.chat_name = firestoreChatDao.createChatName(usersInChat: usersInChat)

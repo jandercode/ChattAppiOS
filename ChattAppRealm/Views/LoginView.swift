@@ -16,7 +16,6 @@ struct LoginView: View {
     @State private var showRegisterAccount = false
     @State private var loginErrorAlert = false
     @State var saveLogin = false
-    @State var loginInfo : [String:String] = [:]
     let userDao = UserDao()
     
     var body: some View {
@@ -47,11 +46,7 @@ struct LoginView: View {
                     
                     Button(action: {
                         
-                        if saveLogin{
-                            
-                            manageLoginInfo.saveLogin(mail: eMail, password: password)
-                            
-                        }
+                       manageLoginInfo.saveLogin(saveInfo: saveLogin)
                        login()
                         
                         
@@ -101,17 +96,32 @@ struct LoginView: View {
             }
             .onAppear(){
                 
-                loginInfo = manageLoginInfo.loadLogin()
+                saveLogin = manageLoginInfo.loadLogin()
                 FirestoreContactDao.firestoreContactDao.getUsers()
                 
-                if(!loginInfo.isEmpty){
-                    eMail = loginInfo[UserData.KEY_EMAIL_LOGIN]!
-                    password = loginInfo[UserData.KEY_PASSWORD_LOGIN]!
-                    login()
+                if(saveLogin){
+                    loadUserData()
                 }
-                
             }
     }
+    
+    func loadUserData(){
+        
+        let realmUser = UserDao()
+        let userLoginData = realmUser.getUser()
+        
+        if userLoginData[UserData.KEY_EMAIL_LOGIN] != nil{
+            eMail = userLoginData[UserData.KEY_EMAIL_LOGIN]!
+        }
+        
+        if userLoginData[UserData.KEY_PASSWORD_LOGIN] != nil{
+            password = userLoginData[UserData.KEY_PASSWORD_LOGIN]!
+        }
+        
+        login()
+    }
+    
+    
     
     func login(){
         
@@ -128,11 +138,8 @@ struct LoginView: View {
                 
                 loginErrorAlert = true
             }
-            
         })
-        
     }
-    
 }
 
 
