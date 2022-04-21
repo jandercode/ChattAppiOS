@@ -8,6 +8,9 @@
 import Foundation
 import Firebase
 
+struct MessageData {
+    var text: String
+}
 class FirestoreMessageDao : ObservableObject {
     static let firestoreMessageDao = FirestoreMessageDao()
     
@@ -15,12 +18,10 @@ class FirestoreMessageDao : ObservableObject {
     
     let db = Firestore.firestore()
     @Published var messages = [Message]()
-    @Published var lastMessage = Message()
-   // @Published var latestMessage = Message(sender: "", text: "")
+    @Published var lastMessage : Message?
     
     private let ID_KEY = "id"
     private let SENDER_KEY = "sender"
-   // private let RECEIVER_KEY = "receiver"
     private let TEXT_KEY = "text"
     private let TIMESTAMP_KEY = "timestamp"
 
@@ -32,10 +33,14 @@ class FirestoreMessageDao : ObservableObject {
         
         do {
             try db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).document(message.id).setData(from: message)
+            db.collection(CHATS_COLLECTION).document(chatId).setData([ "lastMessage": message.text ], merge: true)
+           // lastMessage = message
+           // print("lastMessage saved to db: \(message.text)")
             messages.removeAll()
         } catch {
             print("Error saving newMessage to db")
         }
+            
     }
     
     func listenToFirestore(chatId : String) {
@@ -56,7 +61,8 @@ class FirestoreMessageDao : ObservableObject {
                         switch result {
                         case .success(let message) :
                             self.messages.append(message)
-//                            self.latestMessage = message
+                           // self.lastMessage = message
+                          //  print("MessageDao-listenToFirestore lastMessage = \(message)")
 //                            print("latestMessage = \(self.latestMessage)")
                         case .failure(let error) :
                             print("Error decoding item: \(error)")
@@ -64,10 +70,15 @@ class FirestoreMessageDao : ObservableObject {
                     }
                 }
             }
+            DispatchQueue.main.async {
+                self.lastMessage = self.messages.last ?? Message()
+            }
         }
     }
     
-    func readLastMessage(chatId : String) {
+    func readLastMessage(chatId : String, completionHandler: (Message) -> Void) {
+        var lastMessage = Message()
+        
         db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).order(by: "timestamp", descending: true).limit(to: 1).addSnapshotListener { snapshot, err in
             
             guard let snapshot = snapshot else { return }
@@ -80,9 +91,10 @@ class FirestoreMessageDao : ObservableObject {
                     }
                     switch result {
                     case .success(let message) :
-                        self.lastMessage = message
-                        print("message in readLastMessage: \(message)")
-                        print("lastMessage in readLastMessage: \(self.lastMessage)")
+                        lastMessage = message
+                        
+                       // print("message in readLastMessage: \(message)")
+                      // print("lastMessage in readLastMessage: \(self.lastMessage)")
 
                     case .failure(let error) :
                         print("Error decoding item: \(error)")
@@ -90,5 +102,8 @@ class FirestoreMessageDao : ObservableObject {
                 }
             }
         }
+        completionHandler(lastMessage)
+        print("lastMessage in readLastMessage: \(self.lastMessage)")
+
     }
 }
