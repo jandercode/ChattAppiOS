@@ -69,7 +69,7 @@ class UserManager: ObservableObject{
         
         for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
             
-            imageArray[user.id] = UIImage(imageLiteralResourceName: "person.circle")
+            imageArray[user.id] = UIImage(systemName: "person.circle")
             
         }
         
