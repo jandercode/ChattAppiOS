@@ -25,23 +25,3 @@ enum UserData{
     
 }
 
-//methods for saving and reading users loginData
-class manageLoginInfo{
-    
-    static func saveLogin(saveInfo: Bool){
-        
-        UserData.userDefault.set(saveInfo, forKey: UserData.KEY_AUTOLOGIN)
-        
-    }
-    
-    static func loadLogin() -> Bool{
-        
-        
-        let remember = UserData.userDefault.bool(forKey: UserData.KEY_AUTOLOGIN)
-        
-        return remember
-        
-    }
-}
-
-

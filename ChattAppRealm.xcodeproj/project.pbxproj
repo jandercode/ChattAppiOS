@@ -42,6 +42,7 @@
 		C8F4548328114764008023A4 /* RealmChatDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F4548228114764008023A4 /* RealmChatDao.swift */; };
 		C8F454852811476F008023A4 /* RealmMessageDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F454842811476F008023A4 /* RealmMessageDao.swift */; };
 		C8F4548728114843008023A4 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F4548628114843008023A4 /* UserManager.swift */; };
+		C8F45489281150AF008023A4 /* ManageLoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F45488281150AF008023A4 /* ManageLoginData.swift */; };
 		C8F67CEE2809BA5700BA02EE /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F67CED2809BA5700BA02EE /* Reachability.swift */; };
 /* End PBXBuildFile section */
 
@@ -75,6 +76,7 @@
 		C8F4548228114764008023A4 /* RealmChatDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmChatDao.swift; sourceTree = "<group>"; };
 		C8F454842811476F008023A4 /* RealmMessageDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmMessageDao.swift; sourceTree = "<group>"; };
 		C8F4548628114843008023A4 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		C8F45488281150AF008023A4 /* ManageLoginData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageLoginData.swift; sourceTree = "<group>"; };
 		C8F67CED2809BA5700BA02EE /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -190,6 +192,7 @@
 				C8DDC640280414CF003987F7 /* AppData.swift */,
 				C81FFB042806FED700B89F49 /* PhotoPicker.swift */,
 				C8F4548628114843008023A4 /* UserManager.swift */,
+				C8F45488281150AF008023A4 /* ManageLoginData.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 				C86EA7822806FF3400CDEE79 /* KeyboardManager.swift in Sources */,
 				C8F454852811476F008023A4 /* RealmMessageDao.swift in Sources */,
 				C8F4548728114843008023A4 /* UserManager.swift in Sources */,
+				C8F45489281150AF008023A4 /* ManageLoginData.swift in Sources */,
 				C805C23C27FF169C00544537 /* FirestoreMessageDao.swift in Sources */,
 				C8F67CEE2809BA5700BA02EE /* Reachability.swift in Sources */,
 				C81FFB052806FED700B89F49 /* PhotoPicker.swift in Sources */,
