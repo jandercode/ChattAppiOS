@@ -84,11 +84,9 @@ struct LoginView: View {
                 
                 HStack(){
                     
-                    
                     Toggle("Remember Me?", isOn: $saveLogin)
                         .padding(.leading, CGFloat(70))
                         .padding(.trailing, CGFloat(70))
-                    
                     
                 }
                 .padding()
@@ -110,12 +108,11 @@ struct LoginView: View {
         let realmUser = UserDao()
         let userLoginData = realmUser.getUser()
         
-        if userLoginData[UserData.KEY_EMAIL_LOGIN] != nil{
+        if userLoginData[UserData.KEY_EMAIL_LOGIN] != nil && userLoginData[UserData.KEY_PASSWORD_LOGIN] != nil{
+            
             eMail = userLoginData[UserData.KEY_EMAIL_LOGIN]!
-        }
-        
-        if userLoginData[UserData.KEY_PASSWORD_LOGIN] != nil{
             password = userLoginData[UserData.KEY_PASSWORD_LOGIN]!
+            
         }
         
         login()
@@ -131,7 +128,7 @@ struct LoginView: View {
             
             if UserManager.userManager.currentUser != nil{
                 
-                
+                userDao.saveUser(user: UserManager.userManager.currentUser!)
                 isLoggedIn = true
                 
             }else{
