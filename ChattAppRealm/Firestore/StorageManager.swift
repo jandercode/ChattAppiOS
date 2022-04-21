@@ -102,7 +102,7 @@ class StorageManager: ObservableObject{
                     
                     if let _ = error{
                         
-                        UserManager.userManager.imageArray[user.id] = UIImage(imageLiteralResourceName: "profile-pic")
+                        UserManager.userManager.imageArray[user.id] = UIImage(systemName: "person.circle")
                         
                     }else{
                         

@@ -73,7 +73,30 @@ class FirestoreContactDao : ObservableObject {
         }
     }
     
+    func checkForSameUsername(username: String) -> Bool{
+        
+        if !registeredUsers.isEmpty{
+            
+            for user in registeredUsers{
+                
+                if user.username == username{
+                    
+                    return true
+                    
+                }else{
+                    
+                    return false
+                }
+            }
+        }
+            
+            return false
+        
+    }
+    
     func checkForSameEmail(email: String) -> Bool{
+        
+        print(registeredUsers.count)
         
         if !registeredUsers.isEmpty{
             

@@ -87,7 +87,7 @@ struct MessagesView: View {
         
         .navigationBarItems(leading:
                                 HStack {
-            ProfilePic(size: 30, image: UIImage(imageLiteralResourceName: "profile-pic"))
+            ProfilePic(size: 30, image: UIImage(systemName: "person.circle")!)
             Text(chatName)}.padding())
         
     }
@@ -103,7 +103,7 @@ struct MessagesView: View {
             }
         }
         
-        return UIImage(imageLiteralResourceName: "profile-pic")
+        return UIImage(systemName: "person.circle")!
         
     }
 }

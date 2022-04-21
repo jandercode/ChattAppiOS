@@ -190,6 +190,10 @@ struct registerView: View{
                         
                         showSameMailAlert = true
                         
+                    }else if FirestoreContactDao.firestoreContactDao.checkForSameUsername(username: userName){
+                        
+                        showSameMailAlert = true
+                        
                     }else{
                         
                         if textFieldValidatorPassword(password, repeatPassword) && textFieldValidatorEmail(eMail)
@@ -227,7 +231,7 @@ struct registerView: View{
                 .alert("Something went wrong, check again", isPresented: $showFailureAlert) {
                     Button("Ok", role: .cancel){}
                 }
-                .alert("An account with the same E-mail already exists", isPresented: $showSameMailAlert) {
+                .alert("An account with the same E-mail or UserName already exists", isPresented: $showSameMailAlert) {
                     Button("Ok", role: .cancel){}
                 }
                 
