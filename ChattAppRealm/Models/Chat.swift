@@ -13,7 +13,4 @@ class Chat : Object, Codable, Identifiable {
     var users_in_chat = [String]()
     var lastMessage : String = ""
     @Persisted var chat_name = ""
-    
-    //@Persisted var RealmMessagesList = List<Message>()
-//    var lastMessage = Message()
 }

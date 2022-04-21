@@ -20,9 +20,23 @@ class RealmMessagedao{
         
     }
     
-    func loadMessage(){
+    func loadMessage() -> [Message] {
         
+        let messages = realm.objects(Message.self)
+        var messageArray = [Message]()
+        for message in messages{
+            messageArray.append(message)
+        }
         
+        return messageArray
+        
+    }
+    
+    func deleteMessage(message: Message){
+        
+        try! realm.write({
+            realm.delete(message)
+        })
         
     }
     
