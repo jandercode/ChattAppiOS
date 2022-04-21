@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct Chat : Codable, Identifiable {
-    var id : String = UUID().uuidString
-    var users_in_chat : [String] = [String]()
-    var chat_name = ""
-    var lastMessage: String = ""
+class Chat : Object, Codable, Identifiable {
+    @Persisted(primaryKey: true) var id : String = UUID().uuidString
+    var users_in_chat = [String]()
+    @Persisted var chat_name = ""
+    //@Persisted var RealmMessagesList = List<Message>()
+//    var lastMessage = Message()
 }

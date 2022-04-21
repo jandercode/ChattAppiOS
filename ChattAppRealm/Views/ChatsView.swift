@@ -54,7 +54,7 @@ struct ChatsView: View{
                                 }
                         }
                     }.refreshable {
-                        
+                        print("refreshing")
                     }
                     .listStyle(.plain)
                     Spacer()

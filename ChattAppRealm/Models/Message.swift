@@ -14,6 +14,6 @@ class Message : Object, Codable, Identifiable {
    // var receiver : String = ""
     @Persisted var text : String
     @Persisted var timestamp : Date? = nil // NSDate().timeIntervalSince1970
-    @Persisted var id : String = UUID().uuidString
+    @Persisted(primaryKey: true) var id : String = UUID().uuidString
   //  var date = Date().timeIntervalSinceReferenceDate
 }
