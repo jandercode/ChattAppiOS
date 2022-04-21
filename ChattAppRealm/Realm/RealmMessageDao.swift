@@ -12,5 +12,19 @@ class RealmMessagedao{
     
     let realm = try! Realm()
     
+    func saveMessage(message: Message){
+        
+        try! realm.write({
+            realm.add(message)
+        })
+        
+    }
+    
+    func loadMessage(){
+        
+        
+        
+    }
+    
     
 }
