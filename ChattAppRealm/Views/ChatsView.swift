@@ -19,6 +19,7 @@ struct ChatsView: View{
     @State var chatNameMinusCurrent = ""
     @State var presentUserInfo = false
     @State var userImage = UIImage(systemName: "person.circle")
+    @State var imageChanged = false
     let storage = StorageManager()
     
     
@@ -40,6 +41,7 @@ struct ChatsView: View{
                         }.padding()
                     }
                     List{
+                        
                         ForEach(firestoreChatDao.chats) { chat in
 
                             ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: getProfilePic(chat: chat) ,read: false)
@@ -66,7 +68,7 @@ struct ChatsView: View{
                     }.isDetailLink(false)
                         
                 }.onAppear{
-                    
+
                     if Reachability.isConnectedToNetwork(){
                         print("Internet Connection Available!")
                     } else {
@@ -79,11 +81,11 @@ struct ChatsView: View{
                     FirestoreContactDao.firestoreContactDao.removeCurrentUser()
                 }
                 .sheet(isPresented: $presentUserInfo, content: {
-                    UserInfoView(storage: storage)
-                })
-                .onDisappear {
-                    
-                    changeUserImage()
+                    UserInfoView(storage: storage, imageChanged: imageChanged)
+                }).onDisappear(){
+                    if imageChanged{
+                        changeUserImage()
+                    }
                 }
                 
                 VStack {

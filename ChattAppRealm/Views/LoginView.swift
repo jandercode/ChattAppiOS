@@ -130,6 +130,7 @@ struct LoginView: View {
                 
                 userDao.saveUser(user: UserManager.userManager.currentUser!)
                 isLoggedIn = true
+                UserData.loggedOut = false
                 
             }else{
                 

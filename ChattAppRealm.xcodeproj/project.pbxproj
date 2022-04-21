@@ -43,6 +43,7 @@
 		C8F454852811476F008023A4 /* RealmMessageDao.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F454842811476F008023A4 /* RealmMessageDao.swift */; };
 		C8F4548728114843008023A4 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F4548628114843008023A4 /* UserManager.swift */; };
 		C8F45489281150AF008023A4 /* ManageLoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F45488281150AF008023A4 /* ManageLoginData.swift */; };
+		C8F4548C28119222008023A4 /* NavigateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F4548B28119222008023A4 /* NavigateExtension.swift */; };
 		C8F67CEE2809BA5700BA02EE /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F67CED2809BA5700BA02EE /* Reachability.swift */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,7 @@
 		C8F454842811476F008023A4 /* RealmMessageDao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmMessageDao.swift; sourceTree = "<group>"; };
 		C8F4548628114843008023A4 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		C8F45488281150AF008023A4 /* ManageLoginData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageLoginData.swift; sourceTree = "<group>"; };
+		C8F4548B28119222008023A4 /* NavigateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateExtension.swift; sourceTree = "<group>"; };
 		C8F67CED2809BA5700BA02EE /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,6 +119,7 @@
 		C805C1D327FC370D00544537 /* ChattAppRealm */ = {
 			isa = PBXGroup;
 			children = (
+				C8F4548A281191F8008023A4 /* Tools */,
 				C8F4548128114750008023A4 /* Realm */,
 				C827276127FF0BDD00ABF4B7 /* Controller */,
 				C805C23A27FEC8F500544537 /* Firestore */,
@@ -127,8 +130,6 @@
 				C805C1D827FC370F00544537 /* Assets.xcassets */,
 				C805C23127FDBC5600544537 /* GoogleService-Info.plist */,
 				C805C1DA27FC370F00544537 /* Preview Content */,
-				C86EA7812806FF3400CDEE79 /* KeyboardManager.swift */,
-				C8F67CED2809BA5700BA02EE /* Reachability.swift */,
 			);
 			path = ChattAppRealm;
 			sourceTree = "<group>";
@@ -205,6 +206,16 @@
 				C8F454842811476F008023A4 /* RealmMessageDao.swift */,
 			);
 			path = Realm;
+			sourceTree = "<group>";
+		};
+		C8F4548A281191F8008023A4 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				C86EA7812806FF3400CDEE79 /* KeyboardManager.swift */,
+				C8F67CED2809BA5700BA02EE /* Reachability.swift */,
+				C8F4548B28119222008023A4 /* NavigateExtension.swift */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,6 +320,7 @@
 				C8F454852811476F008023A4 /* RealmMessageDao.swift in Sources */,
 				C8F4548728114843008023A4 /* UserManager.swift in Sources */,
 				C8F45489281150AF008023A4 /* ManageLoginData.swift in Sources */,
+				C8F4548C28119222008023A4 /* NavigateExtension.swift in Sources */,
 				C805C23C27FF169C00544537 /* FirestoreMessageDao.swift in Sources */,
 				C8F67CEE2809BA5700BA02EE /* Reachability.swift in Sources */,
 				C81FFB052806FED700B89F49 /* PhotoPicker.swift in Sources */,

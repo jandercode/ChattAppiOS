@@ -22,6 +22,11 @@ class UserDao{
             userLoginData[UserData.KEY_EMAIL_LOGIN] = users[0].email
             userLoginData[UserData.KEY_PASSWORD_LOGIN] = users[0].password
             
+        }else{
+            
+            userLoginData[UserData.KEY_EMAIL_LOGIN] = nil
+            userLoginData[UserData.KEY_PASSWORD_LOGIN] = nil
+            
         }
         
         return userLoginData
