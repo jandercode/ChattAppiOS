@@ -46,9 +46,7 @@ class FirestoreChatDao : ObservableObject {
             }
         }
         
-       // print(chatNameArray)
         chatName = chatNameArray.joined(separator: ", ")
-       // print(chatName)
         return chatName
     }
     
@@ -88,7 +86,7 @@ class FirestoreChatDao : ObservableObject {
     }
 
     func listenToFirestore() {
-        db.collection(CHATS_COLLECTION).addSnapshotListener { snapshot, err in
+        db.collection(CHATS_COLLECTION).order(by: "timestamp", descending: true).addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else { return }
             if let err = err {
                 print("Error getting document \(err)")
