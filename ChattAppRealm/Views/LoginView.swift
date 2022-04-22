@@ -11,11 +11,15 @@ struct LoginView: View {
     
     @Binding var isLoggedIn: Bool
     
+    let userManager = UserManager.userManager
+    
     @State var eMail: String = ""
     @State var password: String = ""
     @State private var showRegisterAccount = false
     @State private var loginErrorAlert = false
     @State var saveLogin = false
+    @State var isLoading = false
+    
     let userDao = UserDao()
     
     var body: some View {
@@ -91,7 +95,9 @@ struct LoginView: View {
                 }
                 .padding()
                 .ignoresSafeArea()
-            }
+            }.sheet(isPresented: $isLoading, content: {
+                LoadingAnimation()
+            })
             .onAppear(){
                 
                 saveLogin = ManageLoginInfo.loadLogin()
@@ -108,7 +114,8 @@ struct LoginView: View {
     func loadUserData(){
         
         let realmUser = UserDao()
-        let userLoginData = realmUser.getUser()
+        realmUser.getUser()
+        let userLoginData = realmUser.user
         
         if userLoginData[UserData.KEY_EMAIL_LOGIN] != nil && userLoginData[UserData.KEY_PASSWORD_LOGIN] != nil{
             
@@ -124,19 +131,39 @@ struct LoginView: View {
     
     func login(){
         
+        isLoading = true
+        
         FirestoreContactDao.firestoreContactDao.checkLogin(mail: eMail, password: password)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+        loginQueue {
+            moveToChats()
+        }
+    }
+    
+    func moveToChats(){
+        
+        if userManager.currentUser != nil{
             
-            if UserManager.userManager.currentUser != nil{
-                
-                userDao.saveUser(user: UserManager.userManager.currentUser!)
-                isLoggedIn = true
-                
-            }else{
-                
-                loginErrorAlert = true
+            isLoading = false
+            isLoggedIn = true
+            
+        }else{
+            
+            loginErrorAlert = true
+        }
+        
+    }
+    
+    func loginQueue(onComplete: @escaping () -> Void){
+
+        let queue = DispatchQueue(label: "myQueue")
+        queue.async {
+            
+            while userManager.currentUser == nil{
+                continue
             }
-        })
+            
+            onComplete()
+        }
     }
 }

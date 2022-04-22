@@ -137,6 +137,8 @@ struct UserInfoView: View {
     
     func logUserOut(){
         
+        let userDao = UserDao()
+        userDao.eraseUserData()
         ManageLoginInfo.saveLogin(saveInfo: false)
         isLoggedIn = false
         
