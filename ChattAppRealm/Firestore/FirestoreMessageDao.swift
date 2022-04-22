@@ -18,6 +18,7 @@ class FirestoreMessageDao : ObservableObject {
     
     let db = Firestore.firestore()
     @Published var messages = [Message]()
+    @Published var isNewDay = true
    // @Published var lastMessage : Message?
     
     private let ID_KEY = "id"
@@ -67,6 +68,9 @@ class FirestoreMessageDao : ObservableObject {
                     }
                 }
             }
+//            if !Calendar.current.isDate(messages[messages.count-2].timestamp ?? Date(), inSameDayAs: messages[messages.count-3].timestamp ?? Date()) {
+//                isNewDay = true
+//            }
         }
     }
 }
