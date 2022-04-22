@@ -24,6 +24,8 @@ struct ChatsView: View{
     @State var imageChanged = false
     let storage = StorageManager()
     let userDao = UserDao()
+    let realmMessage = RealmMessagedao()
+    let realmChat = RealmChatDao()
     
     
     var body: some View{
@@ -115,7 +117,9 @@ struct ChatsView: View{
             userDao.saveUser(newUser: userManager.currentUser!)
             storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
             storage.loadChatProfilePics()
-
+            realmChat.loadChats()
+            realmMessage.loadMessage()
+            
         }
     }
     
