@@ -11,10 +11,16 @@ struct TimestampFormatter {
     
     func formatChatRowTimestampString(timestamp: Date) -> String {
         
-        
         let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: timestamp)
 
-       // print(Calendar.current.isDateInToday(timestamp))
+        let timeFormatter = DateFormatter()
+        timeFormatter.timeStyle = .short
+        let timeString = timeFormatter.string(from: timestamp)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d MMMM yyyy"
+        let dateString = dateFormatter.string(from: timestamp)
+        
         let currentYear = Calendar.current.component(.year, from: Date())
         let currentMinute = Calendar.current.component(.minute, from: Date())
         
@@ -23,25 +29,31 @@ struct TimestampFormatter {
         let isThisYear = components.year == currentYear
         let isThisMinute = components.minute == currentMinute
         
+       // print(dateString)
+        
             switch true {
             case isThisMinute:
                 return "just now"
             case isToday:
-                return "\(components.hour ?? Calendar.current.component(.hour, from: Date())):\(components.minute ?? Calendar.current.component(.minute, from: Date()))"
+                return timeString
             case isYesterday:
                 return "Yesterday"
             case isThisYear:
-                return "This year"
+                return dateString
             default:
                 return "default"
             }
         
+        
+        
     }
     
     func formatMessageRowTimestampString(timestamp: Date) -> String {
-        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: timestamp)
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        let string = formatter.string(from: timestamp)
         
-            return "\(components.hour ?? Calendar.current.component(.hour, from: Date())):\(components.minute ?? Calendar.current.component(.minute, from: Date()))"
+        return string
     }
     
     func formatDateString(timestamp: Date) -> String {
