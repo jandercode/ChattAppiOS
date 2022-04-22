@@ -29,50 +29,6 @@ class FirestoreContactDao : ObservableObject {
     private let LAST_NAME_KEY = "last_name"
     private let PASSWORD_KEY = "password"
     
-    func checkForSameUsername(username: String) -> Bool{
-        
-        if !registeredUsers.isEmpty{
-            
-            for user in registeredUsers{
-                
-                if user.username == username{
-                    
-                    return true
-                    
-                }else{
-                    
-                    return false
-                }
-            }
-        }
-            
-            return false
-        
-    }
-    
-    func checkForSameEmail(email: String) -> Bool{
-        
-        print(registeredUsers.count)
-        
-        if !registeredUsers.isEmpty{
-            
-            for user in registeredUsers{
-                
-                if user.email == email{
-                    
-                    return true
-                    
-                }else{
-                    
-                    return false
-                }
-            }
-        }
-            
-            return false
-        
-    }
-    
     func saveNewUser(user: User){
         
         let newUser : [String : String] = [
@@ -173,13 +129,13 @@ class FirestoreContactDao : ObservableObject {
         
         switch operation{
             
-        case .userName:
-            db.collection(USERS_COLLECTION).document(UserManager.userManager.currentUser!.id).updateData([USERNAME_KEY : data])
-            UserManager.userManager.currentUser?.username = data
+        case .password:
+            db.collection(USERS_COLLECTION).document(UserManager.userManager.currentUser!.id).updateData([PASSWORD_KEY : data])
+            //UserManager.userManager.currentUser?.password = data
             
         case .email:
             db.collection(USERS_COLLECTION).document(UserManager.userManager.currentUser!.id).updateData([EMAIL_KEY : data])
-            UserManager.userManager.currentUser?.email = data
+            //UserManager.userManager.currentUser?.email = data
             
         }
     }

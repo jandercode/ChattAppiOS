@@ -54,40 +54,5 @@ class UserDao{
             realm.delete(users)
         })
     }
-    
-    func updateUserMail(newEmail: String) -> Bool{
-        
-        let user = realm.objects(User.self).first
-        
-        if user == nil{
-            return false
-        }
-        
-        try! realm.write({
-            user?.email = newEmail
-        })
-        
-        return true
-        
-    }
-    
-    func updateUserPassword(newPassword: String) -> Bool{
-        
-        let user = realm.objects(User.self).first
-        
-        if user == nil{
-            return false
-        }
-        
-        try! realm.write({
-            user?.password = newPassword
-        })
-        
-        return true
-        
-    }
-    
-    
-    
 }
 
