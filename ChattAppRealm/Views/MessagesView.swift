@@ -21,6 +21,7 @@ struct MessagesView: View {
     @State var usersInChat : [String]
     @State var chatName : String
     @State var usersInChatMinusCurrent = [String]()
+    @State var isNewDay = true
     
     let chatDao = RealmChatDao()
     let messageDao = RealmMessagedao()
@@ -30,6 +31,14 @@ struct MessagesView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     ForEach(Array(firestoreMessageDao.messages.enumerated()), id: \.offset) { index, message in
+                        if index >= 1 {
+                            if !Calendar.current.isDate(firestoreMessageDao.messages[index].timestamp ?? Date(), inSameDayAs: firestoreMessageDao.messages[index-1].timestamp ?? Date()) { 
+                                DateRow(timestamp: message.timestamp ?? Date())
+                            }
+                        } else {
+                            DateRow(timestamp: message.timestamp ?? Date())
+                        }
+                        
                         MessageRow(message: message, image: getUserImage(message: message))
                             .id(index)
                     }

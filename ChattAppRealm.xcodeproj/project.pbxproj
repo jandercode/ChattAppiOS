@@ -36,6 +36,7 @@
 		C827276527FF0C7600ABF4B7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276427FF0C7600ABF4B7 /* LoginView.swift */; };
 		C827276727FF0D9D00ABF4B7 /* ChatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276627FF0D9D00ABF4B7 /* ChatsView.swift */; };
 		C86EA7822806FF3400CDEE79 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86EA7812806FF3400CDEE79 /* KeyboardManager.swift */; };
+		C8770A452812ACAD002EBE09 /* DateRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8770A442812ACAD002EBE09 /* DateRow.swift */; };
 		C8838F1D28129A2E00B57573 /* ChangePasswordSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8838F1C28129A2E00B57573 /* ChangePasswordSheet.swift */; };
 		C8838F1F2812AADA00B57573 /* SecureInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8838F1E2812AADA00B57573 /* SecureInputView.swift */; };
 		C8838F212812AB3A00B57573 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8838F202812AB3A00B57573 /* RegisterView.swift */; };
@@ -77,6 +78,7 @@
 		C827276427FF0C7600ABF4B7 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C827276627FF0D9D00ABF4B7 /* ChatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsView.swift; sourceTree = "<group>"; };
 		C86EA7812806FF3400CDEE79 /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
+		C8770A442812ACAD002EBE09 /* DateRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRow.swift; sourceTree = "<group>"; };
 		C8838F1C28129A2E00B57573 /* ChangePasswordSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordSheet.swift; sourceTree = "<group>"; };
 		C8838F1E2812AADA00B57573 /* SecureInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureInputView.swift; sourceTree = "<group>"; };
 		C8838F202812AB3A00B57573 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				C805C22427FC71AC00544537 /* ChatRow.swift */,
 				C805C243280575B800544537 /* MessageRow.swift */,
 				C8DD355C2806B8A600DE7F75 /* ProfilePic.swift */,
+				C8770A442812ACAD002EBE09 /* DateRow.swift */,
 				C8838F1E2812AADA00B57573 /* SecureInputView.swift */,
 			);
 			path = Components;
@@ -322,6 +325,7 @@
 			files = (
 				C805C244280575B800544537 /* MessageRow.swift in Sources */,
 				C827276327FF0BF400ABF4B7 /* UserDao.swift in Sources */,
+				C8770A452812ACAD002EBE09 /* DateRow.swift in Sources */,
 				C8F4548328114764008023A4 /* RealmChatDao.swift in Sources */,
 				C827276727FF0D9D00ABF4B7 /* ChatsView.swift in Sources */,
 				C805C240280053AC00544537 /* FirestoreChatDao.swift in Sources */,
