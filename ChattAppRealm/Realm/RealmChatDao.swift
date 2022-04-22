@@ -11,6 +11,7 @@ import RealmSwift
 class RealmChatDao{
     
     let realm = try! Realm()
+    var chatsArray = [Chat]()
     
     func saveChat(chat: Chat){
         
@@ -20,16 +21,13 @@ class RealmChatDao{
         
     }
     
-    func loadChats() -> [Chat]{
+    func loadChats(){
         
         let chats = realm.objects(Chat.self)
-        var chatsArray = [Chat]()
         
         for chat in chats{
             chatsArray.append(chat)
         }
-        
-        return chatsArray
     }
     
     func deleteChat(chat: Chat){
@@ -47,7 +45,6 @@ class RealmChatDao{
         try! realm.write({
             realm.delete(messagesToDelete)
         })
-        
     }
     
 }

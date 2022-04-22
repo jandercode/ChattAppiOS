@@ -11,24 +11,22 @@ import RealmSwift
 class RealmMessagedao{
     
     let realm = try! Realm()
+    var allMessages = [Message]()
     
     func saveMessage(message: Message){
         
         try! realm.write({
             realm.add(message)
         })
-        
     }
     
-    func loadMessage() -> [Message] {
+    func loadMessage(){
         
         let messages = realm.objects(Message.self)
-        var messageArray = [Message]()
         for message in messages{
-            messageArray.append(message)
+            
+            allMessages.append(message)
         }
-        
-        return messageArray
         
     }
     
