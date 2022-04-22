@@ -36,6 +36,7 @@
 		C827276527FF0C7600ABF4B7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276427FF0C7600ABF4B7 /* LoginView.swift */; };
 		C827276727FF0D9D00ABF4B7 /* ChatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C827276627FF0D9D00ABF4B7 /* ChatsView.swift */; };
 		C86EA7822806FF3400CDEE79 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86EA7812806FF3400CDEE79 /* KeyboardManager.swift */; };
+		C8838F1D28129A2E00B57573 /* ChangePasswordSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8838F1C28129A2E00B57573 /* ChangePasswordSheet.swift */; };
 		C8CA38F728117E780034F28D /* TimestampFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CA38F628117E780034F28D /* TimestampFormatter.swift */; };
 		C8DD355D2806B8A600DE7F75 /* ProfilePic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DD355C2806B8A600DE7F75 /* ProfilePic.swift */; };
 		C8DDC641280414CF003987F7 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DDC640280414CF003987F7 /* AppData.swift */; };
@@ -72,6 +73,7 @@
 		C827276427FF0C7600ABF4B7 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C827276627FF0D9D00ABF4B7 /* ChatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsView.swift; sourceTree = "<group>"; };
 		C86EA7812806FF3400CDEE79 /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
+		C8838F1C28129A2E00B57573 /* ChangePasswordSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordSheet.swift; sourceTree = "<group>"; };
 		C8CA38F628117E780034F28D /* TimestampFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampFormatter.swift; sourceTree = "<group>"; };
 		C8DD355C2806B8A600DE7F75 /* ProfilePic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePic.swift; sourceTree = "<group>"; };
 		C8DDC640280414CF003987F7 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				C827276427FF0C7600ABF4B7 /* LoginView.swift */,
 				C827276627FF0D9D00ABF4B7 /* ChatsView.swift */,
 				C8DDC642280426B8003987F7 /* UserInfoView.swift */,
+				C8838F1C28129A2E00B57573 /* ChangePasswordSheet.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				C8F45489281150AF008023A4 /* ManageLoginData.swift in Sources */,
 				C8F4548C28119222008023A4 /* NavigateExtension.swift in Sources */,
 				C805C23C27FF169C00544537 /* FirestoreMessageDao.swift in Sources */,
+				C8838F1D28129A2E00B57573 /* ChangePasswordSheet.swift in Sources */,
 				C8F67CEE2809BA5700BA02EE /* Reachability.swift in Sources */,
 				C81FFB052806FED700B89F49 /* PhotoPicker.swift in Sources */,
 				C805C23E27FF17E900544537 /* Message.swift in Sources */,

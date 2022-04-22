@@ -8,7 +8,7 @@
 import Foundation
 
 //methods for saving and reading users loginData
-class manageLoginInfo{
+class ManageLoginInfo{
     
     static func saveLogin(saveInfo: Bool){
         

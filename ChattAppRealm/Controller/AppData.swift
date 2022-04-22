@@ -11,7 +11,7 @@ import SwiftUI
 
 enum ActionType: Int{
     
-    case email = 0, userName
+    case email = 0, password
     
 }
 

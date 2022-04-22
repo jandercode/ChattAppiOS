@@ -20,7 +20,7 @@ struct UserInfoView: View {
     @State private var showPhotoPicker = false
     @State private var selectedImage: UIImage? = nil
     @State private var userImage: UIImage = UIImage(systemName: "person.circle")!
-    @State private var logOut: Bool = false
+    @State private var changePassword: Bool = false
     
     var body: some View {
         
@@ -47,6 +47,7 @@ struct UserInfoView: View {
                                     userImage = selectedImage!
                                     storage.upload(image: selectedImage!, id: UserManager.userManager.currentUser!.id)
                                     imageChanged = true
+                                    
                                 }
                             }
                         }
@@ -87,8 +88,20 @@ struct UserInfoView: View {
                         .textFieldStyle(.roundedBorder)
                     
                     Spacer()
+
                 }
                 .padding()
+                
+                HStack{
+                    
+                    Button {
+                        changePassword = true
+                    } label: {
+                        Text("Change Password")
+                    }
+                    .padding()
+                    
+                }
                 
                 HStack{
                     
@@ -104,12 +117,15 @@ struct UserInfoView: View {
                         dismiss()
                     } label: {
                         Text("Logout")
+                            .foregroundColor(.red)
                     }
                     .padding()
                     
                 }
             }
-        }
+        }.sheet(isPresented: $changePassword, content: {
+            changePasswordSheet()
+        })
         .onAppear{
             
             if UserManager.userManager.userImage != nil{
@@ -121,9 +137,7 @@ struct UserInfoView: View {
     
     func logUserOut(){
         
-//        let userDao = UserDao()
-//        userDao.eraseUserData()
-        manageLoginInfo.saveLogin(saveInfo: false)
+        ManageLoginInfo.saveLogin(saveInfo: false)
         isLoggedIn = false
         
     }
@@ -133,6 +147,7 @@ struct UserInfoView: View {
         if eMail != UserManager.userManager.currentUser!.email{
             
             FirestoreContactDao.firestoreContactDao.upadateCurrentUserData(data: eMail, operation: ActionType.email)
+            ManageLoginInfo.saveLogin(saveInfo: false)
         }
         
         dismiss()

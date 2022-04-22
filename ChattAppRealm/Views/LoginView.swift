@@ -46,7 +46,7 @@ struct LoginView: View {
                     
                     Button(action: {
                         
-                       manageLoginInfo.saveLogin(saveInfo: saveLogin)
+                       ManageLoginInfo.saveLogin(saveInfo: saveLogin)
                        login()
                         
                         
@@ -94,7 +94,8 @@ struct LoginView: View {
             }
             .onAppear(){
                 
-                saveLogin = manageLoginInfo.loadLogin()
+                saveLogin = ManageLoginInfo.loadLogin()
+                print(saveLogin)
                 FirestoreContactDao.firestoreContactDao.getUsers()
                 
                 if(saveLogin){
