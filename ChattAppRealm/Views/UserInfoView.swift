@@ -10,7 +10,8 @@ import SwiftUI
 struct UserInfoView: View {
     
     var storage: StorageManager
-    @State var imageChanged: Bool
+    @Binding var imageChanged: Bool
+    @Binding var isLoggedIn: Bool
     
     @Environment(\.dismiss) var dismiss
     let userName = UserManager.userManager.currentUser!.username
@@ -123,7 +124,7 @@ struct UserInfoView: View {
 //        let userDao = UserDao()
 //        userDao.eraseUserData()
         manageLoginInfo.saveLogin(saveInfo: false)
-        UserData.loggedOut = true
+        isLoggedIn = false
         
     }
     

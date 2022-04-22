@@ -17,7 +17,7 @@ struct ContentView: View {
         
         if isLoggedIn{
             
-            ChatsView(showNewChatView: $showNewChatView)
+            ChatsView(isLoggedIn: $isLoggedIn, showNewChatView: $showNewChatView)
             
         }else{
             

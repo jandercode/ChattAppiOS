@@ -68,8 +68,5 @@ class FirestoreMessageDao : ObservableObject {
                 }
             }
         }
-        completionHandler(lastMessage)
-        print("lastMessage in readLastMessage: \(String(describing: self.lastMessage))")
-
     }
 }

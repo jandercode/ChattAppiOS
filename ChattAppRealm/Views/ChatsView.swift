@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ChatsView: View{
     
+    @Binding var isLoggedIn: Bool
+    
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     @ObservedObject var userManager = UserManager.userManager
     @Binding var showNewChatView: Bool
@@ -81,7 +83,7 @@ struct ChatsView: View{
                     FirestoreContactDao.firestoreContactDao.removeCurrentUser()
                 }
                 .sheet(isPresented: $presentUserInfo, content: {
-                    UserInfoView(storage: storage, imageChanged: imageChanged)
+                    UserInfoView(storage: storage, imageChanged: $imageChanged, isLoggedIn: $isLoggedIn)
                 }).onDisappear(){
                     if imageChanged{
                         changeUserImage()
