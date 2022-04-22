@@ -11,17 +11,24 @@ import Firebase
 struct ContentView: View {
     @State var showNewChatView = false
     @State var isLoggedIn = false
+    @ObservedObject var state = StateController.stateController
+    
     let storage = StorageManager()
     
     var body: some View {
         
-        if isLoggedIn{
+        switch state.appState {
             
+        case .Login:
+            LoginView(isLoggedIn: $isLoggedIn, state: state)
+        case .Chats:
             ChatsView(isLoggedIn: $isLoggedIn, showNewChatView: $showNewChatView)
-            
-        }else{
-            
-            LoginView(isLoggedIn: $isLoggedIn)
+        case .Message:
+            MessagesView(isLoggedIn: $isLoggedIn, showNewChatView: $showNewChatView, chatId: state.chatId, usersInChat: state.usersInChat, chatName: state.chatName)
+        case .CreateChat:
+            NewChatView(isLoggedIn: $isLoggedIn, showNewChatView: $showNewChatView)
+        default:
+            LoginView(isLoggedIn: $isLoggedIn, state: state)
             
         }
     }

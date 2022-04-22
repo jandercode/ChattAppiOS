@@ -9,7 +9,12 @@ import SwiftUI
 import Firebase
 
 struct NewChatView: View {
-    @State private var showChatView = false
+    
+    @Binding var isLoggedIn: Bool
+    @Binding var showNewChatView: Bool
+    
+    @State var showChatView = false
+
     @State var usersInChat : [String] = [UserManager.userManager.currentUser?.id ?? User().id]
     
     @State private var searchTerm: String = ""
@@ -22,7 +27,10 @@ struct NewChatView: View {
             
             VStack {
                 
+                Spacer()
+                
                 HStack {
+                    
                     Text("To:")
                     TextField("Type a name or group", text: $searchTerm)
                         .autocapitalization(.none)
@@ -65,7 +73,7 @@ struct NewChatView: View {
                         Text("Start Chatting!!")
                     }
                 }
-        NavigationLink(destination: MessagesView(chatId: "", usersInChat: usersInChat,chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
+        NavigationLink(destination: MessagesView(isLoggedIn: $isLoggedIn,showNewChatView: $showNewChatView, chatId: "", usersInChat: usersInChat,chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
                     EmptyView()
                 }.isDetailLink(false)
                 
@@ -142,9 +150,9 @@ struct NewChatView: View {
     }
 }
 
-struct NewChatView_Previews: PreviewProvider {
-    static var previews: some View {
-        NewChatView()
-    }
-}
+//struct NewChatView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NewChatView()
+//    }
+//}
 

@@ -10,10 +10,10 @@ import SwiftUI
 struct ChatsView: View{
     
     @Binding var isLoggedIn: Bool
+    @Binding var showNewChatView: Bool
     
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     let userManager = UserManager.userManager
-    @Binding var showNewChatView: Bool
     @State private var showChatView = false
     @State var usersInChat = [String]()
     @State var chatId = ""
@@ -64,11 +64,12 @@ struct ChatsView: View{
                         print("refreshing")
                     }
                     .listStyle(.plain)
+                    .sheet(isPresented: $showNewChatView) {
+                        NewChatView(isLoggedIn: $isLoggedIn, showNewChatView: $showNewChatView)
+                    }
                     Spacer()
-                    NavigationLink(destination: NewChatView(), isActive: $showNewChatView) {
-                        EmptyView()
-                    }.isDetailLink(false)
-                    NavigationLink(destination: MessagesView(chatId: chatId, usersInChat: usersInChat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
+                    
+                    NavigationLink(destination: MessagesView(isLoggedIn: $isLoggedIn, showNewChatView: $showNewChatView, chatId: chatId, usersInChat: usersInChat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
                         EmptyView()
                     }.isDetailLink(false)
                         

@@ -15,6 +15,11 @@ enum ActionType: Int{
     
 }
 
+enum AppState: Int{
+    
+    case Login = 0, Chats, Message, CreateChat
+} 
+
 //data for userDefault
 enum UserData{
     

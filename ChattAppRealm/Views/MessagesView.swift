@@ -9,6 +9,11 @@ import SwiftUI
 import Firebase
 
 struct MessagesView: View {
+    
+    @Binding var isLoggedIn: Bool
+    @Binding var showNewChatView: Bool
+    
+    
     let db = Firestore.firestore()
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     @ObservedObject var firestoreMessageDao = FirestoreMessageDao.firestoreMessageDao
@@ -100,12 +105,11 @@ struct MessagesView: View {
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
             }
         }
-        
-        .navigationBarItems(leading:
+        .navigationBarItems(trailing:
                                 HStack {
             ProfilePic(size: 30, image: UIImage(systemName: "person.circle")!)
             Text(chatName)}.padding())
-        
+        .navigationBarBackButtonHidden(true)
     }
     
     
@@ -130,8 +134,8 @@ extension View {
     }
 }
 
-struct ChatView_Previews: PreviewProvider {
-    static var previews: some View {
-        MessagesView(chatId: "", usersInChat: [String](), chatName: "chat name")
-    }
-}
+//struct ChatView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MessagesView(chatId: "", usersInChat: [String](), chatName: "chat name")
+//    }
+//}

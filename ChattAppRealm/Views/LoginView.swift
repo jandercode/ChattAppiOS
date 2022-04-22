@@ -10,6 +10,7 @@ import SwiftUI
 struct LoginView: View {
     
     @Binding var isLoggedIn: Bool
+    @ObservedObject var state: StateController
     
     let userManager = UserManager.userManager
     
@@ -147,6 +148,9 @@ struct LoginView: View {
             isLoading = false
             isLoggedIn = true
             
+            state.appState = AppState.Chats
+            
+            
         }else{
             
             loginErrorAlert = true
@@ -157,7 +161,7 @@ struct LoginView: View {
     func loginQueue(onComplete: @escaping () -> Void){
 
         let queue = DispatchQueue(label: "myQueue")
-        queue.async {
+        queue.async{
             
             while userManager.currentUser == nil{
                 continue
