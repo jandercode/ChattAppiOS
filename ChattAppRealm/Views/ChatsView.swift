@@ -12,7 +12,7 @@ struct ChatsView: View{
     @Binding var isLoggedIn: Bool
     
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
-    @ObservedObject var userManager = UserManager.userManager
+    let userManager = UserManager.userManager
     @Binding var showNewChatView: Bool
     @State private var showChatView = false
     @State var usersInChat = [String]()
@@ -23,6 +23,7 @@ struct ChatsView: View{
     @State var userImage = UIImage(systemName: "person.circle")
     @State var imageChanged = false
     let storage = StorageManager()
+    let userDao = UserDao()
     
     
     var body: some View{
@@ -110,6 +111,8 @@ struct ChatsView: View{
                 }
             }
         }.onAppear{
+            
+            userDao.saveUser(newUser: userManager.currentUser!)
             storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
             storage.loadChatProfilePics()
 

@@ -11,8 +11,9 @@ import RealmSwift
 class UserDao{
     
     let realm = try! Realm()
+    var user: [String:String] = [:]
     
-    func getUser() -> [String: String]{
+    func getUser(){
         
         let users = realm.objects(User.self)
         var userLoginData : [String:String] = [:]
@@ -29,30 +30,37 @@ class UserDao{
             
         }
         
-        return userLoginData
+        user = userLoginData
+        print(user)
         
     }
     
-    func saveUser(user: User){
+    func saveUser(newUser: User){
         
-        let users = realm.objects(User.self)
+        let user = realm.objects(User.self).where{
+            $0.id == newUser.id
+        }.first
         
-        try! realm.write({
-            
-            realm.delete(users)
-            realm.add(user)
-            
-        })
-        
+        if user == nil{
+                        
+            try! realm.write({
+                
+                realm.add(newUser)
+                
+            })
+        }
+
     }
     
     func eraseUserData(){
         
         let users = realm.objects(User.self)
+                    
+            try! realm.write({
+                realm.delete(users)
+            })
+            
         
-        try! realm.write({
-            realm.delete(users)
-        })
     }
 }
 

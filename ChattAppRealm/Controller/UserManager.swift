@@ -12,7 +12,7 @@ import SwiftUI
 class UserManager: ObservableObject{
     
     static let userManager = UserManager()
-    @Published var currentUser: User? = nil
+    var currentUser: User? = nil
     var userImage: UIImage? = nil
     @Published var imageArray : [String:UIImage] = [:]
     
