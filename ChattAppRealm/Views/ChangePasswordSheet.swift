@@ -18,6 +18,9 @@ struct changePasswordSheet: View {
     @State private var samePsw: Bool = false
     @State private var differentPsw: Bool = false
     @State private var oldPswWrong: Bool = false
+    @State private var shortPsw: Bool = false
+    
+    @State private var error: ErrorInfo?
     
     let firestore = FirestoreContactDao.firestoreContactDao
     
@@ -62,7 +65,7 @@ struct changePasswordSheet: View {
                         
                         if oldPassword != newPassword{
                             
-                            if newPassword == repeatNewPassword{
+                            if Validators.textFieldValidatorPassword(newPassword, repeatNewPassword){
 
                                 ManageLoginInfo.saveLogin(saveInfo: false)
                                 firestore.upadateCurrentUserData(data: newPassword, operation: ActionType.password)
@@ -71,15 +74,17 @@ struct changePasswordSheet: View {
                                 
                             }else{
                                 
-                                differentPsw = true
+                                error = ErrorInfo(id: 3, title: "Error", description: "The new password is too short or are different then the repeat")
                             }
                             
                         }else{
-                            samePsw = true
+                            
+                            error = ErrorInfo(id: 2, title: "Error", description: "The old and new password are the same")
                         }
                         
                     }else{
-                        oldPswWrong = true
+                        
+                        error = ErrorInfo(id: 1, title: "Error", description: "The old password is wrong")
                     }
                 
                 } label: {
@@ -108,16 +113,15 @@ struct changePasswordSheet: View {
                 .padding()
             }
             
-        }.alert("The old and New Password are the same", isPresented: $samePsw) {
-            Button("Ok", role: .cancel){}
-        }
-        .alert("The new and repeat field are different", isPresented: $differentPsw) {
-            Button("Ok", role: .cancel){}
-        }
-        .alert("The current password is wrong", isPresented: $oldPswWrong) {
-            Button("Ok", role: .cancel){}
-        }
-        
+        }.alert(item: $error, content: { error in
+            
+            Alert(
+                
+                title: Text(error.title),
+                message: Text(error.description)
+            )
+        })
+        .padding()
         
     }
 }

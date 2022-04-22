@@ -146,8 +146,11 @@ struct UserInfoView: View {
         
         if eMail != UserManager.userManager.currentUser!.email{
             
-            FirestoreContactDao.firestoreContactDao.upadateCurrentUserData(data: eMail, operation: ActionType.email)
-            ManageLoginInfo.saveLogin(saveInfo: false)
+            if Validators.textFieldValidatorEmail(eMail){
+                
+                FirestoreContactDao.firestoreContactDao.upadateCurrentUserData(data: eMail, operation: ActionType.email)
+                ManageLoginInfo.saveLogin(saveInfo: false)
+            }
         }
         
         dismiss()
