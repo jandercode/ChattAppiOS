@@ -9,7 +9,7 @@ import SwiftUI
 import Firebase
 
 struct NewChatView: View {
-    @State private var showChatView = false
+    @State private var showMessagesView = false
     @State var usersInChat : [String] = [UserManager.userManager.currentUser?.id ?? User().id]
     
     @State private var searchTerm: String = ""
@@ -50,22 +50,16 @@ struct NewChatView: View {
                         }
                         
                         removeDoubles()
-                        
-                        if !checkIfChatExists(){
                             
-                            showChatView = true
-                            
-                        }else{
-                            
-                            print("exists!!")
-                        }
                         chatName = FirestoreChatDao.firestoreChatDao.createChatName(usersInChat: usersInChat)
+                        
+                        showMessagesView = true
                         
                     } label: {
                         Text("Start Chatting!!")
                     }
                 }
-        NavigationLink(destination: MessagesView(chatId: "", usersInChat: usersInChat,chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
+        NavigationLink(destination: MessagesView(chatId: checkIfChatExists(), usersInChat: usersInChat,chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showMessagesView) {
                     EmptyView()
                 }.isDetailLink(false)
                 
@@ -98,7 +92,7 @@ struct NewChatView: View {
     }
     
     
-    func checkIfChatExists() -> Bool{
+    func checkIfChatExists() -> String {
         
         for chat in FirestoreChatDao.firestoreChatDao.chats{
             
@@ -106,14 +100,14 @@ struct NewChatView: View {
                 
                 if chat.users_in_chat.sorted() == usersInChat.sorted(){
                     
-                    return true
+                    return chat.id
                 }
                 
             }
             
         }
         
-        return false
+        return ""
        
     }
     
@@ -129,7 +123,7 @@ struct NewChatView: View {
             
             for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
                                 
-                if user.username.contains(searchTerm){
+                if user.username.localizedCaseInsensitiveContains(searchTerm) {
                     
                     result.append(user)
                     
