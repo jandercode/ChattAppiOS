@@ -11,7 +11,7 @@ struct UserInfoView: View {
     
     var storage: StorageManager
     @Binding var imageChanged: Bool
-    @Binding var isLoggedIn: Bool
+    @ObservedObject var state: StateController
     
     @Environment(\.dismiss) var dismiss
     let userName = UserManager.userManager.currentUser!.username
@@ -21,6 +21,9 @@ struct UserInfoView: View {
     @State private var selectedImage: UIImage? = nil
     @State private var userImage: UIImage = UIImage(systemName: "person.circle")!
     @State private var changePassword: Bool = false
+    
+    let firstName = UserManager.userManager.currentUser?.firstName
+    let lastName = UserManager.userManager.currentUser?.lastName
     
     var body: some View {
         
@@ -67,13 +70,11 @@ struct UserInfoView: View {
                 }
                 .padding()
                 
-                
-                
                 HStack{
                     
-                    Text("Name: \(UserManager.userManager.currentUser!.firstName)")
+                    Text("Name: " + (firstName ?? "name"))
                         .padding()
-                    Text("Surname: \(UserManager.userManager.currentUser!.lastName)")
+                    Text("Surname: " + (lastName ?? "lastName"))
                         .padding()
                     
                 }
@@ -137,11 +138,8 @@ struct UserInfoView: View {
     
     func logUserOut(){
         
-        let userDao = UserDao()
-        userDao.eraseUserData()
         ManageLoginInfo.saveLogin(saveInfo: false)
-        isLoggedIn = false
-        
+        state.appState = .Login
     }
     
     func updateUser(){

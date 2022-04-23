@@ -100,6 +100,7 @@ struct LoginView: View {
         })
         .onAppear(){
             
+            userManager.currentUser = nil
             saveLogin = ManageLoginInfo.loadLogin()
             print(saveLogin)
             FirestoreContactDao.firestoreContactDao.getUsers()

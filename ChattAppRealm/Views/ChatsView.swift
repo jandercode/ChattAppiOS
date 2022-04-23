@@ -89,7 +89,7 @@ struct ChatsView: View{
                     FirestoreContactDao.firestoreContactDao.removeCurrentUser()
                 }
                 .sheet(isPresented: $presentUserInfo, content: {
-                    UserInfoView(storage: storage, imageChanged: $imageChanged, isLoggedIn: $isLoggedIn)
+                    UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
                 }).onDisappear(){
                     if imageChanged{
                         changeUserImage()
