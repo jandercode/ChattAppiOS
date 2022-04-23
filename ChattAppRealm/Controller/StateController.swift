@@ -16,5 +16,10 @@ import Foundation
     var usersInChat: [String] = [String]()
     var chatName: String = ""
     
+    func loginLogic(){
+        
+        self.appState = .Chats
+    }
+    
     
 }

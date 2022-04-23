@@ -26,7 +26,7 @@ struct ContentView: View {
         switch state.appState {
             
         case .Login:
-            LoginView(isLoggedIn: $isLoggedIn, state: state)
+            LoginView(state: state)
         case .Chats:
             ChatsView(isLoggedIn: $isLoggedIn, showNewChatView: $showNewChatView, state: state)
         case .Message:
@@ -34,7 +34,7 @@ struct ContentView: View {
         case .CreateChat:
             NewChatView(state: state)
         default:
-            LoginView(isLoggedIn: $isLoggedIn, state: state)
+            LoginView(state: state)
             
         }
     }

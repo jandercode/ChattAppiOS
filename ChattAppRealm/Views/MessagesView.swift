@@ -31,7 +31,7 @@ struct MessagesView: View {
     var body: some View {
         VStack {
             
-            HStack{
+            HStack(alignment:.firstTextBaseline){
                 
                 Button(action: {
                     state.appState = .Chats
@@ -41,6 +41,7 @@ struct MessagesView: View {
                 })
                 
                 HStack {
+                    
                     ProfilePic(size: 30, image: UIImage(systemName: "person.circle")!)
                     Text(chatName)}.padding()
                 
