@@ -57,8 +57,9 @@ struct NewChatView: View {
                         }
                         
                         removeDoubles()
+                        let newChat = checkIfChatExists()
                         
-                        if !checkIfChatExists(){
+                        if newChat == ""{
                             
                             state.chatId = ""
                             state.usersInChat = usersInChat
@@ -68,19 +69,23 @@ struct NewChatView: View {
                             
                         }else{
                             
+                            var chat: Chat?
+                            
+                            for oldChat in FirestoreChatDao.firestoreChatDao.chats{
+                                if oldChat.id == newChat{
+                                    chat = oldChat
+                                }
+                            }
+                            state.chatId = chat!.id
+                            state.usersInChat = chat!.users_in_chat
+                            state.chatName = chat!.chat_name
+                            state.appState = .Message
                             print("exists!!")
                         }
-                        
-                        showMessagesView = true
-                        
                     } label: {
                         Text("Start Chatting!!")
                     }
-                }
-        NavigationLink(destination: MessagesView(chatId: checkIfChatExists(), usersInChat: usersInChat,chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showMessagesView) {
-                    EmptyView()
-                }.isDetailLink(false)
-                
+                }                
             }
     
     
