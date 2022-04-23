@@ -10,9 +10,7 @@ import Firebase
 
 struct MessagesView: View {
     
-    @Binding var isLoggedIn: Bool
-    @Binding var showNewChatView: Bool
-    
+    @ObservedObject var state: StateController
     
     let db = Firestore.firestore()
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
@@ -25,7 +23,6 @@ struct MessagesView: View {
     @State var chatId : String
     @State var usersInChat : [String]
     @State var chatName : String
-    @State var usersInChatMinusCurrent = [String]()
     @State var isNewDay = true
     
     let chatDao = RealmChatDao()
@@ -33,11 +30,27 @@ struct MessagesView: View {
     
     var body: some View {
         VStack {
+            
+            HStack{
+                
+                Button(action: {
+                    state.appState = .Chats
+                }, label: {
+                    Image(systemName: "chevron.backward")
+                    Text("Back")
+                })
+                
+                HStack {
+                    ProfilePic(size: 30, image: UIImage(systemName: "person.circle")!)
+                    Text(chatName)}.padding()
+                
+            }
+            
             ScrollViewReader { proxy in
                 ScrollView {
                     ForEach(Array(firestoreMessageDao.messages.enumerated()), id: \.offset) { index, message in
                         if index >= 1 {
-                            if !Calendar.current.isDate(firestoreMessageDao.messages[index].timestamp ?? Date(), inSameDayAs: firestoreMessageDao.messages[index-1].timestamp ?? Date()) { 
+                            if !Calendar.current.isDate(firestoreMessageDao.messages[index].timestamp ?? Date(), inSameDayAs: firestoreMessageDao.messages[index-1].timestamp ?? Date()) {
                                 DateRow(timestamp: message.timestamp ?? Date())
                             }
                         } else {
@@ -105,11 +118,6 @@ struct MessagesView: View {
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
             }
         }
-        .navigationBarItems(trailing:
-                                HStack {
-            ProfilePic(size: 30, image: UIImage(systemName: "person.circle")!)
-            Text(chatName)}.padding())
-        .navigationBarBackButtonHidden(true)
     }
     
     

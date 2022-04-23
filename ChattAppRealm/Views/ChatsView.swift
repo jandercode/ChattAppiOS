@@ -13,6 +13,8 @@ struct ChatsView: View{
     @Binding var showNewChatView: Bool
     
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
+    @ObservedObject var state: StateController
+
     let userManager = UserManager.userManager
     @State private var showChatView = false
     @State var usersInChat = [String]()
@@ -53,11 +55,11 @@ struct ChatsView: View{
 
                                 .listRowSeparator(.hidden)
                                 .onTapGesture {
-                                    usersInChat = chat.users_in_chat
-                                    chatId = chat.id
-                                    chatName = chat.chat_name
+                                    state.usersInChat = chat.users_in_chat
+                                    state.chatId = chat.id
+                                    state.chatName = chat.chat_name
+                                    state.appState = .Message
                                     print(usersInChat)
-                                    showChatView = true
                                 }
                         }
                     }.refreshable {
@@ -65,13 +67,13 @@ struct ChatsView: View{
                     }
                     .listStyle(.plain)
                     .sheet(isPresented: $showNewChatView) {
-                        NewChatView(isLoggedIn: $isLoggedIn, showNewChatView: $showNewChatView)
+                        NewChatView(state: state)
                     }
                     Spacer()
                     
-                    NavigationLink(destination: MessagesView(isLoggedIn: $isLoggedIn, showNewChatView: $showNewChatView, chatId: chatId, usersInChat: usersInChat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
-                        EmptyView()
-                    }.isDetailLink(false)
+//                    NavigationLink(destination: MessagesView(chatId: chatId, usersInChat: usersInChat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
+//                        EmptyView()
+//                    }.isDetailLink(false)
                         
                 }.onAppear{
 

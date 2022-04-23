@@ -10,9 +10,6 @@ import Firebase
 
 struct NewChatView: View {
     
-    @Binding var isLoggedIn: Bool
-    @Binding var showNewChatView: Bool
-    
     @State var showChatView = false
 
     @State var usersInChat : [String] = [UserManager.userManager.currentUser?.id ?? User().id]
@@ -21,7 +18,9 @@ struct NewChatView: View {
     @State private var selection = Set<User>()
     @State private var isEditMode: EditMode = .active
     @State private var label = "Add Contact"
-    @State var chatName : String = ""
+    @State var newChatName : String = ""
+    
+    @ObservedObject var state: StateController
     
     var body: some View {
             
@@ -61,22 +60,21 @@ struct NewChatView: View {
                         
                         if !checkIfChatExists(){
                             
-                            showChatView = true
+                            state.chatId = ""
+                            state.usersInChat = usersInChat
+                            newChatName = FirestoreChatDao.firestoreChatDao.createChatName(usersInChat: usersInChat)
+                            state.chatName = FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: newChatName)
+                            state.appState = .Message
                             
                         }else{
                             
                             print("exists!!")
                         }
-                        chatName = FirestoreChatDao.firestoreChatDao.createChatName(usersInChat: usersInChat)
                         
                     } label: {
                         Text("Start Chatting!!")
                     }
                 }
-        NavigationLink(destination: MessagesView(isLoggedIn: $isLoggedIn,showNewChatView: $showNewChatView, chatId: "", usersInChat: usersInChat,chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
-                    EmptyView()
-                }.isDetailLink(false)
-                
             }
     
     
@@ -102,7 +100,6 @@ struct NewChatView: View {
                 index = -1
             }
         }
-        
     }
     
     
@@ -116,9 +113,7 @@ struct NewChatView: View {
                     
                     return true
                 }
-                
             }
-            
         }
         
         return false
