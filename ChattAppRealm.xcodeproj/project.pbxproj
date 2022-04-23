@@ -44,6 +44,7 @@
 		C8838F232812AC0C00B57573 /* Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8838F222812AC0C00B57573 /* Validators.swift */; };
 		C8838F252812AE8B00B57573 /* ErrorInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8838F242812AE8B00B57573 /* ErrorInfo.swift */; };
 		C8838F272812D45C00B57573 /* LoadingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8838F262812D45C00B57573 /* LoadingAnimation.swift */; };
+		C8838F292812F01500B57573 /* StateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8838F282812F01500B57573 /* StateController.swift */; };
 		C8CA38F728117E780034F28D /* TimestampFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CA38F628117E780034F28D /* TimestampFormatter.swift */; };
 		C8DD355D2806B8A600DE7F75 /* ProfilePic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DD355C2806B8A600DE7F75 /* ProfilePic.swift */; };
 		C8DDC641280414CF003987F7 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8DDC640280414CF003987F7 /* AppData.swift */; };
@@ -88,6 +89,7 @@
 		C8838F222812AC0C00B57573 /* Validators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validators.swift; sourceTree = "<group>"; };
 		C8838F242812AE8B00B57573 /* ErrorInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ErrorInfo.swift; path = ../../../../../Downloads/ErrorInfo.swift; sourceTree = "<group>"; };
 		C8838F262812D45C00B57573 /* LoadingAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimation.swift; sourceTree = "<group>"; };
+		C8838F282812F01500B57573 /* StateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateController.swift; sourceTree = "<group>"; };
 		C8CA38F628117E780034F28D /* TimestampFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampFormatter.swift; sourceTree = "<group>"; };
 		C8DD355C2806B8A600DE7F75 /* ProfilePic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePic.swift; sourceTree = "<group>"; };
 		C8DDC640280414CF003987F7 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				C8F4548628114843008023A4 /* UserManager.swift */,
 				C8F45488281150AF008023A4 /* ManageLoginData.swift */,
 				C8CA38F628117E780034F28D /* TimestampFormatter.swift */,
+				C8838F282812F01500B57573 /* StateController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -361,6 +364,7 @@
 				C805C23727FEC08300544537 /* Contact.swift in Sources */,
 				C827276527FF0C7600ABF4B7 /* LoginView.swift in Sources */,
 				C8CA38F728117E780034F28D /* TimestampFormatter.swift in Sources */,
+				C8838F292812F01500B57573 /* StateController.swift in Sources */,
 				C805C24228005A5100544537 /* Chat.swift in Sources */,
 				C8DDC643280426B8003987F7 /* UserInfoView.swift in Sources */,
 				C805C23927FEC8F000544537 /* FirestoreContactDao.swift in Sources */,

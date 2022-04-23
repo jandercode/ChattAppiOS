@@ -9,20 +9,27 @@ import SwiftUI
 import Firebase
 
 struct NewChatView: View {
-    @State private var showMessagesView = false
+    
+    @State var showChatView = false
+
     @State var usersInChat : [String] = [UserManager.userManager.currentUser?.id ?? User().id]
     
     @State private var searchTerm: String = ""
     @State private var selection = Set<User>()
     @State private var isEditMode: EditMode = .active
     @State private var label = "Add Contact"
-    @State var chatName : String = ""
+    @State var newChatName : String = ""
+    
+    @ObservedObject var state: StateController
     
     var body: some View {
             
             VStack {
                 
+                Spacer()
+                
                 HStack {
+                    
                     Text("To:")
                     TextField("Type a name or group", text: $searchTerm)
                         .autocapitalization(.none)
@@ -50,8 +57,19 @@ struct NewChatView: View {
                         }
                         
                         removeDoubles()
+                        
+                        if !checkIfChatExists(){
                             
-                        chatName = FirestoreChatDao.firestoreChatDao.createChatName(usersInChat: usersInChat)
+                            state.chatId = ""
+                            state.usersInChat = usersInChat
+                            newChatName = FirestoreChatDao.firestoreChatDao.createChatName(usersInChat: usersInChat)
+                            state.chatName = FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: newChatName)
+                            state.appState = .Message
+                            
+                        }else{
+                            
+                            print("exists!!")
+                        }
                         
                         showMessagesView = true
                         
@@ -88,7 +106,6 @@ struct NewChatView: View {
                 index = -1
             }
         }
-        
     }
     
     
@@ -102,9 +119,7 @@ struct NewChatView: View {
                     
                     return chat.id
                 }
-                
             }
-            
         }
         
         return ""
@@ -136,9 +151,9 @@ struct NewChatView: View {
     }
 }
 
-struct NewChatView_Previews: PreviewProvider {
-    static var previews: some View {
-        NewChatView()
-    }
-}
+//struct NewChatView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NewChatView()
+//    }
+//}
 

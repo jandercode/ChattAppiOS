@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @Binding var isLoggedIn: Bool
+    @ObservedObject var state: StateController
     
     let userManager = UserManager.userManager
     
@@ -23,92 +23,93 @@ struct LoginView: View {
     let userDao = UserDao()
     
     var body: some View {
-                    
-            VStack{
-                
-                Text("LOGIN")
-                    .font(.largeTitle)
-                        
-                    
-                    TextField("E-mail", text: $eMail)
-                            .padding()
-                            .textFieldStyle(.roundedBorder)
-                            .autocapitalization(.none)
-                            .disableAutocorrection(true)
-                
-                
-                    
-                    SecureInputView("Password", text: $password)
-                            .padding()
-                            .textFieldStyle(.roundedBorder)
-                            .autocapitalization(.none)
-                            .disableAutocorrection(true)
-                
-                HStack{
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        
-                       ManageLoginInfo.saveLogin(saveInfo: saveLogin)
-                       login()
-                        
-                        
-                    }, label: {
-                        
-                        Text("Login")
-                        
-                    })
-                    .alert("Error logging in, check userame and password", isPresented: $loginErrorAlert) {
-                        Button("Ok", role: .cancel){}
-                    }
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        
-                        showRegisterAccount.toggle()
-                        
-                        
-                    }, label: {
-                        
-                        Text("Register")
-                        
-                    })
-                    .sheet(isPresented: $showRegisterAccount, content: {
-                        RegisterView(eMail: $eMail, password: $password, userDao: userDao)
-                    })
-                    
-                    Spacer()
-                
-                }
-                .buttonStyle(.bordered)
-                .padding(.top)
-                
-                
-                HStack(){
-                    
-                    Toggle("Remember Me?", isOn: $saveLogin)
-                        .padding(.leading, CGFloat(70))
-                        .padding(.trailing, CGFloat(70))
-                    
-                }
+        
+        VStack{
+            
+            Text("LOGIN")
+                .font(.largeTitle)
+            
+            
+            TextField("E-mail", text: $eMail)
                 .padding()
-                .ignoresSafeArea()
-            }.sheet(isPresented: $isLoading, content: {
-                LoadingAnimation()
-            })
-            .onAppear(){
+                .textFieldStyle(.roundedBorder)
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+            
+            
+            
+            SecureInputView("Password", text: $password)
+                .padding()
+                .textFieldStyle(.roundedBorder)
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+            
+            HStack{
                 
-                saveLogin = ManageLoginInfo.loadLogin()
-                print(saveLogin)
-                FirestoreContactDao.firestoreContactDao.getUsers()
+                Spacer()
                 
-                if(saveLogin){
-                    loadUserData()
+                Button(action: {
+                    
+                    ManageLoginInfo.saveLogin(saveInfo: saveLogin)
+                    login()
+                    
+                    
+                }, label: {
+                    
+                    Text("Login")
+                    
+                })
+                .alert("Error logging in, check userame and password", isPresented: $loginErrorAlert) {
+                    Button("Ok", role: .cancel){}
                 }
-
+                
+                Spacer()
+                
+                Button(action: {
+                    
+                    showRegisterAccount.toggle()
+                    
+                    
+                }, label: {
+                    
+                    Text("Register")
+                    
+                })
+                .sheet(isPresented: $showRegisterAccount, content: {
+                    RegisterView(eMail: $eMail, password: $password, userDao: userDao)
+                })
+                
+                Spacer()
+                
             }
+            .buttonStyle(.bordered)
+            .padding(.top)
+            
+            
+            HStack(){
+                
+                Toggle("Remember Me?", isOn: $saveLogin)
+                    .padding(.leading, CGFloat(70))
+                    .padding(.trailing, CGFloat(70))
+                
+            }
+            .padding()
+            .ignoresSafeArea()
+        }.sheet(isPresented: $isLoading, content: {
+            LoadingAnimation(state: state)
+        })
+        .onAppear(){
+            
+            userManager.currentUser = nil
+            saveLogin = ManageLoginInfo.loadLogin()
+            print(saveLogin)
+            FirestoreContactDao.firestoreContactDao.getUsers()
+            
+            if(saveLogin){
+                loadUserData()
+            }
+            
+        }
     }
     
     func loadUserData(){
@@ -141,28 +142,27 @@ struct LoginView: View {
     }
     
     func moveToChats(){
-        
+                
         if userManager.currentUser != nil{
             
             isLoading = false
-            isLoggedIn = true
             
         }else{
             
+            isLoading = false
             loginErrorAlert = true
         }
         
     }
     
     func loginQueue(onComplete: @escaping () -> Void){
-
+        
         let queue = DispatchQueue(label: "myQueue")
-        queue.async {
+        queue.async{
             
             while userManager.currentUser == nil{
                 continue
             }
-            
             onComplete()
         }
     }

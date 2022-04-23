@@ -10,6 +10,8 @@ import SwiftUI
 struct LoadingAnimation: View {
  
     @State private var isLoading = false
+    @ObservedObject var state: StateController
+
  
     var body: some View {
         ZStack {
@@ -27,6 +29,15 @@ struct LoadingAnimation: View {
                 .onAppear() {
                     self.isLoading = true
             }
+        }
+        .onDisappear{
+            
+            if UserManager.userManager.currentUser != nil{
+                
+                state.loginLogic()
+                
+            }
+            
         }
     }
 }

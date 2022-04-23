@@ -10,10 +10,12 @@ import SwiftUI
 struct ChatsView: View{
     
     @Binding var isLoggedIn: Bool
+    @Binding var showNewChatView: Bool
     
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
+    @ObservedObject var state: StateController
+
     let userManager = UserManager.userManager
-    @Binding var showNewChatView: Bool
     @State private var showChatView = false
     @State var usersInChat = [String]()
     @State var chatId = ""
@@ -53,24 +55,25 @@ struct ChatsView: View{
 
                                 .listRowSeparator(.hidden)
                                 .onTapGesture {
-                                    usersInChat = chat.users_in_chat
-                                    chatId = chat.id
-                                    chatName = chat.chat_name
+                                    state.usersInChat = chat.users_in_chat
+                                    state.chatId = chat.id
+                                    state.chatName = chat.chat_name
+                                    state.appState = .Message
                                     print(usersInChat)
-                                    showChatView = true
                                 }
                         }
                     }.refreshable {
                         print("refreshing")
                     }
                     .listStyle(.plain)
+                    .sheet(isPresented: $showNewChatView) {
+                        NewChatView(state: state)
+                    }
                     Spacer()
-                    NavigationLink(destination: NewChatView(), isActive: $showNewChatView) {
-                        EmptyView()
-                    }.isDetailLink(false)
-                    NavigationLink(destination: MessagesView(chatId: chatId, usersInChat: usersInChat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
-                        EmptyView()
-                    }.isDetailLink(false)
+                    
+//                    NavigationLink(destination: MessagesView(chatId: chatId, usersInChat: usersInChat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
+//                        EmptyView()
+//                    }.isDetailLink(false)
                         
                 }.onAppear{
 
@@ -86,7 +89,7 @@ struct ChatsView: View{
                     FirestoreContactDao.firestoreContactDao.removeCurrentUser()
                 }
                 .sheet(isPresented: $presentUserInfo, content: {
-                    UserInfoView(storage: storage, imageChanged: $imageChanged, isLoggedIn: $isLoggedIn)
+                    UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
                 }).onDisappear(){
                     if imageChanged{
                         changeUserImage()

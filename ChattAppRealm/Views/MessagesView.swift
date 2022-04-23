@@ -9,6 +9,9 @@ import SwiftUI
 import Firebase
 
 struct MessagesView: View {
+    
+    @ObservedObject var state: StateController
+    
     let db = Firestore.firestore()
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     @ObservedObject var firestoreMessageDao = FirestoreMessageDao.firestoreMessageDao
@@ -20,7 +23,6 @@ struct MessagesView: View {
     @State var chatId : String
     @State var usersInChat : [String]
     @State var chatName : String
-    @State var usersInChatMinusCurrent = [String]()
     @State var isNewDay = true
     
     let chatDao = RealmChatDao()
@@ -28,11 +30,28 @@ struct MessagesView: View {
     
     var body: some View {
         VStack {
+            
+            HStack(alignment:.firstTextBaseline){
+                
+                Button(action: {
+                    state.appState = .Chats
+                }, label: {
+                    Image(systemName: "chevron.backward")
+                    Text("Back")
+                })
+                
+                HStack {
+                    
+                    ProfilePic(size: 30, image: UIImage(systemName: "person.circle")!)
+                    Text(chatName)}.padding()
+                
+            }
+            
             ScrollViewReader { proxy in
                 ScrollView {
                     ForEach(Array(firestoreMessageDao.messages.enumerated()), id: \.offset) { index, message in
                         if index >= 1 {
-                            if !Calendar.current.isDate(firestoreMessageDao.messages[index].timestamp ?? Date(), inSameDayAs: firestoreMessageDao.messages[index-1].timestamp ?? Date()) { 
+                            if !Calendar.current.isDate(firestoreMessageDao.messages[index].timestamp ?? Date(), inSameDayAs: firestoreMessageDao.messages[index-1].timestamp ?? Date()) {
                                 DateRow(timestamp: message.timestamp ?? Date())
                             }
                         } else {
@@ -100,12 +119,6 @@ struct MessagesView: View {
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
             }
         }
-        
-        .navigationBarItems(leading:
-                                HStack {
-            ProfilePic(size: 30, image: UIImage(systemName: "person.circle")!)
-            Text(chatName)}.padding())
-        
     }
     
     
@@ -130,8 +143,8 @@ extension View {
     }
 }
 
-struct ChatView_Previews: PreviewProvider {
-    static var previews: some View {
-        MessagesView(chatId: "", usersInChat: [String](), chatName: "chat name")
-    }
-}
+//struct ChatView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MessagesView(chatId: "", usersInChat: [String](), chatName: "chat name")
+//    }
+//}
