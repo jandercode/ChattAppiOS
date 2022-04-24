@@ -18,7 +18,7 @@ struct DateRow: View {
             .font(.system(size: 13))
             .padding()
             .onAppear {
-                dateString = timestampFormatter.formatDateString(timestamp: timestamp)
+                dateString = timestampFormatter.formatMessagesViewDateString(timestamp: timestamp)
             }
     }
 }

@@ -21,16 +21,12 @@ struct TimestampFormatter {
         dateFormatter.dateFormat = "d MMMM yyyy"
         let dateString = dateFormatter.string(from: timestamp)
         
-        let currentYear = Calendar.current.component(.year, from: Date())
         let currentMinute = Calendar.current.component(.minute, from: Date())
         
         let isToday = Calendar.current.isDateInToday(timestamp)
         let isYesterday = Calendar.current.isDateInYesterday(timestamp)
-        let isThisYear = components.year == currentYear
         let isThisMinute = components.minute == currentMinute
-        
-       // print(dateString)
-        
+                
             switch true {
             case isThisMinute:
                 return "just now"
@@ -38,14 +34,9 @@ struct TimestampFormatter {
                 return timeString
             case isYesterday:
                 return "Yesterday"
-            case isThisYear:
-                return dateString
             default:
-                return "default"
+                return dateString
             }
-        
-        
-        
     }
     
     func formatMessageRowTimestampString(timestamp: Date) -> String {
@@ -56,8 +47,11 @@ struct TimestampFormatter {
         return string
     }
     
-    func formatDateString(timestamp: Date) -> String {
-        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: timestamp)
+    func formatMessagesViewDateString(timestamp: Date) -> String {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d MMMM yyyy"
+        let dateString = dateFormatter.string(from: timestamp)
         
         let isToday = Calendar.current.isDateInToday(timestamp)
         let isYesterday = Calendar.current.isDateInYesterday(timestamp)
@@ -68,7 +62,7 @@ struct TimestampFormatter {
         case isYesterday:
             return "Yesterday"
         default:
-            return "\(components.day) \(components.month) \(components.year)"
+            return dateString
         }
     }
 }
