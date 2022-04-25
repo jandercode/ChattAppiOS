@@ -27,6 +27,8 @@ struct MessagesView: View {
     
     let chatDao = RealmChatDao()
     let messageDao = RealmMessagedao()
+    @State var userImage = UIImage(systemName: "person.circle")
+    @State var showUsernames = false
     
     var body: some View {
         VStack {
@@ -39,11 +41,21 @@ struct MessagesView: View {
                     Image(systemName: "chevron.backward")
                     Text("Back")
                 })
+                    .padding(.leading)
                 
                 HStack {
+                    Button {
+                        showUsernames.toggle()
+                    } label: {
+                        ProfilePic(size: 30, image: userImage!)
+                        Text(firestoreChatDao.removeCurrentFromChatName(chatName: chatName))
+                            .foregroundColor(Color.black)
+                            .lineLimit(1)
+                    }
+                  // ProfilePic(size: 30, image: UIImage(systemName: "person.circle")!)
                     
-                    ProfilePic(size: 30, image: UIImage(systemName: "person.circle")!)
-                    Text(chatName)}.padding()
+                }.padding()
+                    Spacer()
                 
             }
             
@@ -79,6 +91,9 @@ struct MessagesView: View {
                 .onTapGesture {
                     self.endTextEditing()
                 }
+            }
+            .sheet(isPresented: $showUsernames) {
+                ShowUsernames(chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chatName))
             }
             
             HStack {
@@ -117,10 +132,15 @@ struct MessagesView: View {
             .onAppear {
                 firestoreMessageDao.messages.removeAll()
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
+//                imageChangeQueue {
+//                    changeUserImage()
+//                }
+
             }
         }
     }
     
+
     
     func getUserImage(message: Message) -> UIImage{
         
@@ -135,6 +155,7 @@ struct MessagesView: View {
         return UIImage(systemName: "person.circle")!
         
     }
+
 }
 
 extension View {

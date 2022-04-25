@@ -44,7 +44,7 @@ struct ChatsView: View{
                         Button {
                             presentUserInfo.toggle()
                         } label: {
-                            ProfilePic(size: 32, image: userImage!)
+                            ProfilePic(size: 30, image: userImage!)
                         }.padding()
                     }
                     List{
@@ -76,7 +76,7 @@ struct ChatsView: View{
 //                    }.isDetailLink(false)
                         
                 }.onAppear{
-
+                    print("currentUser: \(String(describing: userManager.currentUser))")
                     if Reachability.isConnectedToNetwork(){
                         print("Internet Connection Available!")
                     } else {
