@@ -27,9 +27,9 @@ struct MessagesView: View {
     
     let chatDao = RealmChatDao()
     let messageDao = RealmMessagedao()
-    @State var userImage = UIImage(systemName: "person.circle")
+   // @State var userImage = UIImage(systemName: "person.circle")
+   // @State var userImage = getProfilePic(usersInChat: usersInChat)
     @State var showUsernames = false
-   // @State var isGroupChat = usersInChat.count > 2 ? true : false
     
     var body: some View {
         VStack {
@@ -48,7 +48,7 @@ struct MessagesView: View {
                     Button {
                         showUsernames.toggle()
                     } label: {
-                        ProfilePic(size: 30, image: userImage!)
+                        ProfilePic(size: 30, image: getProfilePic(usersInChat: usersInChat))
                         Text(firestoreChatDao.removeCurrentFromChatName(chatName: chatName))
                             .foregroundColor(Color.black)
                             .lineLimit(1)
@@ -124,6 +124,7 @@ struct MessagesView: View {
                         messageDao.saveMessage(message: message)
                         messageText = ""
                         firestoreMessageDao.listenToFirestore(chatId: chatId)
+                     //   getProfilePic(usersInChat: usersInChat)
                     }
                 } label: {
                     Text("Send")
@@ -153,6 +154,20 @@ struct MessagesView: View {
         }
         
         return UIImage(systemName: "person.circle")!
+        
+    }
+    
+    func getProfilePic(usersInChat: [String]) -> UIImage{
+        
+        let usersInChatMinusCurrent = usersInChat.index(of: UserManager.userManager.currentUser?.id ?? User().id)
+        
+        let ind = usersInChat.firstIndex(of:UserManager.userManager.currentUser?.id ?? User().id)
+//        usersInChat.remove(at: ind)
+        
+        
+        print("usersInChatMinusCurrent:\(String(describing: usersInChatMinusCurrent))")
+        let userId = usersInChat[1]
+        return userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
         
     }
 
