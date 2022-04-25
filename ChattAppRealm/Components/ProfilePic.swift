@@ -14,7 +14,7 @@ struct ProfilePic: View {
         Image(uiImage: image)
             .resizable()
             .frame(width: size, height: size, alignment: .center)
-            .cornerRadius(20)
+            .cornerRadius(size/2)
     }
 }
 

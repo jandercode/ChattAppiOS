@@ -89,7 +89,8 @@ class FirestoreChatDao : ObservableObject {
     }
 
     func listenToFirestore() {
-        db.collection(CHATS_COLLECTION).order(by: "timestamp", descending: true).addSnapshotListener { snapshot, err in
+        print("listenToFirestore-currentUser \(UserManager.userManager.currentUser?.id ?? User().id)")
+        db.collection(CHATS_COLLECTION).whereField("users_in_chat", arrayContains: "\(UserManager.userManager.currentUser?.id ?? User().id)" ).order(by: "timestamp", descending: true).addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else { return }
             if let err = err {
                 print("Error getting document \(err)")

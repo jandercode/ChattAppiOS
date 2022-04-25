@@ -135,11 +135,7 @@ struct NewChatView: View {
         
         var result = [User]()
         
-        if searchTerm.isEmpty{
-            
-            result.append(contentsOf: FirestoreContactDao.firestoreContactDao.registeredUsers)
-        
-        }else{
+        if !searchTerm.isEmpty {
             
             for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
                                 
