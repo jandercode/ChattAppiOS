@@ -49,6 +49,8 @@ struct LoginView: View {
                 
                 Button(action: {
                     
+                    let userDao = UserDao()
+                    userDao.eraseUserData()
                     ManageLoginInfo.saveLogin(saveInfo: saveLogin)
                     login()
                     

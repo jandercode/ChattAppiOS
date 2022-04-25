@@ -115,7 +115,7 @@ struct UserInfoView: View {
                     
                     Button {
                         logUserOut()
-                        dismiss()
+                        //dismiss()
                     } label: {
                         Text("Logout")
                             .foregroundColor(.red)
