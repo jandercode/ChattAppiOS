@@ -29,6 +29,7 @@ struct MessagesView: View {
     let messageDao = RealmMessagedao()
     @State var userImage = UIImage(systemName: "person.circle")
     @State var showUsernames = false
+   // @State var isGroupChat = usersInChat.count > 2 ? true : false
     
     var body: some View {
         VStack {
@@ -70,7 +71,7 @@ struct MessagesView: View {
                             DateRow(timestamp: message.timestamp ?? Date())
                         }
                         
-                        MessageRow(message: message, image: getUserImage(message: message))
+                        MessageRow(message: message, image: getUserImage(message: message), usersInChat: usersInChat)
                             .id(index)
                     }
                 }
@@ -132,6 +133,7 @@ struct MessagesView: View {
             .onAppear {
                 firestoreMessageDao.messages.removeAll()
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
+                
 //                imageChangeQueue {
 //                    changeUserImage()
 //                }
@@ -139,8 +141,6 @@ struct MessagesView: View {
             }
         }
     }
-    
-
     
     func getUserImage(message: Message) -> UIImage{
         
