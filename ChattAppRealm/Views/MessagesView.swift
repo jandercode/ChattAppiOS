@@ -120,7 +120,7 @@ struct MessagesView: View {
                         firestoreMessageDao.saveMessage(message: message, chatId: chatId)
                         messageDao.saveMessage(message: message)
                         messageText = ""
-                        firestoreMessageDao.listenToFirestore(chatId: chatId)
+                        //firestoreMessageDao.listenToFirestore(chatId: chatId)
                     }
                 } label: {
                     Text("Send")
@@ -144,6 +144,7 @@ struct MessagesView: View {
                 print("name \(chatName)")
                 print("users \(usersInChat)")
                 firestoreMessageDao.messages.removeAll()
+                
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
                 
 //                imageChangeQueue {
@@ -153,7 +154,7 @@ struct MessagesView: View {
             }
         }.onDisappear{
             
-            messageDao.saveRecievedMessage()
+            //messageDao.saveRecievedMessage()
             
         }
     }

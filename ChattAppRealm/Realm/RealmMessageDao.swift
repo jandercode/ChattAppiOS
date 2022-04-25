@@ -22,11 +22,15 @@ class RealmMessageDao{
     
     func saveRecievedMessage(){
         
-        //let recievedMessages = FirestoreMessageDao.firestoreMessageDao.messages
+        let recievedMessages = FirestoreMessageDao.firestoreMessageDao.messages
         
-//        for message in recievedMessages{
-//            let backup == 
-//        }
+        for message in recievedMessages{
+            
+            let backup = realm.objects(Message.self).where{
+                $0.id == message.id
+            }
+           
+        }
         
     }
     
