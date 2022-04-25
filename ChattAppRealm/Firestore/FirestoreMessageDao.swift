@@ -19,6 +19,7 @@ class FirestoreMessageDao : ObservableObject {
     let db = Firestore.firestore()
     @Published var messages = [Message]()
     @Published var isNewDay = true
+    var snapshotWoo : ListenerRegistration? = nil
     
     private let ID_KEY = "id"
     private let SENDER_KEY = "sender"
@@ -47,14 +48,19 @@ class FirestoreMessageDao : ObservableObject {
     
     func listenToFirestore(chatId : String) {
         if chatId != "" {
-                db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).order(by: "timestamp", descending: false).addSnapshotListener { snapshot, err in
+                snapshotWoo = db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).order(by: "timestamp", descending: false).addSnapshotListener { snapshot, err in
                 
-                guard let snapshot = snapshot else { return }
+                  //  self.snapshotWoo = snapshot
+                    if snapshot == nil {
+                        print("snapshot = nil")
+                        return
+                    }
+                    
                 if let err = err {
                     print("Error getting document \(err)")
                 } else {
                     self.messages.removeAll()
-                    for document in snapshot.documents {
+                    for document in snapshot!.documents {
                         let result = Result {
                             try document.data(as: Message.self)
                         }
@@ -68,5 +74,9 @@ class FirestoreMessageDao : ObservableObject {
                 }
             }
         }
+    }
+    
+    func stopListen() {
+        snapshotWoo?.remove()
     }
 }
