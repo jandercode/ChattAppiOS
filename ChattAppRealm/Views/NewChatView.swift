@@ -9,7 +9,7 @@ import SwiftUI
 import Firebase
 
 struct NewChatView: View {
-    
+        
     @State var showChatView = false
 
     @State var usersInChat : [String] = [UserManager.userManager.currentUser?.id ?? User().id]
@@ -65,7 +65,7 @@ struct NewChatView: View {
                             state.usersInChat = usersInChat
                             newChatName = FirestoreChatDao.firestoreChatDao.createChatName(usersInChat: usersInChat)
                             state.chatName = FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: newChatName)
-                            state.appState = .Message
+                            
                             
                         }else{
                             
@@ -79,11 +79,16 @@ struct NewChatView: View {
                             state.chatId = chat!.id
                             state.usersInChat = chat!.users_in_chat
                             state.chatName = chat!.chat_name
-                            state.appState = .Message
                             print("exists!!")
                         }
+                        
+                        state.appState = .Message
+
+                        
                     } label: {
+                        
                         Text("Start Chatting!!")
+                        
                     }
                 }                
             }
@@ -122,12 +127,12 @@ struct NewChatView: View {
             if chat.users_in_chat.count == usersInChat.count{
                 
                 if chat.users_in_chat.sorted() == usersInChat.sorted(){
-                    
+                    print("found")
                     return chat.id
                 }
             }
         }
-        
+        print("not found")
         return ""
        
     }
