@@ -17,7 +17,6 @@ class FirestoreContactDao : ObservableObject {
     private init(){}
     
     let db = Firestore.firestore()
-    @Published var contacts = [Contact]()
     @Published var registeredUsers = [User]()
     
     private let ID_KEY = "id"
