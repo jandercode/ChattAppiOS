@@ -23,6 +23,7 @@ class FirestoreChatDao : ObservableObject {
     private let CHAT_NAME_KEY = "chat_name"
     
     func updateUsersInChatList(existingUserList: [String], usersToAddToList: [String]) -> [String] {
+        
         var usersInChatList = [String]()
         for userInList in existingUserList {
             usersInChatList.append(userInList)
@@ -86,6 +87,18 @@ class FirestoreChatDao : ObservableObject {
             let chat = chats[index]
             db.collection(CHATS_COLLECTION).document(chat.id).delete()
         }
+    }
+    
+    func checkIfExists(chatId: String) -> Bool{
+        
+        for chat in chats{
+            
+            if chat.id == chatId{
+                return true
+            }
+        }
+        
+        return false
     }
 
     func listenToFirestore() {

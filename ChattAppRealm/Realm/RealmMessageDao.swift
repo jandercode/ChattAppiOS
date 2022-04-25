@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class RealmMessagedao{
+class RealmMessageDao{
     
     let realm = try! Realm()
     var allMessages = [Message]()
@@ -20,7 +20,17 @@ class RealmMessagedao{
         })
     }
     
-    func loadMessage(){
+    func saveRecievedMessage(){
+        
+        //let recievedMessages = FirestoreMessageDao.firestoreMessageDao.messages
+        
+//        for message in recievedMessages{
+//            let backup == 
+//        }
+        
+    }
+    
+    func loadMessages(){
         
         let messages = realm.objects(Message.self)
         for message in messages{

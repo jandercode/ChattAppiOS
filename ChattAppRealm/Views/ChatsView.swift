@@ -14,7 +14,7 @@ struct ChatsView: View{
     
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     @ObservedObject var state: StateController
-
+    
     let userManager = UserManager.userManager
     @State private var showChatView = false
     @State var usersInChat = [String]()
@@ -24,9 +24,11 @@ struct ChatsView: View{
     @State var presentUserInfo = false
     @State var userImage = UIImage(systemName: "person.circle")
     @State var imageChanged = false
+    @State var isConnected = false
+    
     let storage = StorageManager()
     let userDao = UserDao()
-    let realmMessage = RealmMessagedao()
+    let realmMessage = RealmMessageDao()
     let realmChat = RealmChatDao()
     
     
@@ -50,9 +52,9 @@ struct ChatsView: View{
                     List{
                         
                         ForEach(firestoreChatDao.chats) { chat in
-
+                            
                             ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: getProfilePic(chat: chat) ,read: false)
-
+                            
                                 .listRowSeparator(.hidden)
                                 .onTapGesture {
                                     state.usersInChat = chat.users_in_chat
@@ -72,19 +74,11 @@ struct ChatsView: View{
                     NavigationLink(destination: NewChatView(state: state), isActive: $showNewChatView) {
                         EmptyView()
                     }.isDetailLink(false)
-                        
+                    
                 }.onAppear{
                     print("currentUser: \(String(describing: userManager.currentUser))")
-                    if Reachability.isConnectedToNetwork(){
-                        print("Internet Connection Available!")
-                    } else {
-                        print("Internet Connection Not Available!")
-                    }
-                    imageChangeQueue {
-                        changeUserImage()
-                    }
-                    firestoreChatDao.listenToFirestore()
-                    FirestoreContactDao.firestoreContactDao.removeCurrentUser()
+                    
+                    
                 }
                 .sheet(isPresented: $presentUserInfo, content: {
                     UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
@@ -115,16 +109,36 @@ struct ChatsView: View{
             }
         }.onAppear{
             
+            if Reachability.isConnectedToNetwork(){
+                isConnected = true
+                print("Internet Connection Available!")
+            } else {
+                isConnected = false
+                print("Internet Connection Not Available!")
+            }
+            
             if ManageLoginInfo.loadLogin(){
                 
                 userDao.saveUser(newUser: userManager.currentUser!)
                 ManageLoginInfo.saveLogin(saveInfo: true)
             }
             
+            imageChangeQueue {
+                changeUserImage()
+            }
+            
+            
+            //Firestore
+            firestoreChatDao.listenToFirestore()
+            FirestoreContactDao.firestoreContactDao.removeCurrentUser()
+            
+            //Storage
             storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
             storage.loadChatProfilePics()
+            
+            //Realm
             realmChat.loadChats()
-            realmMessage.loadMessage()
+            realmMessage.loadMessages()
             
         }
     }
@@ -135,7 +149,7 @@ struct ChatsView: View{
         return userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
         
     }
-
+    
     
     func changeUserImage(){
         
@@ -146,17 +160,17 @@ struct ChatsView: View{
     }
     
     // creates an async process that changes the user profile image as soon as it's avalable
-        func imageChangeQueue(onComplete: @escaping () -> Void){
-    
-            let queue = DispatchQueue(label: "myQueue")
-            queue.async {
-                
-                while UserManager.userManager.userImage == nil{
-                    continue
-                }
-                
-                onComplete()
+    func imageChangeQueue(onComplete: @escaping () -> Void){
+        
+        let queue = DispatchQueue(label: "myQueue")
+        queue.async {
+            
+            while UserManager.userManager.userImage == nil{
+                continue
             }
+            
+            onComplete()
         }
+    }
     
 }

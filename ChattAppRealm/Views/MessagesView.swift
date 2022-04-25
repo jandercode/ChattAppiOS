@@ -29,7 +29,10 @@ struct MessagesView: View {
     let messageDao = RealmMessagedao()
    // @State var userImage = UIImage(systemName: "person.circle")
    // @State var userImage = getProfilePic(usersInChat: usersInChat)
+
     @State var showUsernames = false
+    
+    @State var newChat : Chat? = nil
     
     var body: some View {
         VStack {
@@ -53,7 +56,6 @@ struct MessagesView: View {
                             .foregroundColor(Color.black)
                             .lineLimit(1)
                     }
-                  // ProfilePic(size: 30, image: UIImage(systemName: "person.circle")!)
                     
                 }.padding()
                     Spacer()
@@ -102,16 +104,12 @@ struct MessagesView: View {
                 Button {
                     // create a new chat in firestore if it doesn't already exist
                     
+                    if !firestoreChatDao.checkIfExists(chatId: chatId){
+                        firestoreChatDao.saveNewChat(chat: newChat!)
+                    }
+                    
                     if messageText != "" {
-                        if chatId == "" {
-                            let chat = Chat()
-                            chatId = chat.id
-                            chat.users_in_chat = usersInChat
-                            chat.chat_name = firestoreChatDao.createChatName(usersInChat: usersInChat)
-                            firestoreChatDao.saveNewChat(chat: chat)
-                            chatDao.saveChat(chat: chat)
-                            
-                        }
+                        
                         // add new message to firestore
                         let sender = UserManager.userManager.currentUser?.id ?? "anonymous"
                         let message = Message()
@@ -132,6 +130,21 @@ struct MessagesView: View {
             }
             .padding()
             .onAppear {
+                
+                if chatId == "" {
+                    
+                    let chat = Chat()
+                    chatId = chat.id
+                    chat.users_in_chat = usersInChat
+                    chat.chat_name = firestoreChatDao.createChatName(usersInChat: usersInChat)
+                    chatDao.saveChat(chat: chat)
+                    newChat = chat
+                    
+                }
+                
+                print("id \(chatId)")
+                print("name \(chatName)")
+                print("users \(usersInChat)")
                 firestoreMessageDao.messages.removeAll()
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
                 
@@ -140,6 +153,10 @@ struct MessagesView: View {
 //                }
 
             }
+        }.onDisappear{
+            
+            messageDao.saveRecievedMessage()
+            
         }
     }
     
@@ -156,6 +173,7 @@ struct MessagesView: View {
         return UIImage(systemName: "person.circle")!
         
     }
+
     
     func getProfilePic(usersInChat: [String]) -> UIImage{
         
@@ -170,7 +188,6 @@ struct MessagesView: View {
         return userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
         
     }
-
 }
 
 extension View {
