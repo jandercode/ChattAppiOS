@@ -39,11 +39,13 @@ struct MessagesView: View {
                     Image(systemName: "chevron.backward")
                     Text("Back")
                 })
+                    .padding(.leading)
                 
                 HStack {
                     
                     ProfilePic(size: 30, image: UIImage(systemName: "person.circle")!)
-                    Text(chatName)}.padding()
+                    Text(firestoreChatDao.removeCurrentFromChatName(chatName: chatName))}.padding()
+                    Spacer()
                 
             }
             

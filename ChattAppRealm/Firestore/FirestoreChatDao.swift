@@ -58,6 +58,9 @@ class FirestoreChatDao : ObservableObject {
         if chatNameMinusCurrent.hasPrefix(", ") {
             chatNameMinusCurrent.removeFirst(2)
         }
+        if chatNameMinusCurrent.contains(", , ") {
+            chatNameMinusCurrent = chatNameMinusCurrent.replacingOccurrences(of: ", , ", with: ", ")
+        }
         return chatNameMinusCurrent
     }
     
