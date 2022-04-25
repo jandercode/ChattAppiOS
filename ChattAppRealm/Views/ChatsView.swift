@@ -66,14 +66,12 @@ struct ChatsView: View{
                         print("refreshing")
                     }
                     .listStyle(.plain)
-                    .sheet(isPresented: $showNewChatView) {
-                        NewChatView(state: state)
-                    }
+                    
                     Spacer()
                     
-//                    NavigationLink(destination: MessagesView(chatId: chatId, usersInChat: usersInChat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chatName)), isActive: $showChatView) {
-//                        EmptyView()
-//                    }.isDetailLink(false)
+                    NavigationLink(destination: NewChatView(state: state), isActive: $showNewChatView) {
+                        EmptyView()
+                    }.isDetailLink(false)
                         
                 }.onAppear{
                     print("currentUser: \(String(describing: userManager.currentUser))")
