@@ -25,6 +25,7 @@ struct ChatRow: View {
             }
             VStack(alignment: .leading) {
                 Text(chatName)
+                    .lineLimit(1)
                 Text(chat.last_message)
                     .lineLimit(1)
                     .font(.system(size: 15))

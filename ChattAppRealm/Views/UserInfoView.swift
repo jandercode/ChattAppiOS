@@ -35,7 +35,7 @@ struct UserInfoView: View {
                     showPhotoPicker = true
                     
                 } label: {
-                    ProfilePic(size: 46, image: userImage)
+                    ProfilePic(size: 50, image: userImage)
                 }
                 .fullScreenCover(isPresented: $showPhotoPicker) {
                     PhotoPicker(filter: .images, limit: 1){results in
