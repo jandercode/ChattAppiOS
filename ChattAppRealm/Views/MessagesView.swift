@@ -26,7 +26,7 @@ struct MessagesView: View {
     @State var isNewDay = true
     
     let chatDao = RealmChatDao()
-    let messageDao = RealmMessagedao()
+    let messageDao = RealmMessageDao()
    // @State var userImage = UIImage(systemName: "person.circle")
    // @State var userImage = getProfilePic(usersInChat: usersInChat)
 
@@ -146,6 +146,7 @@ struct MessagesView: View {
                 print("name \(chatName)")
                 print("users \(usersInChat)")
                 firestoreMessageDao.messages.removeAll()
+                firestoreMessageDao.stopListen()
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
                 
 //                imageChangeQueue {
@@ -156,6 +157,7 @@ struct MessagesView: View {
         }.onDisappear{
             
             messageDao.saveRecievedMessage()
+            
             
         }
     }
