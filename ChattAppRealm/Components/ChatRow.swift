@@ -12,16 +12,12 @@ struct ChatRow: View {
     var profilePic: UIImage
     var read: Bool
     var timestampFormatter = TimestampFormatter()
-    @State var stringToPrint = ""
+    @State var formattedTime = ""
     
     var body: some View {
         HStack {
             ZStack {
-                Image(uiImage: profilePic)
-                    .resizable()
-                    .frame(width: 45, height: 45)
-                    .clipShape(Circle())
-                    .foregroundColor(.white)
+                ProfilePic(size: 45, image: profilePic)
             }
             VStack(alignment: .leading) {
                 Text(chatName)
@@ -32,19 +28,16 @@ struct ChatRow: View {
             }
             
             Spacer()
-           // Text(chat.timestamp ?? Date.now, format: .dateTime.day().month().hour().minute())
-            Text(stringToPrint)
+            Text(formattedTime)
                 .font(.system(size: 12))
            // Image(systemName: read ? "circle" : "circle.fill")
         }
         .padding(3)
         .onAppear{
             FirestoreMessageDao.firestoreMessageDao.listenToFirestore(chatId: chat.id)
-            stringToPrint = timestampFormatter.formatChatRowTimestampString(timestamp: chat.timestamp ?? Date())
-           // print(stringToPrint)
+            formattedTime = timestampFormatter.formatChatRowTimestampString(timestamp: chat.timestamp ?? Date())
         }
     }
-    
 }
 
 //struct ChatRow_Previews: PreviewProvider {
