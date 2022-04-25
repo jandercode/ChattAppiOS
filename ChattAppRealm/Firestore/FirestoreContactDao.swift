@@ -57,7 +57,7 @@ class FirestoreContactDao : ObservableObject {
             .getDocuments(){(querysnapshot, err) in
                 if let err = err {
                     
-                    print(err)
+                    print("login error: \(err)")
                     
                 }else{
                     
@@ -71,9 +71,21 @@ class FirestoreContactDao : ObservableObject {
                             
                             self.setCurrentUsert(data: data)
                             
-                            
-                    }
+                        }
                         print("success")
+                        
+                    }
+                    
+                    if UserManager.userManager.currentUser == nil{
+                        
+                        
+                        let u = User()
+                        u.firstName = "error"
+                        u.lastName = "error"
+                        u.username = "error"
+                        UserManager.userManager.currentUser = u
+                        
+                        
                         
                     }
                 }

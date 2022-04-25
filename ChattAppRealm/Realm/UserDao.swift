@@ -20,8 +20,9 @@ class UserDao{
         
         if !users.isEmpty{
             
-            userLoginData[UserData.KEY_EMAIL_LOGIN] = users[0].email
-            userLoginData[UserData.KEY_PASSWORD_LOGIN] = users[0].password
+            UserManager.userManager.currentUser = users[0]
+            //userLoginData[UserData.KEY_EMAIL_LOGIN] = users[0].email
+            //userLoginData[UserData.KEY_PASSWORD_LOGIN] = users[0].password
             
         }else{
             

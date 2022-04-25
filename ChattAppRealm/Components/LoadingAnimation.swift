@@ -11,6 +11,7 @@ struct LoadingAnimation: View {
  
     @State private var isLoading = false
     @ObservedObject var state: StateController
+    @Binding var error: ErrorInfo?
 
  
     var body: some View {
@@ -32,10 +33,14 @@ struct LoadingAnimation: View {
         }
         .onDisappear{
             
-            if UserManager.userManager.currentUser != nil{
+            if UserManager.userManager.currentUser != nil && UserManager.userManager.currentUser?.firstName != "error"{
                 
                 state.loginLogic()
                 
+            }else{
+                
+                error = ErrorInfo(id: 1, title: "Error", description: "Error logging in, check the fields")
+
             }
             
         }

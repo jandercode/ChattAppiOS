@@ -16,9 +16,11 @@ struct LoginView: View {
     @State var eMail: String = ""
     @State var password: String = ""
     @State private var showRegisterAccount = false
-    @State private var loginErrorAlert = false
+    //@State private var loginErrorAlert = false
     @State var saveLogin = false
     @State var isLoading = false
+    @State private var error: ErrorInfo?
+
     
     let userDao = UserDao()
     
@@ -58,10 +60,14 @@ struct LoginView: View {
                     
                     Text("Login")
                     
+                }).alert(item: $error, content: { error in
+                    
+                    Alert(
+                        
+                        title: Text(error.title),
+                        message: Text(error.description)
+                    )
                 })
-                .alert("Error logging in, check userame and password", isPresented: $loginErrorAlert) {
-                    Button("Ok", role: .cancel){}
-                }
                 
                 Spacer()
                 
@@ -95,8 +101,10 @@ struct LoginView: View {
             }
             .padding()
             .ignoresSafeArea()
-        }.sheet(isPresented: $isLoading, content: {
-            LoadingAnimation(state: state)
+            
+        }
+        .sheet(isPresented: $isLoading, content: {
+            LoadingAnimation(state: state, error: $error)
         })
         .onAppear(){
             
@@ -122,12 +130,17 @@ struct LoginView: View {
             
             eMail = userLoginData[UserData.KEY_EMAIL_LOGIN]!
             password = userLoginData[UserData.KEY_PASSWORD_LOGIN]!
+            isLoading = true
+            moveToChats()
             
+        }else{
+            
+            saveLogin = false
         }
         
-        login()
+        
+        
     }
-    
     
     
     func login(){
@@ -139,38 +152,36 @@ struct LoginView: View {
         loginQueue {
             moveToChats()
         }
+            
+
+        
     }
     
     func moveToChats(){
                 
-        if userManager.currentUser != nil{
+        if userManager.currentUser != nil && userManager.currentUser?.firstName != "error"{
             
             isLoading = false
             
         }else{
             
+            userManager.currentUser = nil
             isLoading = false
-            loginErrorAlert = true
+            //error = ErrorInfo(id: 1, title: "Error", description: "Error logging in, check the fields")
+
         }
         
     }
     
     func loginQueue(onComplete: @escaping () -> Void){
-        
+
         let queue = DispatchQueue(label: "myQueue")
         queue.async{
-            var count = 0
+
             while userManager.currentUser == nil{
-                count += 1
-                if count < 100{
-                    print("continuing")
-                    continue
-                }else{
-                    print("ended")
-                    break
-                }
-                
+                continue
             }
+            print("exited")
             onComplete()
         }
     }
