@@ -10,19 +10,22 @@ import RealmSwift
 
 class UserDao{
     
-    let realm = try! Realm()
     var user: [String:String] = [:]
     
     func getUser(){
         
+        let realm = try! Realm()
         let users = realm.objects(User.self)
         var userLoginData : [String:String] = [:]
         
+        print(users.count)
+
         if !users.isEmpty{
             
             UserManager.userManager.currentUser = users[0]
-            //userLoginData[UserData.KEY_EMAIL_LOGIN] = users[0].email
-            //userLoginData[UserData.KEY_PASSWORD_LOGIN] = users[0].password
+            print(users[0])
+            userLoginData[UserData.KEY_EMAIL_LOGIN] = users[0].email
+            userLoginData[UserData.KEY_PASSWORD_LOGIN] = users[0].password
             
         }else{
             
@@ -38,6 +41,7 @@ class UserDao{
     
     func saveUser(newUser: User){
         
+        let realm = try! Realm()
         let user = realm.objects(User.self).where{
             $0.id == newUser.id
         }.first
@@ -55,6 +59,7 @@ class UserDao{
     
     func eraseUserData(){
         
+        let realm = try! Realm()
         let users = realm.objects(User.self)
                     
             try! realm.write({

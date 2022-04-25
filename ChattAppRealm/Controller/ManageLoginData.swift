@@ -10,6 +10,7 @@ import Foundation
 //methods for saving and reading users loginData
 class ManageLoginInfo{
     
+    
     static func saveLogin(saveInfo: Bool){
         
         UserData.userDefault.set(saveInfo, forKey: UserData.KEY_AUTOLOGIN)

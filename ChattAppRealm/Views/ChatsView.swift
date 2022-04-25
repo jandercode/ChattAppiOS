@@ -117,7 +117,12 @@ struct ChatsView: View{
             }
         }.onAppear{
             
-            userDao.saveUser(newUser: userManager.currentUser!)
+            if ManageLoginInfo.loadLogin(){
+                
+                userDao.saveUser(newUser: userManager.currentUser!)
+                ManageLoginInfo.saveLogin(saveInfo: true)
+            }
+            
             storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
             storage.loadChatProfilePics()
             realmChat.loadChats()

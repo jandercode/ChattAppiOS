@@ -13,7 +13,6 @@ struct RegisterView: View{
     
     @Binding var eMail: String
     @Binding var password: String
-    var userDao: UserDao
     
     @State var firstName = ""
     @State var lastName = ""
@@ -84,6 +83,7 @@ struct RegisterView: View{
                                 user.lastName = lastName
                                 user.password = password
 
+                                let userDao = UserDao()
                                 userDao.saveUser(newUser: user)
                                 FirestoreContactDao.firestoreContactDao.saveNewUser(user: user)
 

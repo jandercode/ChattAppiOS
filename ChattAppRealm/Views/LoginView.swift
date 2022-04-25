@@ -21,9 +21,6 @@ struct LoginView: View {
     @State var isLoading = false
     @State private var error: ErrorInfo?
 
-    
-    let userDao = UserDao()
-    
     var body: some View {
         
         VStack{
@@ -82,7 +79,7 @@ struct LoginView: View {
                     
                 })
                 .sheet(isPresented: $showRegisterAccount, content: {
-                    RegisterView(eMail: $eMail, password: $password, userDao: userDao)
+                    RegisterView(eMail: $eMail, password: $password)
                 })
                 
                 Spacer()
@@ -108,10 +105,10 @@ struct LoginView: View {
         })
         .onAppear(){
             
+            FirestoreContactDao.firestoreContactDao.getUsers()
             userManager.currentUser = nil
             saveLogin = ManageLoginInfo.loadLogin()
-            print(saveLogin)
-            FirestoreContactDao.firestoreContactDao.getUsers()
+            print("save login \(saveLogin)")
             
             if(saveLogin){
                 loadUserData()
@@ -130,16 +127,13 @@ struct LoginView: View {
             
             eMail = userLoginData[UserData.KEY_EMAIL_LOGIN]!
             password = userLoginData[UserData.KEY_PASSWORD_LOGIN]!
-            isLoading = true
-            moveToChats()
+            state.appState = .Chats
             
         }else{
             
             saveLogin = false
+            ManageLoginInfo.saveLogin(saveInfo: saveLogin)
         }
-        
-        
-        
     }
     
     
@@ -167,7 +161,6 @@ struct LoginView: View {
             
             userManager.currentUser = nil
             isLoading = false
-            //error = ErrorInfo(id: 1, title: "Error", description: "Error logging in, check the fields")
 
         }
         
