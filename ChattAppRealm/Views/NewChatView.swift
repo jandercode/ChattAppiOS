@@ -89,6 +89,7 @@ struct NewChatView: View {
             }
     
     
+    
     func removeDoubles(){
         
         var index = -1

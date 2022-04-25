@@ -159,9 +159,17 @@ struct LoginView: View {
         
         let queue = DispatchQueue(label: "myQueue")
         queue.async{
-            
+            var count = 0
             while userManager.currentUser == nil{
-                continue
+                count += 1
+                if count < 100{
+                    print("continuing")
+                    continue
+                }else{
+                    print("ended")
+                    break
+                }
+                
             }
             onComplete()
         }
