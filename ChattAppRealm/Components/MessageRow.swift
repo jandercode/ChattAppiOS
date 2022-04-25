@@ -10,32 +10,61 @@ import SwiftUI
 struct MessageRow: View {
     var message : Message
     var image: UIImage
-    @State var stringToPrint = ""
+    @State var formattedTimestamp = ""
     var timestampFormatter = TimestampFormatter()
+    var usersInChat : [String]
     
     var body: some View {
+        VStack {
+            if usersInChat.count > 2 {
+                if message.sender != UserManager.userManager.currentUser?.id {
+                    Text(getUsername(userId: message.sender))
+                        .foregroundColor(.gray)
+                        .font(.system(size: 12))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 66)
+                        .padding(.top, 5)
+                }
+            }
+            
         HStack {
             if message.sender != UserManager.userManager.currentUser?.id {
                 ProfilePic(size: 40, image: image)
             } else {
                 Spacer()
-                Text(stringToPrint)
+                Text(formattedTimestamp)
+                    .foregroundColor(.gray)
                     .font(.system(size: 12))
             }
-            Text(message.text)
-                .padding(10)
-                .foregroundColor(message.sender == UserManager.userManager.currentUser?.id ? Color.white : Color.black)
-                .background(message.sender == UserManager.userManager.currentUser?.id ? Color.blue : Color(UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)))
-                .cornerRadius(10)
+                Text(message.text)
+                    .padding(10)
+                    .foregroundColor(message.sender == UserManager.userManager.currentUser?.id ? Color.white : Color.black)
+                    .background(message.sender == UserManager.userManager.currentUser?.id ? Color.blue : Color(UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)))
+                    .cornerRadius(10)
+            
             if message.sender != UserManager.userManager.currentUser?.id {
-                Text(stringToPrint)
+                Text(formattedTimestamp)
+                    .foregroundColor(.gray)
                     .font(.system(size: 12))
                 Spacer()
             }
         }.padding(.horizontal)
+    }
         .onAppear {
-            stringToPrint = timestampFormatter.formatMessageRowTimestampString(timestamp: message.timestamp ?? Date())
+            formattedTimestamp = timestampFormatter.formatMessageRowTimestampString(timestamp: message.timestamp ?? Date())
         }
+    }
+    
+    func getUsername(userId : String) -> String {
+        for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
+                            
+            if userId == user.id {
+                
+                return user.username
+                
+            }
+        }
+        return ""
     }
 }
 
