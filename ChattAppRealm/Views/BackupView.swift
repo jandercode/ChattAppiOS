@@ -67,12 +67,8 @@ struct BackupView: View {
     func getProfilePic(chat: Chat) -> [UIImage]{
         
         var imageArray = [UIImage]()
-        
-        let i = chat.users_in_chat.count
-        
-        for _ in 0...i{
-            imageArray.append(UIImage(systemName: "person.circle")!)
-        }
+
+        imageArray.append(UIImage(systemName: "person.circle")!)
         
         return imageArray
         
