@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ChatsView: View{
-    
+        
     @Binding var isLoggedIn: Bool
     @Binding var showNewChatView: Bool
     
@@ -58,29 +58,34 @@ struct ChatsView: View{
                             ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: storage.getProfilePics(usersInChatList: chat.users_in_chat),read: false)
                             
                                 .listRowSeparator(.hidden)
+                            
                                 .onTapGesture {
+                                    
                                     state.usersInChat = chat.users_in_chat
                                     state.chatId = chat.id
                                     state.chatName = chat.chat_name
                                     state.appState = .Message
                                     print(usersInChat)
                                 }
+                            
+                        }.onDelete(perform: firestoreChatDao.deleteChat(at:))
+                        
+                    }.refreshable{
+                        
+                        do{
+                           try await storage.reload()
+                        }catch{
+                            let _ = error
                         }
-                        .onDelete(perform: firestoreChatDao.deleteChat(at:))
-                    }.refreshable {
-                        print("refreshing")
                     }
+                    
                     .listStyle(.plain)
                     
                     Spacer()
                     
-                }.onAppear{
-                    print("currentUser: \(String(describing: userManager.currentUser))")
-                    
-                    
-                }
-                .sheet(isPresented: $presentUserInfo, content: {
+                }.sheet(isPresented: $presentUserInfo, content: {
                     UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
+                    
                 }).onDisappear(){
                     if imageChanged{
                         changeUserImage()
@@ -88,18 +93,28 @@ struct ChatsView: View{
                 }
                 
                 VStack {
+                    
                     Spacer()
+                    
                     HStack {
+                        
                         Spacer()
+                        
                         Button {
+                            
                             if isConnected{
+                                
                                 state.appState = .CreateChat
+                                
                             }else{
+                                
                                 error = ErrorInfo(id: 1, title: "Not Connected", description: "You can't create a new chat when you are not connected to internet")
                             }
                             
                         } label: {
+                            
                             ZStack {
+                                
                                 Circle()
                                     .fill(.green)
                                     .frame(width: 50)
@@ -128,34 +143,22 @@ struct ChatsView: View{
                 isConnected = false
                 print("Internet Connection Not Available!")
             }
-            
+                            
             if ManageLoginInfo.loadLogin(){
                 
                 userDao.saveUser(newUser: userManager.currentUser!)
                 ManageLoginInfo.saveLogin(saveInfo: true)
             }
-            print("rad 122")
             imageChangeQueue {
                 changeUserImage()
-                print("rad 125")
             }
             
-            print("rad 127")
             //Firestore
             firestoreChatDao.listenToFirestore()
-            print("rad 130")
             FirestoreContactDao.firestoreContactDao.removeCurrentUser()
             
             //Storage
-            print("rad 134")
             storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
-            print("rad 136")
-              //  imageChangeQueueRU {
-                    print("registeredUsers.count = \(FirestoreContactDao.firestoreContactDao.registeredUsers.count)")
-                    storage.loadChatProfilePics()
-                    print("rad 140")
-
-              //  }
             
             //Realm
             realmChat.loadChats()
@@ -195,17 +198,5 @@ struct ChatsView: View{
         }
     }
     
-    func imageChangeQueueRU(onComplete: @escaping () -> Void){
-        
-        let queue = DispatchQueue(label: "myQueueRU")
-        queue.async {
-            
-            while FirestoreContactDao.firestoreContactDao.registeredUsers.count < 1 {
-                continue
-            }
-            
-            onComplete()
-        }
-    }
     
 }

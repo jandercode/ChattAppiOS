@@ -91,18 +91,15 @@ class StorageManager: ObservableObject{
         storageRef.list(maxResults: 1, completion: handler)
     }
     
-    func loadChatProfilePics(){
+    func loadChatProfilePics() async{
         
         let allUsers = FirestoreContactDao.firestoreContactDao.registeredUsers
-        print("loadChatProfilePics registeredUsers \(allUsers)")
             for user in allUsers{
-                print("loadChatProfilePics rad 99")
 
                 let imageRef = storage.reference().child("images/\(user.id)")
                 imageRef.getData(maxSize: 1*1024*1024){ data, error in
                     
                     if let _ = error{
-                        print("error: \(String(describing: error))")
                         UserManager.userManager.imageArray[user.id] = UIImage(systemName: "person.circle")
                         
                     }else{
@@ -111,11 +108,11 @@ class StorageManager: ObservableObject{
                         
                     }
                 }
-                print("loading done!!")
             }
     }
     
     func getProfilePics(usersInChatList: [String]) -> [UIImage] {
+        
         var usersInChatMinusCurrent = usersInChatList
         
         var index = -1
@@ -126,17 +123,14 @@ class StorageManager: ObservableObject{
         }
         
         if index > -1 {
-            print("index > -1: \(index)")
             usersInChatMinusCurrent.remove(at: index)
         }
         
-        print("usersInChatMinusCurrent:\(usersInChatMinusCurrent))")
-       
         var profilePicArray = [UIImage]()
         for userId in usersInChatMinusCurrent {
             profilePicArray.append(UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!)
         }
-        print("profilePicArray: \(profilePicArray)")
+        
         return profilePicArray
         
     }
@@ -159,6 +153,11 @@ class StorageManager: ObservableObject{
                 
             }
         }
+    }
+    
+    func reload() async throws{
+        
+        try await loadChatProfilePics()
     }
     
 
