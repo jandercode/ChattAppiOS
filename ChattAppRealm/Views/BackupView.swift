@@ -24,7 +24,7 @@ struct BackupView: View {
                     ForEach (presentationArray){ chat in
                         
                         
-                        ChatRow(chat: chat, chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: UIImage(systemName: "person.circle")! ,read: false)
+                        ChatRow(chat: chat, chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: getProfilePic(chat: chat) ,read: false)
                         
                             .onTapGesture {
                                 
@@ -83,6 +83,21 @@ struct BackupView: View {
                 
                 presentationArray = state.chatRealm!.chatsArray
             }
+    }
+    
+    
+    func getProfilePic(chat: Chat) -> [UIImage]{
+        
+        var imageArray = [UIImage]()
+        
+        let i = chat.users_in_chat.count
+        
+        for _ in 0...i{
+            imageArray.append(UIImage(systemName: "person.circle")!)
+        }
+        
+        return imageArray
+        
     }
 }
 
