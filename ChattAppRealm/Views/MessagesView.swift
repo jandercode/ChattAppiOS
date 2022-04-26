@@ -27,6 +27,7 @@ struct MessagesView: View {
     
     let chatDao = RealmChatDao()
     let messageDao = RealmMessageDao()
+    let storage = StorageManager()
 
     @State var showUsernames = false
     
@@ -50,7 +51,7 @@ struct MessagesView: View {
                         showUsernames.toggle()
                     } label: {
                        // ProfilePic(size: 30, image: getProfilePic(usersInChat: usersInChat))
-                        ProfilePic(size: 30, images: [state.profilePicArray ?? UIImage(systemName: "person.circle")!])
+                        ProfilePic(size: 30, images: storage.getProfilePics(usersInChatList: usersInChat) ?? [UIImage(systemName: "person.circle")!])
                         Text(firestoreChatDao.removeCurrentFromChatName(chatName: chatName))
                             .foregroundColor(Color.black)
                             .lineLimit(1)
@@ -95,7 +96,7 @@ struct MessagesView: View {
                 }
             }
             .sheet(isPresented: $showUsernames) {
-                ShowUsernames(chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chatName))
+                ShowUsernamesSheet(chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chatName), profilePicArray: getProfilePic(usersInChatList: usersInChat))
             }
             
             HStack {
@@ -169,25 +170,54 @@ struct MessagesView: View {
         
     }
     
-    func getProfilePic(usersInChat: [String]) -> UIImage{
-       // var usersInChatMinusCurrent : [String]
+    func getProfilePic(usersInChatList: [String]) -> [UIImage] {
+        var usersInChatMinusCurrent = usersInChatList
+        
         var index = -1
-        for user in usersInChat {
+        for user in usersInChatMinusCurrent {
             if user == UserManager.userManager.currentUser?.id {
-                index = usersInChat.firstIndex(of: user)!
+                index = usersInChatMinusCurrent.firstIndex(of: user)!
             }
         }
         
         if index > -1 {
-            self.usersInChat.remove(at: index)
+            print("index > -1: \(index)")
+            usersInChatMinusCurrent.remove(at: index)
         }
         
-        print("usersInChatMinusCurrent:\(usersInChat))")
+        print("usersInChatMinusCurrent:\(usersInChatMinusCurrent))")
        
-        let userId = usersInChat[0]
-        return UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
+        var profilePicArray = [UIImage]()
+        for userId in usersInChatMinusCurrent {
+            profilePicArray.append(UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!)
+        }
+        print("profilePicArray: \(profilePicArray)")
+       // state.profilePicArray = profilePicArray
+        return profilePicArray
+ //       let userId = usersInChatMinusCurrent[0]
+       // return UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
         
     }
+    
+//    func getProfilePic(usersInChat: [String]) -> UIImage{
+//       // var usersInChatMinusCurrent : [String]
+//        var index = -1
+//        for user in usersInChat {
+//            if user == UserManager.userManager.currentUser?.id {
+//                index = usersInChat.firstIndex(of: user)!
+//            }
+//        }
+//
+//        if index > -1 {
+//            self.usersInChat.remove(at: index)
+//        }
+//
+//        print("usersInChatMinusCurrent:\(usersInChat))")
+//
+//        let userId = usersInChat[0]
+//        return UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
+//        
+//    }
 }
 
 extension View {
