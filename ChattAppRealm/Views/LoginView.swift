@@ -20,7 +20,8 @@ struct LoginView: View {
     @State var saveLogin = false
     @State var isLoading = false
     @State private var error: ErrorInfo?
-    
+    @State var isConnected = false
+
     var body: some View {
         
         VStack{
@@ -49,10 +50,18 @@ struct LoginView: View {
                 
                 Button(action: {
                     
-                    let userDao = UserDao()
-                    userDao.eraseUserData()
-                    ManageLoginInfo.saveLogin(saveInfo: saveLogin)
-                    login()
+                    if isConnected{
+                        
+                        let userDao = UserDao()
+                        userDao.eraseUserData()
+                        ManageLoginInfo.saveLogin(saveInfo: saveLogin)
+                        login()
+                        
+                    }else{
+                        
+                        error = ErrorInfo(id: 1, title: "Offline", description: "Connection error, check your internet connection")
+                    }
+                    
                     
                     
                 }, label: {
@@ -72,13 +81,25 @@ struct LoginView: View {
                 
                 Button(action: {
                     
-                    showRegisterAccount.toggle()
+                    if isConnected{
+                        showRegisterAccount.toggle()
+                    }else{
+                        error = ErrorInfo(id: 1, title: "Offline", description: "Connection error, check your internet connection")
+                    }
+                    
                     
                     
                 }, label: {
                     
                     Text("Register")
                     
+                }).alert(item: $error, content: { error in
+                    
+                    Alert(
+                        
+                        title: Text(error.title),
+                        message: Text(error.description)
+                    )
                 })
                     .sheet(isPresented: $showRegisterAccount, content: {
                         RegisterView(eMail: $eMail, password: $password)
@@ -114,6 +135,12 @@ struct LoginView: View {
             
             if(saveLogin){
                 loadUserData()
+            }
+            
+            if Reachability.isConnectedToNetwork(){
+                isConnected = true
+            } else {
+                isConnected = false
             }
             
         }

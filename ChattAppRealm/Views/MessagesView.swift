@@ -181,7 +181,6 @@ struct MessagesView: View {
         }
         
         if index > -1 {
-            print("index > -1: \(index)")
             usersInChatMinusCurrent.remove(at: index)
         }
         

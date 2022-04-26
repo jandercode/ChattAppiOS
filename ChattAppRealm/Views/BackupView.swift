@@ -41,54 +41,22 @@ struct BackupView: View {
                                 
                             }
                     }
+                    .padding()
                 }
-            }
-            
-            HStack{
+                                
+            }.onAppear{
                 
-                Button {
-                    
-                    state.appState = .Chats
-                    
-                } label: {
-                    
-                    Image(systemName: "chevron.left")
-                    Text("Exit")
+                if state.chatRealm == nil{
+                    state.chatRealm = RealmChatDao()
+                    state.chatRealm?.loadChats()
                 }
-                .padding()
-                
-                
-                Button {
-                    
-                    state.chatRealm?.chatsArray.removeAll()
-                    state.messageRealm?.allMessages.removeAll()
-                    presentationArray.removeAll()
-                    state.messageRealm?.deleteAllMessages()
-                    state.chatRealm?.deleteAllChats()
-                    state.appState = .Chats
-                    
-                } label: {
-                    Text("Erase All")
-                        .foregroundColor(.red)
+                if state.messageRealm == nil{
+                    state.messageRealm = RealmMessageDao()
+                    state.messageRealm?.loadMessages()
                 }
-                .padding()
+                
+                presentationArray = state.chatRealm!.chatsArray
             }
-            
-            
-            
-        }.onAppear{
-            
-            if state.chatRealm == nil{
-                state.chatRealm = RealmChatDao()
-                state.chatRealm?.loadChats()
-            }
-            if state.messageRealm == nil{
-                state.messageRealm = RealmMessageDao()
-                state.messageRealm?.loadMessages()
-            }
-            
-            presentationArray = state.chatRealm!.chatsArray
-        }
     }
     
     

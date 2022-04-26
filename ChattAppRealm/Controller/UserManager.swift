@@ -27,7 +27,6 @@ class UserManager: ObservableObject{
             imageArray[user.id] = UIImage(systemName: "person.circle")
             
         }
-        
     }
     
     
