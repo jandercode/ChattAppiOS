@@ -18,7 +18,22 @@ class RealmChatDao{
         try! realm.write({
             realm.add(chat)
         })
+    }
+    
+    func saveRemoteChats(){
         
+        let remoteChats = FirestoreChatDao.firestoreChatDao.chats
+        
+        for chat in remoteChats{
+            
+            let backup = realm.objects(Chat.self).where{
+                $0.id == chat.id
+            }
+            
+            if backup.isEmpty{
+                saveChat(chat: chat)
+            }
+        }
     }
     
     func loadChats(){
