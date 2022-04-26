@@ -133,7 +133,6 @@ struct UserInfoView: View {
                 userImage = UserManager.userManager.userImage!
             }
         }
-        
     }
     
     func logUserOut(){

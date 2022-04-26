@@ -29,6 +29,11 @@ class RealmMessageDao{
             let backup = realm.objects(Message.self).where{
                 $0.id == message.id
             }
+            
+            if backup.isEmpty{
+                
+                saveMessage(message: message)
+            }
            
         }
         

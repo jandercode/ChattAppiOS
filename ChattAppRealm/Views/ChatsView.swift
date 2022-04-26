@@ -150,6 +150,7 @@ struct ChatsView: View{
         .onDisappear{
             
             firestoreChatDao.removeChatListener()
+            realmChat.saveRemoteChats()
             
         }
     
