@@ -29,7 +29,7 @@ struct BackupView: View {
                     ForEach (presentationArray){ chat in
                         
                         
-                        ChatRow(chat: chat, chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: getProfilePic(chat: chat) ,read: false)
+                        ChatRow(chat: chat, chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: getProfilePic(chat: chat))
                         
                             .onTapGesture {
                                 
