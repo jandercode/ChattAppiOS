@@ -11,7 +11,7 @@ struct BackupChatView: View {
     
     @ObservedObject var state: StateController
     @State var filteredMessages = [Message]()
-
+    
     var body: some View {
         
         VStack{
@@ -44,7 +44,7 @@ struct BackupChatView: View {
                 } label: {
                     
                     Image(systemName: "chevron.left")
-                    Text("Back")
+                    Text("Back to backups")
                 }
             }
             

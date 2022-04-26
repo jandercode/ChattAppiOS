@@ -16,10 +16,15 @@ struct BackupView: View {
     
     var body: some View {
         
+        
+        VStack{
             
-            VStack{
+            List{
                 
-                List{
+                ForEach (presentationArray){ chat in
+                    
+                    
+                    ChatRow(chat: chat, chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: [UIImage(systemName: "person.circle")!])
                     
                     ForEach (presentationArray){ chat in
                         
@@ -37,52 +42,53 @@ struct BackupView: View {
                             }
                     }
                 }
-                
-                HStack{
-                    
-                    Button {
-                        
-                        state.appState = .Chats
-                        
-                    } label: {
-                        
-                        Image(systemName: "chevron.left")
-                        Text("Exit")
-                    }
-                    .padding()
-                    
-                    
-                    Button {
-                        
-                        state.chatRealm?.chatsArray.removeAll()
-                        state.messageRealm?.allMessages.removeAll()
-                        presentationArray.removeAll()
-                        state.messageRealm?.deleteAllMessages()
-                        state.chatRealm?.deleteAllChats()
-                        state.appState = .Chats
-                        
-                    } label: {
-                        Text("Erase All")
-                            .foregroundColor(.red)
-                    }
-                    .padding()
-                }
-                
-                
-                
-            }.onAppear{
-                
-                if state.chatRealm == nil{
-                    state.chatRealm = RealmChatDao()
-                    state.chatRealm?.loadChats()
-                }
-                if state.messageRealm == nil{
-                    state.messageRealm = RealmMessageDao()
-                    state.messageRealm?.loadMessages()
-                }
-                
-                presentationArray = state.chatRealm!.chatsArray
             }
+            
+            HStack{
+                
+                Button {
+                    
+                    state.appState = .Chats
+                    
+                } label: {
+                    
+                    Image(systemName: "chevron.left")
+                    Text("Exit")
+                }
+                .padding()
+                
+                
+                Button {
+                    
+                    state.chatRealm?.chatsArray.removeAll()
+                    state.messageRealm?.allMessages.removeAll()
+                    presentationArray.removeAll()
+                    state.messageRealm?.deleteAllMessages()
+                    state.chatRealm?.deleteAllChats()
+                    state.appState = .Chats
+                    
+                } label: {
+                    Text("Erase All")
+                        .foregroundColor(.red)
+                }
+                .padding()
+            }
+            
+            
+            
+        }.onAppear{
+            
+            if state.chatRealm == nil{
+                state.chatRealm = RealmChatDao()
+                state.chatRealm?.loadChats()
+            }
+            if state.messageRealm == nil{
+                state.messageRealm = RealmMessageDao()
+                state.messageRealm?.loadMessages()
+            }
+            
+            presentationArray = state.chatRealm!.chatsArray
+        }
     }
     
     

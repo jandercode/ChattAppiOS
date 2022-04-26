@@ -16,7 +16,7 @@ struct UserInfoView: View {
     @Environment(\.dismiss) var dismiss
     let userName = UserManager.userManager.currentUser!.username
     @State var eMail = UserManager.userManager.currentUser!.email
-        
+    
     @State private var showPhotoPicker = false
     @State private var selectedImage: UIImage? = nil
     @State private var userImage: UIImage = UIImage(systemName: "person.circle")!
@@ -31,7 +31,7 @@ struct UserInfoView: View {
             
             VStack{
                 Button {
-                   
+                    
                     showPhotoPicker = true
                     
                 } label: {
@@ -55,7 +55,7 @@ struct UserInfoView: View {
                             }
                         }
                     }
-                        .edgesIgnoringSafeArea(.all)
+                    .edgesIgnoringSafeArea(.all)
                 }
                 
                 HStack{
@@ -89,7 +89,7 @@ struct UserInfoView: View {
                         .textFieldStyle(.roundedBorder)
                     
                     Spacer()
-
+                    
                 }
                 .padding()
                 
@@ -134,12 +134,12 @@ struct UserInfoView: View {
         }.sheet(isPresented: $changePassword, content: {
             changePasswordSheet()
         })
-        .onAppear{
-            
-            if UserManager.userManager.userImage != nil{
-                userImage = UserManager.userManager.userImage!
+            .onAppear{
+                
+                if UserManager.userManager.userImage != nil{
+                    userImage = UserManager.userManager.userImage!
+                }
             }
-        }
     }
     
     func logUserOut(){

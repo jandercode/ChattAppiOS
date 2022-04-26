@@ -38,17 +38,7 @@ struct ContentView: View {
             BackupView(state: state)
         case .BackupChat:
             BackupChatView(state: state)
-//        default:
-//            LoginView(state: state)
             
         }
     }
 }
-
-
-
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}

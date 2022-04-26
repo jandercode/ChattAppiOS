@@ -39,7 +39,7 @@ class FirestoreChatDao : ObservableObject {
     
     func createChatName(usersInChat: [String]) -> String {
         var chatNameArray = [String]()
-
+        
         chatNameArray.append(UserManager.userManager.currentUser?.username ?? "current user")
         for user in FirestoreContactDao.firestoreContactDao.registeredUsers {
             for userId in usersInChat {
@@ -68,20 +68,14 @@ class FirestoreChatDao : ObservableObject {
     }
     
     func saveNewChat(chat: Chat){
-                
+        
         let newChat : [String : Any] = [
             ID_KEY : chat.id,
             USERS_IN_CHAT_KEY : chat.users_in_chat,
             CHAT_NAME_KEY : chat.chat_name]
         
-        do{
-            _ = try db.collection(CHATS_COLLECTION).document(chat.id).setData(newChat)
-            print("success")
-            
-        }catch{
-            
-            print("error saving to DB")
-        }
+        db.collection(CHATS_COLLECTION).document(chat.id).setData(newChat)
+        
     }
     
     func deleteChat(at indexSet: IndexSet) {
@@ -102,9 +96,9 @@ class FirestoreChatDao : ObservableObject {
         
         return false
     }
-
+    
     func listenToFirestore() {
-
+        
         listener = db.collection(CHATS_COLLECTION).whereField("users_in_chat", arrayContains: "\(UserManager.userManager.currentUser?.id ?? User().id)" ).order(by: "timestamp", descending: true).addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else { return }
             if let err = err {

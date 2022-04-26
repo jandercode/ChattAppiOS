@@ -37,7 +37,7 @@ struct TwoProfilePic: View {
                 .resizable()
                 .frame(width: size, height: size, alignment: .center)
                 .cornerRadius(size/2)
-                
+            
             Image(uiImage: images[1])
                 .resizable()
                 .frame(width: size, height: size, alignment: .center)
@@ -70,9 +70,3 @@ struct ThreeProfilePic: View {
         }
     }
 }
-
-//struct ProfilePic_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ProfilePic(size: 40, image: UIImage(imageLiteralResourceName: "profile-pic"))
-//    }
-//}

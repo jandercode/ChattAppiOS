@@ -26,7 +26,7 @@ struct RegisterView: View{
     @ObservedObject var firestore = FirestoreContactDao.firestoreContactDao
     
     @State private var error: ErrorInfo?
-
+    
     
     var body: some View{
         
@@ -82,11 +82,11 @@ struct RegisterView: View{
                                 user.firstName = firstName
                                 user.lastName = lastName
                                 user.password = password
-
+                                
                                 let userDao = UserDao()
                                 userDao.saveUser(newUser: user)
                                 FirestoreContactDao.firestoreContactDao.saveNewUser(user: user)
-
+                                
                                 error = ErrorInfo(id: 1, title: "Account Created", description: "Your account has been created successfully \(userName)")
                                 
                             }else{
@@ -95,7 +95,7 @@ struct RegisterView: View{
                             }
                         }
                     }
-
+                    
                 }, label: {
                     Text("Register")
                     
@@ -107,7 +107,7 @@ struct RegisterView: View{
                         message: Text(error.description)
                     )
                 })
-                .padding()
+                    .padding()
                 
                 Spacer()
                 

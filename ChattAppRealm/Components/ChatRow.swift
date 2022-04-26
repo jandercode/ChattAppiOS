@@ -10,7 +10,6 @@ struct ChatRow: View {
     var chat: Chat
     var chatName: String
     var profilePic: [UIImage]
-    var read: Bool
     var timestampFormatter = TimestampFormatter()
     @State var formattedTime = ""
     
@@ -30,18 +29,10 @@ struct ChatRow: View {
             Spacer()
             Text(formattedTime)
                 .font(.system(size: 12))
-           // Image(systemName: read ? "circle" : "circle.fill")
         }
         .padding(3)
         .onAppear{
-            //FirestoreMessageDao.firestoreMessageDao.listenToFirestore()
             formattedTime = timestampFormatter.formatChatRowTimestampString(timestamp: chat.timestamp ?? Date())
         }
     }
 }
-
-//struct ChatRow_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ChatRow(chat: "Betty Sanders", time: "timestamp", read: false)
-//    }
-//}

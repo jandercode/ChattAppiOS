@@ -20,7 +20,7 @@ struct LoginView: View {
     @State var saveLogin = false
     @State var isLoading = false
     @State private var error: ErrorInfo?
-
+    
     var body: some View {
         
         VStack{
@@ -80,9 +80,9 @@ struct LoginView: View {
                     Text("Register")
                     
                 })
-                .sheet(isPresented: $showRegisterAccount, content: {
-                    RegisterView(eMail: $eMail, password: $password)
-                })
+                    .sheet(isPresented: $showRegisterAccount, content: {
+                        RegisterView(eMail: $eMail, password: $password)
+                    })
                 
                 Spacer()
                 
@@ -148,13 +148,13 @@ struct LoginView: View {
         loginQueue {
             moveToChats()
         }
-            
-
+        
+        
         
     }
     
     func moveToChats(){
-                
+        
         if userManager.currentUser != nil && userManager.currentUser?.firstName != "error"{
             
             isLoading = false
@@ -163,16 +163,16 @@ struct LoginView: View {
             
             userManager.currentUser = nil
             isLoading = false
-
+            
         }
         
     }
     
     func loginQueue(onComplete: @escaping () -> Void){
-
+        
         let queue = DispatchQueue(label: "myQueue")
         queue.async{
-
+            
             while userManager.currentUser == nil{
                 continue
             }

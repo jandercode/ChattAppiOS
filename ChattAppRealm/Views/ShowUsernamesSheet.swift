@@ -17,16 +17,18 @@ struct ShowUsernamesSheet: View {
         VStack {
             Text(chatName)
                 .padding(20)
-            ForEach(profilePicArray, id: \.self) { image in
-                ProfilePic(size: 40, images: [image])
+            HStack {
+                ForEach(profilePicArray, id: \.self) { image in
+                    ProfilePic(size: 40, images: [image])
+                }
             }
         }
-            .onAppear() {
-                self.showUsernames = true
+        .onAppear() {
+            self.showUsernames = true
         }
-            .onDisappear {
-                
-            }
+        .onDisappear {
+            
+        }
     }
 }
 

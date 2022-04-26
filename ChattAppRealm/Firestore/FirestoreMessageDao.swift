@@ -25,12 +25,12 @@ class FirestoreMessageDao : ObservableObject {
     private let SENDER_KEY = "sender"
     private let TEXT_KEY = "text"
     private let TIMESTAMP_KEY = "timestamp"
-
+    
     private let MESSAGES_COLLECTION = "messages"
     private let CHATS_COLLECTION = "chats"
     
     
-
+    
     func saveMessage(message: Message, chatId : String) {
         
         do {
@@ -43,16 +43,15 @@ class FirestoreMessageDao : ObservableObject {
             
             print("Error saving newMessage to db")
         }
-            
+        
     }
     
     func listenToFirestore(chatId : String) {
         if chatId != "" {
-                snapshotWoo = db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).order(by: "timestamp", descending: false).addSnapshotListener { snapshot, err in
+            snapshotWoo = db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).order(by: "timestamp", descending: false).addSnapshotListener { snapshot, err in
                 
-                  //  self.snapshotWoo = snapshot
-                    guard let snapshot = snapshot else {return}
-                    
+                guard let snapshot = snapshot else {return}
+                
                 if let err = err {
                     print("Error getting document \(err)")
                 } else {
