@@ -38,7 +38,6 @@ struct NewChatView: View {
                     .padding(.top, 20)
                 Spacer()
             }
-           // Spacer()
             
             HStack {
                 
@@ -94,7 +93,6 @@ struct NewChatView: View {
                     state.chatName = chat!.chat_name
                     print("exists!!")
                 }
-                state.profilePicArray = getProfilePic(usersInChat: usersInChat)
                 state.appState = .Message
                 
                 
@@ -104,26 +102,6 @@ struct NewChatView: View {
                 
             }
         }
-    }
-    
-    func getProfilePic(usersInChat: [String]) -> UIImage{
-       // var usersInChatMinusCurrent : [String]
-        var index = -1
-        for user in usersInChat {
-            if user == UserManager.userManager.currentUser?.id {
-                index = usersInChat.firstIndex(of: user)!
-            }
-        }
-        
-        if index > -1 {
-            self.usersInChat.remove(at: index)
-        }
-        
-        print("usersInChatMinusCurrent:\(usersInChat))")
-       
-        let userId = usersInChat[0]
-        return UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
-        
     }
     
     func removeDoubles(){
@@ -188,26 +166,6 @@ struct NewChatView: View {
         return result
         
     }
-    
-//    func getProfilePic(usersInChat: [String]) -> UIImage{
-//        var usersInChatMinusCurrent : [String]
-//        var index = -1
-//        for user in usersInChat {
-//            if user == UserManager.userManager.currentUser?.id {
-//                index = usersInChat.firstIndex(of: user)!
-//            }
-//        }
-//
-//        if index > -1 {
-//            self.usersInChat.remove(at: index)
-//        }
-//
-//        print("usersInChatMinusCurrent:\(usersInChat))")
-//
-//        let userId = usersInChat[1]
-//        return UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
-//
-//    }
 }
 
 //struct NewChatView_Previews: PreviewProvider {
