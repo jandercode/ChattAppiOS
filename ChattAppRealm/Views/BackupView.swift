@@ -37,6 +37,17 @@ struct BackupView: View {
                     }
                     .padding()
                 }
+            
+            Button {
+                
+                state.appState = .Chats
+                
+            } label: {
+                
+                Image(systemName: "chevron.left")
+                Text("Exit")
+            }
+            .padding()
                                 
             }.onAppear{
                 
