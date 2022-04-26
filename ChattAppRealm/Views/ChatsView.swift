@@ -66,6 +66,7 @@ struct ChatsView: View{
                                     print(usersInChat)
                                 }
                         }
+                        .onDelete(perform: firestoreChatDao.deleteChat(at:))
                     }.refreshable {
                         print("refreshing")
                     }
@@ -145,6 +146,9 @@ struct ChatsView: View{
             //Realm
             realmChat.loadChats()
             realmMessage.loadMessages()
+                
+            state.chatRealm = realmChat
+            state.messageRealm = realmMessage
             
         }
         .onDisappear{

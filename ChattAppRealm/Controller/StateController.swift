@@ -18,6 +18,10 @@ import UIKit
     var chatName: String = ""
     var profilePicArray: UIImage? = nil
     
+    var chatRealm : RealmChatDao? = nil
+    var messageRealm: RealmMessageDao? = nil
+
+    
     func loginLogic(){
         
         self.appState = .Chats

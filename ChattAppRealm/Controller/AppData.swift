@@ -17,7 +17,7 @@ enum ActionType: Int{
 
 enum AppState: Int{
     
-    case Login = 0, Chats, Message, CreateChat
+    case Login = 0, Chats, Message, CreateChat, BackupPage, BackupChat
 } 
 
 //data for userDefault

@@ -102,6 +102,12 @@ struct UserInfoView: View {
                     }
                     .padding()
                     
+                    Button {
+                        state.appState = .BackupPage
+                    } label: {
+                        Text("View Backups")
+                            .foregroundColor(.green)
+                    }
                 }
                 
                 HStack{
@@ -114,8 +120,9 @@ struct UserInfoView: View {
                     .padding()
                     
                     Button {
+                        
                         logUserOut()
-                        //dismiss()
+                        
                     } label: {
                         Text("Logout")
                             .foregroundColor(.red)

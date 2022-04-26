@@ -12,6 +12,7 @@ class RealmMessageDao{
     
     let realm = try! Realm()
     var allMessages = [Message]()
+    var filteredMessages = [Message]()
     
     func saveMessage(message: Message){
         
@@ -34,9 +35,20 @@ class RealmMessageDao{
                 
                 saveMessage(message: message)
             }
-           
+        }
+    }
+    
+    func filterMessages(chatId: String){
+        
+        let filtered = realm.objects(Message.self).where {
+            
+            $0.referenceChatId == chatId
         }
         
+        for message in filtered{
+            
+            filteredMessages.append(message)
+        }
     }
     
     func loadMessages(){
@@ -46,7 +58,6 @@ class RealmMessageDao{
             
             allMessages.append(message)
         }
-        
     }
     
     func deleteMessage(message: Message){
@@ -54,6 +65,19 @@ class RealmMessageDao{
         try! realm.write({
             realm.delete(message)
         })
+        
+    }
+    
+    func deleteAllMessages(){
+        
+        let messages = realm.objects(Message.self)
+        
+        try! realm.write({
+            
+            realm.delete(messages)
+            
+        })
+        
         
     }
     
