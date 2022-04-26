@@ -11,8 +11,7 @@ struct ProfilePic: View {
     var size: CGFloat
     var images: [UIImage]
     var body: some View {
-        // ForEach(image)
-        //  ForEach(images, id: \.self) { image in
+        
         if images.count <= 1 {
             Image(uiImage: images[0])
                 .resizable()

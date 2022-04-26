@@ -115,7 +115,31 @@ class StorageManager: ObservableObject{
             }
     }
     
-    
+    func getProfilePics(usersInChatList: [String]) -> [UIImage] {
+        var usersInChatMinusCurrent = usersInChatList
+        
+        var index = -1
+        for user in usersInChatMinusCurrent {
+            if user == UserManager.userManager.currentUser?.id {
+                index = usersInChatMinusCurrent.firstIndex(of: user)!
+            }
+        }
+        
+        if index > -1 {
+            print("index > -1: \(index)")
+            usersInChatMinusCurrent.remove(at: index)
+        }
+        
+        print("usersInChatMinusCurrent:\(usersInChatMinusCurrent))")
+       
+        var profilePicArray = [UIImage]()
+        for userId in usersInChatMinusCurrent {
+            profilePicArray.append(UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!)
+        }
+        print("profilePicArray: \(profilePicArray)")
+        return profilePicArray
+        
+    }
     
     
     func loadImageFromStorage(id: String){

@@ -16,7 +16,6 @@ import UIKit
     var chatId: String = ""
     var usersInChat: [String] = [String]()
     var chatName: String = ""
-    var profilePicArray: UIImage? = nil
     
     func loginLogic(){
         

@@ -7,14 +7,20 @@
 
 import SwiftUI
 
-struct ShowUsernames: View {
+struct ShowUsernamesSheet: View {
     
     @State private var showUsernames = false
     @State var chatName : String
+    @State var profilePicArray : [UIImage]
     
     var body: some View {
-        Text(chatName)
-            .padding(20)
+        VStack {
+            Text(chatName)
+                .padding(20)
+            ForEach(profilePicArray, id: \.self) { image in
+                ProfilePic(size: 40, images: [image])
+            }
+        }
             .onAppear() {
                 self.showUsernames = true
         }

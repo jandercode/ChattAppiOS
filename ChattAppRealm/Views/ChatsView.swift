@@ -53,15 +53,13 @@ struct ChatsView: View{
                         
                         ForEach(firestoreChatDao.chats) { chat in
                             
-                          //  ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: getProfilePic(chat: chat) ,read: false)
-                            ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: getProfilePic(usersInChatList: chat.users_in_chat),read: false)
+                            ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: storage.getProfilePics(usersInChatList: chat.users_in_chat),read: false)
                             
                                 .listRowSeparator(.hidden)
                                 .onTapGesture {
                                     state.usersInChat = chat.users_in_chat
                                     state.chatId = chat.id
                                     state.chatName = chat.chat_name
-                                   // state.profilePicArray = getProfilePic(usersInChat: usersInChat)
                                     state.appState = .Message
                                     print(usersInChat)
                                 }
@@ -135,12 +133,12 @@ struct ChatsView: View{
             print("rad 134")
             storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
             print("rad 136")
-                imageChangeQueueRU {
+              //  imageChangeQueueRU {
                     print("registeredUsers.count = \(FirestoreContactDao.firestoreContactDao.registeredUsers.count)")
                     storage.loadChatProfilePics()
                     print("rad 140")
 
-                }
+              //  }
             
             //Realm
             realmChat.loadChats()
@@ -153,43 +151,6 @@ struct ChatsView: View{
             realmChat.saveRemoteChats()
             
         }
-    
-    }
-    
-//    func getProfilePic(chat: Chat) -> UIImage{
-//
-//        let userId = chat.users_in_chat[1]
-//        return userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
-//
-//    }
-    
-    func getProfilePic(usersInChatList: [String]) -> [UIImage] {
-        var usersInChatMinusCurrent = usersInChatList
-        
-        var index = -1
-        for user in usersInChatMinusCurrent {
-            if user == UserManager.userManager.currentUser?.id {
-                index = usersInChatMinusCurrent.firstIndex(of: user)!
-            }
-        }
-        
-        if index > -1 {
-            print("index > -1: \(index)")
-            usersInChatMinusCurrent.remove(at: index)
-        }
-        
-        print("usersInChatMinusCurrent:\(usersInChatMinusCurrent))")
-       
-        var profilePicArray = [UIImage]()
-        for userId in usersInChatMinusCurrent {
-            profilePicArray.append(UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!)
-        }
-        print("profilePicArray: \(profilePicArray)")
-
-        return profilePicArray
- //       let userId = usersInChatMinusCurrent[0]
-       // return UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
-        
     }
     
     func changeUserImage(){
