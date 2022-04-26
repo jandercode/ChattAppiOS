@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 @MainActor class StateController: ObservableObject{
     
@@ -15,6 +16,7 @@ import Foundation
     var chatId: String = ""
     var usersInChat: [String] = [String]()
     var chatName: String = ""
+    var profilePicArray: UIImage? = nil
     
     func loginLogic(){
         

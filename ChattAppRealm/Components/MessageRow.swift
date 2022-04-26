@@ -29,7 +29,7 @@ struct MessageRow: View {
             
         HStack {
             if message.sender != UserManager.userManager.currentUser?.id {
-                ProfilePic(size: 40, image: image)
+                ProfilePic(size: 40, images: [image])
             } else {
                 Spacer()
                 Text(formattedTimestamp)

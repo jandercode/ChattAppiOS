@@ -45,7 +45,7 @@ struct ChatsView: View{
                         Button {
                             presentUserInfo.toggle()
                         } label: {
-                            ProfilePic(size: 30, image: userImage!)
+                            ProfilePic(size: 30, images: [userImage!])
                         }.padding()
                     }
                     .padding(.top, 40)
@@ -53,13 +53,15 @@ struct ChatsView: View{
                         
                         ForEach(firestoreChatDao.chats) { chat in
                             
-                            ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: getProfilePic(chat: chat) ,read: false)
+                          //  ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: getProfilePic(chat: chat) ,read: false)
+                            ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: getProfilePic(usersInChatList: chat.users_in_chat),read: false)
                             
                                 .listRowSeparator(.hidden)
                                 .onTapGesture {
                                     state.usersInChat = chat.users_in_chat
                                     state.chatId = chat.id
                                     state.chatName = chat.chat_name
+                                   // state.profilePicArray = getProfilePic(usersInChat: usersInChat)
                                     state.appState = .Message
                                     print(usersInChat)
                                 }
@@ -117,19 +119,28 @@ struct ChatsView: View{
                 userDao.saveUser(newUser: userManager.currentUser!)
                 ManageLoginInfo.saveLogin(saveInfo: true)
             }
-            
+            print("rad 122")
             imageChangeQueue {
                 changeUserImage()
+                print("rad 125")
             }
             
-            
+            print("rad 127")
             //Firestore
             firestoreChatDao.listenToFirestore()
+            print("rad 130")
             FirestoreContactDao.firestoreContactDao.removeCurrentUser()
             
             //Storage
+            print("rad 134")
             storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
-            storage.loadChatProfilePics()
+            print("rad 136")
+                imageChangeQueueRU {
+                    print("registeredUsers.count = \(FirestoreContactDao.firestoreContactDao.registeredUsers.count)")
+                    storage.loadChatProfilePics()
+                    print("rad 140")
+
+                }
             
             //Realm
             realmChat.loadChats()
@@ -144,13 +155,41 @@ struct ChatsView: View{
     
     }
     
-    func getProfilePic(chat: Chat) -> UIImage{
+//    func getProfilePic(chat: Chat) -> UIImage{
+//
+//        let userId = chat.users_in_chat[1]
+//        return userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
+//
+//    }
+    
+    func getProfilePic(usersInChatList: [String]) -> [UIImage] {
+        var usersInChatMinusCurrent = usersInChatList
         
-        let userId = chat.users_in_chat[1]
-        return userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
+        var index = -1
+        for user in usersInChatMinusCurrent {
+            if user == UserManager.userManager.currentUser?.id {
+                index = usersInChatMinusCurrent.firstIndex(of: user)!
+            }
+        }
+        
+        if index > -1 {
+            print("index > -1: \(index)")
+            usersInChatMinusCurrent.remove(at: index)
+        }
+        
+        print("usersInChatMinusCurrent:\(usersInChatMinusCurrent))")
+       
+        var profilePicArray = [UIImage]()
+        for userId in usersInChatMinusCurrent {
+            profilePicArray.append(UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!)
+        }
+        print("profilePicArray: \(profilePicArray)")
+
+        return profilePicArray
+ //       let userId = usersInChatMinusCurrent[0]
+       // return UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
         
     }
-    
     
     func changeUserImage(){
         
@@ -167,6 +206,19 @@ struct ChatsView: View{
         queue.async {
             
             while UserManager.userManager.userImage == nil{
+                continue
+            }
+            
+            onComplete()
+        }
+    }
+    
+    func imageChangeQueueRU(onComplete: @escaping () -> Void){
+        
+        let queue = DispatchQueue(label: "myQueueRU")
+        queue.async {
+            
+            while FirestoreContactDao.firestoreContactDao.registeredUsers.count < 1 {
                 continue
             }
             
