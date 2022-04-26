@@ -16,6 +16,9 @@ import Foundation
     var usersInChat: [String] = [String]()
     var chatName: String = ""
     
+    var chatRealm : RealmChatDao? = nil
+
+    
     func loginLogic(){
         
         self.appState = .Chats

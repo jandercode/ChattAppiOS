@@ -134,6 +134,8 @@ struct ChatsView: View{
             //Realm
             realmChat.loadChats()
             realmMessage.loadMessages()
+                
+            state.chatRealm = realmChat
             
         }
         .onDisappear{

@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 
 struct ContentView: View {
+    
     @State var showNewChatView = false
     @State var isLoggedIn = false
     @ObservedObject var state : StateController
@@ -33,8 +34,10 @@ struct ContentView: View {
             MessagesView(state: state ,chatId: state.chatId, usersInChat: state.usersInChat, chatName: state.chatName)
         case .CreateChat:
             NewChatView(state: state)
-        default:
-            LoginView(state: state)
+        case .BackupPage:
+            BackupView(state: state)
+//        default:
+//            LoginView(state: state)
             
         }
     }
