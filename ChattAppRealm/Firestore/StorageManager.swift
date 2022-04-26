@@ -10,6 +10,7 @@ import Firebase
 import SwiftUI
 
 class StorageManager: ObservableObject{
+    
     let storage = Storage.storage()
     //storage reference for default image
     let defaultUserImageKey = "defaultimg"
@@ -111,7 +112,6 @@ class StorageManager: ObservableObject{
             }
             print("loading done!!")
         }
-    }
     
     func getProfilePics(usersInChatList: [String]) -> [UIImage] {
         
@@ -174,5 +174,6 @@ class StorageManager: ObservableObject{
             }
         }
     }
+
     
 }

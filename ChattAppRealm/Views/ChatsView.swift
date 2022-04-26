@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ChatsView: View{
-        
+    
     @Binding var isLoggedIn: Bool
     @Binding var showNewChatView: Bool
     
@@ -36,115 +36,103 @@ struct ChatsView: View{
     
     var body: some View{
         
-            ZStack {
-                Color.white
-                    .ignoresSafeArea()
-                VStack {
-                    HStack{
-                        Text("Chats")
-                            .font(.largeTitle)
-                            .padding()
-                        Button {
-                            presentUserInfo.toggle()
-                        } label: {
-                            ProfilePic(size: 30, images: [userImage!])
-                        }.padding()
-                    }
-                    .padding(.top, 40)
-                    List{
+        ZStack {
+            Color.white
+                .ignoresSafeArea()
+            VStack {
+                HStack{
+                    Text("Chats")
+                        .font(.largeTitle)
+                        .padding()
+                    Button {
+                        presentUserInfo.toggle()
+                    } label: {
+                        ProfilePic(size: 30, images: [userImage!])
+                    }.padding()
+                }
+                .padding(.top, 40)
+                List{
+                    
+                    ForEach(firestoreChatDao.chats) { chat in
                         
-                        ForEach(firestoreChatDao.chats) { chat in
-                            
-                            ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: storage.getProfilePics(usersInChatList: chat.users_in_chat),read: false)
-                            
-                                .listRowSeparator(.hidden)
-                            
-                                .onTapGesture {
-                                    
-                                    state.usersInChat = chat.users_in_chat
-                                    state.chatId = chat.id
-                                    state.chatName = chat.chat_name
-                                    state.appState = .Message
-                                    print(usersInChat)
-                                }
-                            
-                        }.onDelete(perform: firestoreChatDao.deleteChat(at:))
+                        ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: storage.getProfilePics(usersInChatList: chat.users_in_chat))
                         
-                    }.refreshable{
+                            .listRowSeparator(.hidden)
                         
-                        do{
-                           try await storage.reload()
-                        }catch{
-                            let _ = error
-                        }
-                    }
+                            .onTapGesture {
+                                
+                                state.usersInChat = chat.users_in_chat
+                                state.chatId = chat.id
+                                state.chatName = chat.chat_name
+                                state.appState = .Message
+                                print(usersInChat)
+                            }
+                        
+                    }.onDelete(perform: firestoreChatDao.deleteChat(at:))
                     
-                    .listStyle(.plain)
+                }.refreshable{
                     
-                    Spacer()
-                    
-                }.sheet(isPresented: $presentUserInfo, content: {
-                    UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
-                    
-                }).onDisappear(){
-                    if imageChanged{
-                        changeUserImage()
+                    do{
+                        try await storage.reload()
+                    }catch{
+                        let _ = error
                     }
                 }
                 
-                VStack {
-                    
-                    Spacer()
-                    
-                    HStack {
-                        
-                        Spacer()
-                        
-                        Button {
-                            
-                            if isConnected{
-                                
-                                state.appState = .CreateChat
-                                
-                            }else{
-                                
-                                error = ErrorInfo(id: 1, title: "Not Connected", description: "You can't create a new chat when you are not connected to internet")
-                            }
-                            
-                        } label: {
-                            
-                            ZStack {
-                                
-                                Circle()
-                                    .fill(.green)
-                                    .frame(width: 50)
-                                Image(systemName: "pencil")
-                                    .foregroundColor(.white)
-                            }
-                            .frame(height: 50)
-                            
-                        }.alert(item: $error, content: { error in
-                            
-                            Alert(
-                                
-                                title: Text(error.title),
-                                message: Text(error.description)
-                            )
-                        })
-                        .padding(.trailing, 30)
-                    }
-                    .onDelete(perform: firestoreChatDao.deleteChat(at:))
-                }.refreshable {
-                    print("refreshing")
-                }
                 .listStyle(.plain)
                 
                 Spacer()
                 
-            }.onAppear{
-                print("currentUser: \(String(describing: userManager.currentUser))")
+            }.sheet(isPresented: $presentUserInfo, content: {
+                UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
                 
+            }).onDisappear(){
+                if imageChanged{
+                    changeUserImage()
+                }
+            }
+            
+            VStack {
                 
+                Spacer()
+                
+                HStack {
+                    
+                    Spacer()
+                    
+                    Button {
+                        
+                        if isConnected{
+                            
+                            state.appState = .CreateChat
+                            
+                        }else{
+                            
+                            error = ErrorInfo(id: 1, title: "Not Connected", description: "You can't create a new chat when you are not connected to internet")
+                        }
+                        
+                    } label: {
+                        
+                        ZStack {
+                            
+                            Circle()
+                                .fill(.green)
+                                .frame(width: 50)
+                            Image(systemName: "pencil")
+                                .foregroundColor(.white)
+                        }
+                        .frame(height: 50)
+                        
+                    }.alert(item: $error, content: { error in
+                        
+                        Alert(
+                            
+                            title: Text(error.title),
+                            message: Text(error.description)
+                        )
+                    })
+                    .padding(.trailing, 30)
+                }
             }
             .sheet(isPresented: $presentUserInfo, content: {
                 UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
@@ -171,53 +159,44 @@ struct ChatsView: View{
                         .frame(height: 50)
                     }.padding(.trailing, 30)
                 }
-            }
-        }.onAppear{
-            
-            if Reachability.isConnectedToNetwork(){
-                isConnected = true
-                print("Internet Connection Available!")
-            } else {
-                isConnected = false
-                print("Internet Connection Not Available!")
-            }
-                            
-            if ManageLoginInfo.loadLogin(){
+            }.onAppear{
                 
-                userDao.saveUser(newUser: userManager.currentUser!)
-                ManageLoginInfo.saveLogin(saveInfo: true)
+                if Reachability.isConnectedToNetwork(){
+                    isConnected = true
+                } else {
+                    isConnected = false
+                }
+                
+                if ManageLoginInfo.loadLogin(){
+                    
+                    userDao.saveUser(newUser: userManager.currentUser!)
+                    ManageLoginInfo.saveLogin(saveInfo: true)
+                }
+                imageChangeQueue {
+                    changeUserImage()
+                }
+                
+                //Firestore
+                firestoreChatDao.listenToFirestore()
+                FirestoreContactDao.firestoreContactDao.removeCurrentUser()
+                
+                //Storage
+                storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)                
+                
+                //Realm
+                realmChat.loadChats()
+                realmMessage.loadMessages()
+                
+                state.chatRealm = realmChat
+                state.messageRealm = realmMessage
+                
             }
-            imageChangeQueue {
-                changeUserImage()
+            .onDisappear{
+                
+                firestoreChatDao.removeChatListener()
+                realmChat.saveRemoteChats()
+                
             }
-            
-            //Firestore
-            firestoreChatDao.listenToFirestore()
-            FirestoreContactDao.firestoreContactDao.removeCurrentUser()
-            
-            //Storage
-            storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
-            print("rad 136")
-            //  imageChangeQueueRU {
-            print("registeredUsers.count = \(FirestoreContactDao.firestoreContactDao.registeredUsers.count)")
-            storage.loadChatProfilePics()
-            print("rad 140")
-            
-            //  }
-            
-            //Realm
-            realmChat.loadChats()
-            realmMessage.loadMessages()
-            
-            state.chatRealm = realmChat
-            state.messageRealm = realmMessage
-            
-        }
-        .onDisappear{
-            
-            firestoreChatDao.removeChatListener()
-            realmChat.saveRemoteChats()
-            
         }
     }
     
@@ -242,6 +221,5 @@ struct ChatsView: View{
             onComplete()
         }
     }
-    
     
 }

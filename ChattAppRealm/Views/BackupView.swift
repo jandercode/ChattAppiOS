@@ -20,14 +20,8 @@ struct BackupView: View {
         VStack{
             
             List{
-                
-                ForEach (presentationArray){ chat in
-                    
-                    
-                    ChatRow(chat: chat, chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: [UIImage(systemName: "person.circle")!])
                     
                     ForEach (presentationArray){ chat in
-                        
                         
                         ChatRow(chat: chat, chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: getProfilePic(chat: chat))
                         
@@ -57,8 +51,7 @@ struct BackupView: View {
                 
                 presentationArray = state.chatRealm!.chatsArray
             }
-    }
-    
+}
     
     func getProfilePic(chat: Chat) -> [UIImage]{
         
@@ -73,5 +66,5 @@ struct BackupView: View {
         return imageArray
         
     }
-}
 
+}
