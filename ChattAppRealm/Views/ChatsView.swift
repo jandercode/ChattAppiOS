@@ -146,7 +146,18 @@ struct ChatsView: View{
     
     func getProfilePic(chat: Chat) -> UIImage{
         
-        let userId = chat.users_in_chat[1]
+        var userId: String = ""
+        
+        if chat.users_in_chat.count > 1{
+            
+            userId = chat.users_in_chat[1]
+            
+        }else{
+            
+            userId = chat.users_in_chat[0]
+            
+        }
+        
         return userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
         
     }
