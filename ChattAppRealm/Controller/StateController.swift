@@ -17,6 +17,7 @@ import Foundation
     var chatName: String = ""
     
     var chatRealm : RealmChatDao? = nil
+    var messageRealm: RealmMessageDao? = nil
 
     
     func loginLogic(){
