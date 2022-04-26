@@ -13,29 +13,42 @@ struct BackupChatView: View {
     @State var filteredMessages = [Message]()
 
     var body: some View {
+        
+        VStack{
             
-        ScrollViewReader { proxy in
-            ScrollView {
-                ForEach(Array(filteredMessages.enumerated()), id: \.offset) { index, message in
-                    if index >= 1 {
-                        if !Calendar.current.isDate(state.messageRealm?.allMessages[index].timestamp ?? Date(), inSameDayAs: state.messageRealm?.allMessages[index-1].timestamp ?? Date()) {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    ForEach(Array(filteredMessages.enumerated()), id: \.offset) { index, message in
+                        if index >= 1 {
+                            if !Calendar.current.isDate(state.messageRealm?.allMessages[index].timestamp ?? Date(), inSameDayAs: state.messageRealm?.allMessages[index-1].timestamp ?? Date()) {
+                                DateRow(timestamp: message.timestamp ?? Date())
+                            }
+                        } else {
                             DateRow(timestamp: message.timestamp ?? Date())
                         }
-                    } else {
-                        DateRow(timestamp: message.timestamp ?? Date())
+                        
+                        MessageRow(message: message, image: UIImage(systemName: "person.circle")!, usersInChat: state.usersInChat)
+                            .id(index)
                     }
-                    
-                    MessageRow(message: message, image: UIImage(systemName: "person.circle")!, usersInChat: state.usersInChat)
-                        .id(index)
+                }
+                .onAppear {
+                    proxy.scrollTo((filteredMessages.count) - 1, anchor: .bottom)
                 }
             }
-            .onAppear {
-                proxy.scrollTo((filteredMessages.count) - 1, anchor: .bottom)
+            
+            Button {
+                
+                state.appState = .BackupPage
+                
+            } label: {
+                
+                Image(systemName: "chevron.left")
+                Text("Back")
             }
+            
         }.onAppear{
             
-            state.messageRealm?.filterMessages(chatId: state.chatId)
-            filteredMessages = state.messageRealm?.filteredMessages ?? []
+            filteredMessages = (state.messageRealm?.filteredMessages)!
             
         }
         

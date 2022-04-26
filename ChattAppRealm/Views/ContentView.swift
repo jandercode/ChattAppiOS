@@ -36,6 +36,8 @@ struct ContentView: View {
             NewChatView(state: state)
         case .BackupPage:
             BackupView(state: state)
+        case .BackupChat:
+            BackupChatView(state: state)
 //        default:
 //            LoginView(state: state)
             

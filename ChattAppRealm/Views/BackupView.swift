@@ -15,7 +15,6 @@ struct BackupView: View {
     
     var body: some View {
         
-        NavigationView{
             
             VStack{
                 
@@ -23,24 +22,29 @@ struct BackupView: View {
                     
                     ForEach (state.chatRealm!.chatsArray){ chat in
                         
+                        
                         ChatRow(chat: chat, chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: UIImage(systemName: "person.circle")! ,read: false)
                         
-                            .listRowSeparator(.hidden)
                             .onTapGesture {
                                 
                                 state.usersInChat = chat.users_in_chat
                                 state.chatId = chat.id
                                 state.chatName = chat.chat_name
-                                showChat = true
+                                state.messageRealm?.filterMessages(chatId: state.chatId)
+                                state.appState = .BackupChat
+                                
                             }
-                        
-                        NavigationLink(isActive: $showChat) {
-                            BackupChatView(state: state)
-                        } label: {
-                            Text("View Backup")
-                        }
-                        
                     }
+                }
+                
+                Button {
+                    
+                    state.appState = .Chats
+                    
+                } label: {
+                    
+                    Image(systemName: "chevron.left")
+                    Text("Exit")
                 }
                 
             }.onAppear{
@@ -54,7 +58,7 @@ struct BackupView: View {
                     state.messageRealm?.loadMessages()
                 }
             }
-        }
+        
         
     }
 }
