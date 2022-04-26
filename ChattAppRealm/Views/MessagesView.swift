@@ -181,43 +181,16 @@ struct MessagesView: View {
         }
         
         if index > -1 {
-            print("index > -1: \(index)")
             usersInChatMinusCurrent.remove(at: index)
         }
         
-        print("usersInChatMinusCurrent:\(usersInChatMinusCurrent))")
-       
         var profilePicArray = [UIImage]()
         for userId in usersInChatMinusCurrent {
             profilePicArray.append(UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!)
         }
-        print("profilePicArray: \(profilePicArray)")
-       // state.profilePicArray = profilePicArray
         return profilePicArray
- //       let userId = usersInChatMinusCurrent[0]
-       // return UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
         
     }
-    
-//    func getProfilePic(usersInChat: [String]) -> UIImage{
-//       // var usersInChatMinusCurrent : [String]
-//        var index = -1
-//        for user in usersInChat {
-//            if user == UserManager.userManager.currentUser?.id {
-//                index = usersInChat.firstIndex(of: user)!
-//            }
-//        }
-//
-//        if index > -1 {
-//            self.usersInChat.remove(at: index)
-//        }
-//
-//        print("usersInChatMinusCurrent:\(usersInChat))")
-//
-//        let userId = usersInChat[0]
-//        return UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
-//        
-//    }
 }
 
 extension View {
@@ -225,9 +198,3 @@ extension View {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
-
-//struct ChatView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MessagesView(chatId: "", usersInChat: [String](), chatName: "chat name")
-//    }
-//}
