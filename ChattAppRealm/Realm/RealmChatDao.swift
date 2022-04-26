@@ -26,6 +26,7 @@ class RealmChatDao{
         let chats = realm.objects(Chat.self)
         
         for chat in chats{
+            chat.users_in_chat = chat.chat_name.components(separatedBy: ", ")
             chatsArray.append(chat)
         }
     }
