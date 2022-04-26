@@ -48,6 +48,7 @@ struct ChatsView: View{
                             ProfilePic(size: 30, image: userImage!)
                         }.padding()
                     }
+                    .padding(.top, 40)
                     List{
                         
                         ForEach(firestoreChatDao.chats) { chat in

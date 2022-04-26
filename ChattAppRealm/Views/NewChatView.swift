@@ -9,9 +9,9 @@ import SwiftUI
 import Firebase
 
 struct NewChatView: View {
-        
+    
     @State var showChatView = false
-
+    
     @State var usersInChat : [String] = [UserManager.userManager.currentUser?.id ?? User().id]
     
     @State private var searchTerm: String = ""
@@ -23,8 +23,10 @@ struct NewChatView: View {
     @ObservedObject var state: StateController
     
     var body: some View {
-            
-            VStack {
+        
+        VStack {
+            HStack {
+                
                 Button(action: {
                     state.appState = .Chats
                 }, label: {
@@ -32,72 +34,76 @@ struct NewChatView: View {
                     Text("Back")
                 })
                     .padding(.leading)
+                    .padding(.top, 20)
                 Spacer()
-                
-                HStack {
-                    
-                    Text("To:")
-                    TextField("Type a name or group", text: $searchTerm)
-                        .autocapitalization(.none)
-
-                }
-                    
-                    List(searchResult(), id: \.self, selection: $selection){ user in
-                            
-                            Text(user.username)
-
-                    }
-                    .searchable(text: $searchTerm)
-                }
-                .environment(\.editMode, self.$isEditMode)
-                
-            Spacer()
-                
-                HStack{
-                    
-                    Button {
-                    
-                        for user in selection{
-                            
-                            usersInChat.append(user.id)
-                        }
-                        
-                        removeDoubles()
-                        let newChat = checkIfChatExists()
-                        
-                        if newChat == ""{
-                            
-                            state.chatId = ""
-                            state.usersInChat = usersInChat
-                            newChatName = FirestoreChatDao.firestoreChatDao.createChatName(usersInChat: usersInChat)
-                            state.chatName = FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: newChatName)
-                            
-                            
-                        }else{
-                            
-                            var chat: Chat?
-                            
-                            for oldChat in FirestoreChatDao.firestoreChatDao.chats{
-                                if oldChat.id == newChat{
-                                    chat = oldChat
-                                }
-                            }
-                            state.chatId = chat!.id
-                            state.usersInChat = chat!.users_in_chat
-                            state.chatName = chat!.chat_name
-                            print("exists!!")
-                        }
-                        
-                        state.appState = .Message
-
-                        
-                    } label: {
-                        
-                        Text("Start Chatting!!")
-                        
-                    }
-                }                
             }
+           // Spacer()
+            
+            HStack {
+                
+                Text("To:")
+                TextField("Type a name or group", text: $searchTerm)
+                    .autocapitalization(.none)
+                
+            }
+            .padding()
+            
+            List(searchResult(), id: \.self, selection: $selection){ user in
+                
+                Text(user.username)
+                
+            }
+            .searchable(text: $searchTerm)
+        }
+        .environment(\.editMode, self.$isEditMode)
+        
+        Spacer()
+        
+        HStack{
+            
+            Button {
+                
+                for user in selection{
+                    
+                    usersInChat.append(user.id)
+                }
+                
+                removeDoubles()
+                let newChat = checkIfChatExists()
+                
+                if newChat == ""{
+                    
+                    state.chatId = ""
+                    state.usersInChat = usersInChat
+                    newChatName = FirestoreChatDao.firestoreChatDao.createChatName(usersInChat: usersInChat)
+                    state.chatName = FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: newChatName)
+                    
+                    
+                }else{
+                    
+                    var chat: Chat?
+                    
+                    for oldChat in FirestoreChatDao.firestoreChatDao.chats{
+                        if oldChat.id == newChat{
+                            chat = oldChat
+                        }
+                    }
+                    state.chatId = chat!.id
+                    state.usersInChat = chat!.users_in_chat
+                    state.chatName = chat!.chat_name
+                    print("exists!!")
+                }
+                
+                state.appState = .Message
+                
+                
+            } label: {
+                
+                Text("Start Chatting!!")
+                
+            }
+        }
+    }
     
     
     
@@ -140,7 +146,7 @@ struct NewChatView: View {
         }
         print("not found")
         return ""
-       
+        
     }
     
     func searchResult() -> [User]{
@@ -149,8 +155,9 @@ struct NewChatView: View {
         
         if !searchTerm.isEmpty {
             
+            FirestoreContactDao.firestoreContactDao.removeCurrentUser()
             for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
-                                
+                
                 if user.username.localizedCaseInsensitiveContains(searchTerm) {
                     
                     result.append(user)
