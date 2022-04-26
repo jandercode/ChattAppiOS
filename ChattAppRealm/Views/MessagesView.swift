@@ -49,7 +49,8 @@ struct MessagesView: View {
                     Button {
                         showUsernames.toggle()
                     } label: {
-                        ProfilePic(size: 30, image: getProfilePic(usersInChat: usersInChat))
+                       // ProfilePic(size: 30, image: getProfilePic(usersInChat: usersInChat))
+                        ProfilePic(size: 30, images: [state.profilePicArray ?? UIImage(systemName: "person.circle")!])
                         Text(firestoreChatDao.removeCurrentFromChatName(chatName: chatName))
                             .foregroundColor(Color.black)
                             .lineLimit(1)
@@ -120,7 +121,6 @@ struct MessagesView: View {
                         messageDao.saveMessage(message: message)
                         messageText = ""
                         firestoreMessageDao.listenToFirestore(chatId: chatId)
-                     //   getProfilePic(usersInChat: usersInChat)
                     }
                 } label: {
                     Text("Send")
@@ -168,19 +168,24 @@ struct MessagesView: View {
         return UIImage(systemName: "person.circle")!
         
     }
-
     
     func getProfilePic(usersInChat: [String]) -> UIImage{
+       // var usersInChatMinusCurrent : [String]
+        var index = -1
+        for user in usersInChat {
+            if user == UserManager.userManager.currentUser?.id {
+                index = usersInChat.firstIndex(of: user)!
+            }
+        }
         
-        let usersInChatMinusCurrent = usersInChat.firstIndex(of: UserManager.userManager.currentUser?.id ?? User().id)
+        if index > -1 {
+            self.usersInChat.remove(at: index)
+        }
         
-        usersInChat.firstIndex(of:UserManager.userManager.currentUser?.id ?? User().id)
-//        usersInChat.remove(at: ind)
-        
-        
-        print("usersInChatMinusCurrent:\(String(describing: usersInChatMinusCurrent))")
-        let userId = usersInChat[1]
-        return userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
+        print("usersInChatMinusCurrent:\(usersInChat))")
+       
+        let userId = usersInChat[0]
+        return UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
         
     }
 }

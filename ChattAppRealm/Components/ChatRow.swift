@@ -9,7 +9,7 @@ import SwiftUI
 struct ChatRow: View {
     var chat: Chat
     var chatName: String
-    var profilePic: UIImage
+    var profilePic: [UIImage]
     var read: Bool
     var timestampFormatter = TimestampFormatter()
     @State var formattedTime = ""
@@ -17,7 +17,7 @@ struct ChatRow: View {
     var body: some View {
         HStack {
             ZStack {
-                ProfilePic(size: 45, image: profilePic)
+                ProfilePic(size: 45, images: profilePic)
             }
             VStack(alignment: .leading) {
                 Text(chatName)
