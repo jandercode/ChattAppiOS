@@ -25,7 +25,13 @@ struct NewChatView: View {
     var body: some View {
             
             VStack {
-                
+                Button(action: {
+                    state.appState = .Chats
+                }, label: {
+                    Image(systemName: "chevron.backward")
+                    Text("Back")
+                })
+                    .padding(.leading)
                 Spacer()
                 
                 HStack {

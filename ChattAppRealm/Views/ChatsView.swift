@@ -34,7 +34,6 @@ struct ChatsView: View{
     
     var body: some View{
         
-        NavigationView {
             ZStack {
                 Color.white
                     .ignoresSafeArea()
@@ -71,10 +70,6 @@ struct ChatsView: View{
                     
                     Spacer()
                     
-                    NavigationLink(destination: NewChatView(state: state), isActive: $showNewChatView) {
-                        EmptyView()
-                    }.isDetailLink(false)
-                    
                 }.onAppear{
                     print("currentUser: \(String(describing: userManager.currentUser))")
                     
@@ -93,7 +88,7 @@ struct ChatsView: View{
                     HStack {
                         Spacer()
                         Button {
-                            showNewChatView = true
+                            state.appState = .CreateChat
                         } label: {
                             ZStack {
                                 Circle()
@@ -106,8 +101,7 @@ struct ChatsView: View{
                         }.padding(.trailing, 30)
                     }
                 }
-            }
-        }.onAppear{
+            }.onAppear{
             
             if Reachability.isConnectedToNetwork(){
                 isConnected = true
@@ -146,6 +140,7 @@ struct ChatsView: View{
             firestoreChatDao.removeChatListener()
             
         }
+    
     }
     
     func getProfilePic(chat: Chat) -> UIImage{
