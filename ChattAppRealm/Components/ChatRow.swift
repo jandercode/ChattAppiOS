@@ -34,7 +34,7 @@ struct ChatRow: View {
         }
         .padding(3)
         .onAppear{
-            FirestoreMessageDao.firestoreMessageDao.listenToFirestore(chatId: chat.id)
+            //FirestoreMessageDao.firestoreMessageDao.listenToFirestore()
             formattedTime = timestampFormatter.formatChatRowTimestampString(timestamp: chat.timestamp ?? Date())
         }
     }

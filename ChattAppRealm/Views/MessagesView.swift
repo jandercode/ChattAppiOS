@@ -146,7 +146,6 @@ struct MessagesView: View {
                 print("name \(chatName)")
                 print("users \(usersInChat)")
                 firestoreMessageDao.messages.removeAll()
-                firestoreMessageDao.stopListen()
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
                 
 //                imageChangeQueue {
@@ -154,11 +153,11 @@ struct MessagesView: View {
 //                }
 
             }
+            
         }.onDisappear{
             
             //messageDao.saveRecievedMessage()
-            
-            
+            firestoreMessageDao.stopListen()
         }
     }
     
@@ -179,9 +178,9 @@ struct MessagesView: View {
     
     func getProfilePic(usersInChat: [String]) -> UIImage{
         
-        let usersInChatMinusCurrent = usersInChat.index(of: UserManager.userManager.currentUser?.id ?? User().id)
+        let usersInChatMinusCurrent = usersInChat.firstIndex(of: UserManager.userManager.currentUser?.id ?? User().id)
         
-        let ind = usersInChat.firstIndex(of:UserManager.userManager.currentUser?.id ?? User().id)
+        usersInChat.firstIndex(of:UserManager.userManager.currentUser?.id ?? User().id)
 //        usersInChat.remove(at: ind)
         
         

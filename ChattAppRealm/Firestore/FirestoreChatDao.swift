@@ -17,6 +17,8 @@ class FirestoreChatDao : ObservableObject {
     @Published var chats = [Chat]()
     @Published var chatName = ""
     
+    var listener: ListenerRegistration? = nil
+    
     private let CHATS_COLLECTION = "chats"
     private let USERS_IN_CHAT_KEY = "users_in_chat"
     private let ID_KEY = "id"
@@ -102,8 +104,8 @@ class FirestoreChatDao : ObservableObject {
     }
 
     func listenToFirestore() {
-        print("listenToFirestore-currentUser \(UserManager.userManager.currentUser?.id ?? User().id)")
-        db.collection(CHATS_COLLECTION).whereField("users_in_chat", arrayContains: "\(UserManager.userManager.currentUser?.id ?? User().id)" ).order(by: "timestamp", descending: true).addSnapshotListener { snapshot, err in
+
+        listener = db.collection(CHATS_COLLECTION).whereField("users_in_chat", arrayContains: "\(UserManager.userManager.currentUser?.id ?? User().id)" ).order(by: "timestamp", descending: true).addSnapshotListener { snapshot, err in
             guard let snapshot = snapshot else { return }
             if let err = err {
                 print("Error getting document \(err)")
@@ -123,4 +125,14 @@ class FirestoreChatDao : ObservableObject {
             }
         }
     }
+    
+    func removeChatListener(){
+        
+        listener?.remove()
+        
+    }
+    
+    
+    
+    
 }

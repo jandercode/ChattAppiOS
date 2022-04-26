@@ -51,16 +51,13 @@ class FirestoreMessageDao : ObservableObject {
                 snapshotWoo = db.collection(CHATS_COLLECTION).document(chatId).collection(MESSAGES_COLLECTION).order(by: "timestamp", descending: false).addSnapshotListener { snapshot, err in
                 
                   //  self.snapshotWoo = snapshot
-                    if snapshot == nil {
-                        print("snapshot = nil")
-                        return
-                    }
+                    guard let snapshot = snapshot else {return}
                     
                 if let err = err {
                     print("Error getting document \(err)")
                 } else {
                     self.messages.removeAll()
-                    for document in snapshot!.documents {
+                    for document in snapshot.documents {
                         let result = Result {
                             try document.data(as: Message.self)
                         }

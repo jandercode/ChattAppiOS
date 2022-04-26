@@ -141,6 +141,11 @@ struct ChatsView: View{
             realmMessage.loadMessages()
             
         }
+        .onDisappear{
+            
+            firestoreChatDao.removeChatListener()
+            
+        }
     }
     
     func getProfilePic(chat: Chat) -> UIImage{
