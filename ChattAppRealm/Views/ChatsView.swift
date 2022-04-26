@@ -31,6 +31,8 @@ struct ChatsView: View{
     let realmMessage = RealmMessageDao()
     let realmChat = RealmChatDao()
     
+    @State private var error: ErrorInfo?
+    
     
     var body: some View{
         
@@ -90,7 +92,12 @@ struct ChatsView: View{
                     HStack {
                         Spacer()
                         Button {
-                            state.appState = .CreateChat
+                            if isConnected{
+                                state.appState = .CreateChat
+                            }else{
+                                error = ErrorInfo(id: 1, title: "Not Connected", description: "You can't create a new chat when you are not connected to internet")
+                            }
+                            
                         } label: {
                             ZStack {
                                 Circle()
@@ -100,7 +107,16 @@ struct ChatsView: View{
                                     .foregroundColor(.white)
                             }
                             .frame(height: 50)
-                        }.padding(.trailing, 30)
+                            
+                        }.alert(item: $error, content: { error in
+                            
+                            Alert(
+                                
+                                title: Text(error.title),
+                                message: Text(error.description)
+                            )
+                        })
+                        .padding(.trailing, 30)
                     }
                 }
             }.onAppear{
