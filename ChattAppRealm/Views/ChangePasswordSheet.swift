@@ -31,34 +31,34 @@ struct changePasswordSheet: View {
             HStack{
                 
                 SecureInputView("Old Password", text: $oldPassword)
-                        .padding()
-                        .textFieldStyle(.roundedBorder)
-                        .autocapitalization(.none)
-                        .disableAutocorrection(true)
+                    .padding()
+                    .textFieldStyle(.roundedBorder)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
             }
             
             HStack{
                 
                 SecureInputView("New Password", text: $newPassword)
-                        .padding()
-                        .textFieldStyle(.roundedBorder)
-                        .autocapitalization(.none)
-                        .disableAutocorrection(true)
+                    .padding()
+                    .textFieldStyle(.roundedBorder)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
                 
             }
             
             HStack{
                 
                 SecureInputView("Repeat New Password", text: $repeatNewPassword)
-                        .padding()
-                        .textFieldStyle(.roundedBorder)
-                        .autocapitalization(.none)
-                        .disableAutocorrection(true)
+                    .padding()
+                    .textFieldStyle(.roundedBorder)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
                 
             }
-        
+            
             HStack{
-                    
+                
                 Button {
                     
                     if UserManager.userManager.currentUser?.password == oldPassword{
@@ -66,7 +66,7 @@ struct changePasswordSheet: View {
                         if oldPassword != newPassword{
                             
                             if Validators.textFieldValidatorPassword(newPassword, repeatNewPassword){
-
+                                
                                 ManageLoginInfo.saveLogin(saveInfo: false)
                                 firestore.upadateCurrentUserData(data: newPassword, operation: ActionType.password)
                                 print(ManageLoginInfo.loadLogin())
@@ -86,9 +86,9 @@ struct changePasswordSheet: View {
                         
                         error = ErrorInfo(id: 1, title: "Error", description: "The old password is wrong")
                     }
-                
+                    
                 } label: {
-                
+                    
                     Text("Save")
                         .padding()
                         .background(Color.blue)
@@ -96,14 +96,14 @@ struct changePasswordSheet: View {
                         .cornerRadius(10)
                 }
                 .padding()
-            
-                Button {
                 
+                Button {
+                    
                     print("canceled")
                     dismiss()
-                
+                    
                 } label: {
-                
+                    
                     Text("Return")
                         .padding()
                         .background(Color.red)
@@ -121,7 +121,7 @@ struct changePasswordSheet: View {
                 message: Text(error.description)
             )
         })
-        .padding()
+            .padding()
         
     }
 }

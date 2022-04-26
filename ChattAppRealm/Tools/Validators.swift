@@ -50,12 +50,12 @@ class Validators{
                 }
             }
         }
-            return false
+        return false
     }
     
     
     static func checkForSameEmail(newEmail: String, registeredUsers: [User]) -> Bool{
-                
+        
         if !registeredUsers.isEmpty{
             
             for user in registeredUsers{
@@ -70,8 +70,8 @@ class Validators{
                 }
             }
         }
-            
-            return false
+        
+        return false
         
     }
     

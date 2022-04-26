@@ -37,7 +37,7 @@ struct SecureInputView: View {
                 
             }) {
                 Image(systemName: self.isSecured ? "eye.slash" : "eye")
-                .accentColor(.gray)
+                    .accentColor(.gray)
                 
             }
             

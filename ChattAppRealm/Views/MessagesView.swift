@@ -28,7 +28,7 @@ struct MessagesView: View {
     let chatDao = RealmChatDao()
     let messageDao = RealmMessageDao()
     let storage = StorageManager()
-
+    
     @State var showUsernames = false
     
     @State var newChat : Chat? = nil
@@ -50,15 +50,15 @@ struct MessagesView: View {
                     Button {
                         showUsernames.toggle()
                     } label: {
-                       // ProfilePic(size: 30, image: getProfilePic(usersInChat: usersInChat))
-                        ProfilePic(size: 30, images: storage.getProfilePics(usersInChatList: usersInChat) ?? [UIImage(systemName: "person.circle")!])
+                        // ProfilePic(size: 30, image: getProfilePic(usersInChat: usersInChat))
+                        ProfilePic(size: 30, images: storage.getProfilePics(usersInChatList: usersInChat) )
                         Text(firestoreChatDao.removeCurrentFromChatName(chatName: chatName))
                             .foregroundColor(Color.black)
                             .lineLimit(1)
                     }
                     
                 }.padding()
-                    Spacer()
+                Spacer()
                 
             }
             
@@ -146,7 +146,7 @@ struct MessagesView: View {
                 print("users \(usersInChat)")
                 firestoreMessageDao.messages.removeAll()
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
-
+                
             }
             
         }.onDisappear{
@@ -185,39 +185,13 @@ struct MessagesView: View {
             usersInChatMinusCurrent.remove(at: index)
         }
         
-        print("usersInChatMinusCurrent:\(usersInChatMinusCurrent))")
-       
         var profilePicArray = [UIImage]()
         for userId in usersInChatMinusCurrent {
             profilePicArray.append(UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!)
         }
-        print("profilePicArray: \(profilePicArray)")
-       // state.profilePicArray = profilePicArray
         return profilePicArray
- //       let userId = usersInChatMinusCurrent[0]
-       // return UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
         
     }
-    
-//    func getProfilePic(usersInChat: [String]) -> UIImage{
-//       // var usersInChatMinusCurrent : [String]
-//        var index = -1
-//        for user in usersInChat {
-//            if user == UserManager.userManager.currentUser?.id {
-//                index = usersInChat.firstIndex(of: user)!
-//            }
-//        }
-//
-//        if index > -1 {
-//            self.usersInChat.remove(at: index)
-//        }
-//
-//        print("usersInChatMinusCurrent:\(usersInChat))")
-//
-//        let userId = usersInChat[0]
-//        return UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
-//        
-//    }
 }
 
 extension View {
@@ -225,9 +199,3 @@ extension View {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
-
-//struct ChatView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MessagesView(chatId: "", usersInChat: [String](), chatName: "chat name")
-//    }
-//}

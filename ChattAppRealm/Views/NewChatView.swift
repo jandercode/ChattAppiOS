@@ -167,10 +167,3 @@ struct NewChatView: View {
         
     }
 }
-
-//struct NewChatView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NewChatView()
-//    }
-//}
-

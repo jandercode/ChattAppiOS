@@ -16,73 +16,73 @@ struct BackupView: View {
     
     var body: some View {
         
+        
+        VStack{
             
-            VStack{
+            List{
                 
-                List{
-                    
-                    ForEach (presentationArray){ chat in
-                        
-                        
-                        ChatRow(chat: chat, chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: UIImage(systemName: "person.circle")! ,read: false)
-                        
-                            .onTapGesture {
-                                
-                                state.usersInChat = chat.users_in_chat
-                                state.chatId = chat.id
-                                state.chatName = chat.chat_name
-                                state.messageRealm?.filterMessages(chatId: state.chatId)
-                                state.appState = .BackupChat
-                                
-                            }
-                    }
-                }
-                
-                HStack{
-                    
-                    Button {
-                        
-                        state.appState = .Chats
-                        
-                    } label: {
-                        
-                        Image(systemName: "chevron.left")
-                        Text("Exit")
-                    }
-                    .padding()
+                ForEach (presentationArray){ chat in
                     
                     
-                    Button {
-                        
-                        state.chatRealm?.chatsArray.removeAll()
-                        state.messageRealm?.allMessages.removeAll()
-                        presentationArray.removeAll()
-                        state.messageRealm?.deleteAllMessages()
-                        state.chatRealm?.deleteAllChats()
-                        state.appState = .Chats
-                        
-                    } label: {
-                        Text("Erase All")
-                            .foregroundColor(.red)
-                    }
-                    .padding()
+                    ChatRow(chat: chat, chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: [UIImage(systemName: "person.circle")!])
+                    
+                        .onTapGesture {
+                            
+                            state.usersInChat = chat.users_in_chat
+                            state.chatId = chat.id
+                            state.chatName = chat.chat_name
+                            state.messageRealm?.filterMessages(chatId: state.chatId)
+                            state.appState = .BackupChat
+                            
+                        }
                 }
-                
-                
-                
-            }.onAppear{
-                
-                if state.chatRealm == nil{
-                    state.chatRealm = RealmChatDao()
-                    state.chatRealm?.loadChats()
-                }
-                if state.messageRealm == nil{
-                    state.messageRealm = RealmMessageDao()
-                    state.messageRealm?.loadMessages()
-                }
-                
-                presentationArray = state.chatRealm!.chatsArray
             }
+            
+            HStack{
+                
+                Button {
+                    
+                    state.appState = .Chats
+                    
+                } label: {
+                    
+                    Image(systemName: "chevron.left")
+                    Text("Exit")
+                }
+                .padding()
+                
+                
+                Button {
+                    
+                    state.chatRealm?.chatsArray.removeAll()
+                    state.messageRealm?.allMessages.removeAll()
+                    presentationArray.removeAll()
+                    state.messageRealm?.deleteAllMessages()
+                    state.chatRealm?.deleteAllChats()
+                    state.appState = .Chats
+                    
+                } label: {
+                    Text("Erase All")
+                        .foregroundColor(.red)
+                }
+                .padding()
+            }
+            
+            
+            
+        }.onAppear{
+            
+            if state.chatRealm == nil{
+                state.chatRealm = RealmChatDao()
+                state.chatRealm?.loadChats()
+            }
+            if state.messageRealm == nil{
+                state.messageRealm = RealmMessageDao()
+                state.messageRealm?.loadMessages()
+            }
+            
+            presentationArray = state.chatRealm!.chatsArray
+        }
     }
 }
 

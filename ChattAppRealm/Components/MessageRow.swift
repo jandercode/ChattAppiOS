@@ -27,29 +27,29 @@ struct MessageRow: View {
                 }
             }
             
-        HStack {
-            if message.sender != UserManager.userManager.currentUser?.id {
-                ProfilePic(size: 40, images: [image])
-            } else {
-                Spacer()
-                Text(formattedTimestamp)
-                    .foregroundColor(.gray)
-                    .font(.system(size: 12))
-            }
+            HStack {
+                if message.sender != UserManager.userManager.currentUser?.id {
+                    ProfilePic(size: 40, images: [image])
+                } else {
+                    Spacer()
+                    Text(formattedTimestamp)
+                        .foregroundColor(.gray)
+                        .font(.system(size: 12))
+                }
                 Text(message.text)
                     .padding(10)
                     .foregroundColor(message.sender == UserManager.userManager.currentUser?.id ? Color.white : Color.black)
                     .background(message.sender == UserManager.userManager.currentUser?.id ? Color.blue : Color(UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0)))
                     .cornerRadius(10)
-            
-            if message.sender != UserManager.userManager.currentUser?.id {
-                Text(formattedTimestamp)
-                    .foregroundColor(.gray)
-                    .font(.system(size: 12))
-                Spacer()
-            }
-        }.padding(.horizontal)
-    }
+                
+                if message.sender != UserManager.userManager.currentUser?.id {
+                    Text(formattedTimestamp)
+                        .foregroundColor(.gray)
+                        .font(.system(size: 12))
+                    Spacer()
+                }
+            }.padding(.horizontal)
+        }
         .onAppear {
             formattedTimestamp = timestampFormatter.formatMessageRowTimestampString(timestamp: message.timestamp ?? Date())
         }
@@ -57,7 +57,7 @@ struct MessageRow: View {
     
     func getUsername(userId : String) -> String {
         for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
-                            
+            
             if userId == user.id {
                 
                 return user.username
@@ -67,9 +67,3 @@ struct MessageRow: View {
         return ""
     }
 }
-
-//struct MessageRow_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MessageRow()
-//    }
-//}

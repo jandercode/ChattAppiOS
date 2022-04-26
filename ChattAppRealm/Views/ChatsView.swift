@@ -34,76 +34,76 @@ struct ChatsView: View{
     
     var body: some View{
         
-            ZStack {
-                Color.white
-                    .ignoresSafeArea()
-                VStack {
-                    HStack{
-                        Text("Chats")
-                            .font(.largeTitle)
-                            .padding()
-                        Button {
-                            presentUserInfo.toggle()
-                        } label: {
-                            ProfilePic(size: 30, images: [userImage!])
-                        }.padding()
-                    }
-                    .padding(.top, 40)
-                    List{
+        ZStack {
+            Color.white
+                .ignoresSafeArea()
+            VStack {
+                HStack{
+                    Text("Chats")
+                        .font(.largeTitle)
+                        .padding()
+                    Button {
+                        presentUserInfo.toggle()
+                    } label: {
+                        ProfilePic(size: 30, images: [userImage!])
+                    }.padding()
+                }
+                .padding(.top, 40)
+                List{
+                    
+                    ForEach(firestoreChatDao.chats) { chat in
                         
-                        ForEach(firestoreChatDao.chats) { chat in
-                            
-                            ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: storage.getProfilePics(usersInChatList: chat.users_in_chat),read: false)
-                            
-                                .listRowSeparator(.hidden)
-                                .onTapGesture {
-                                    state.usersInChat = chat.users_in_chat
-                                    state.chatId = chat.id
-                                    state.chatName = chat.chat_name
-                                    state.appState = .Message
-                                    print(usersInChat)
-                                }
-                        }
-                        .onDelete(perform: firestoreChatDao.deleteChat(at:))
-                    }.refreshable {
-                        print("refreshing")
-                    }
-                    .listStyle(.plain)
-                    
-                    Spacer()
-                    
-                }.onAppear{
-                    print("currentUser: \(String(describing: userManager.currentUser))")
-                    
-                    
-                }
-                .sheet(isPresented: $presentUserInfo, content: {
-                    UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
-                }).onDisappear(){
-                    if imageChanged{
-                        changeUserImage()
-                    }
-                }
-                
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Button {
-                            state.appState = .CreateChat
-                        } label: {
-                            ZStack {
-                                Circle()
-                                    .fill(.green)
-                                    .frame(width: 50)
-                                Image(systemName: "pencil")
-                                    .foregroundColor(.white)
+                        ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: storage.getProfilePics(usersInChatList: chat.users_in_chat))
+                        
+                            .listRowSeparator(.hidden)
+                            .onTapGesture {
+                                state.usersInChat = chat.users_in_chat
+                                state.chatId = chat.id
+                                state.chatName = chat.chat_name
+                                state.appState = .Message
+                                print(usersInChat)
                             }
-                            .frame(height: 50)
-                        }.padding(.trailing, 30)
                     }
+                    .onDelete(perform: firestoreChatDao.deleteChat(at:))
+                }.refreshable {
+                    print("refreshing")
                 }
+                .listStyle(.plain)
+                
+                Spacer()
+                
             }.onAppear{
+                print("currentUser: \(String(describing: userManager.currentUser))")
+                
+                
+            }
+            .sheet(isPresented: $presentUserInfo, content: {
+                UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
+            }).onDisappear(){
+                if imageChanged{
+                    changeUserImage()
+                }
+            }
+            
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button {
+                        state.appState = .CreateChat
+                    } label: {
+                        ZStack {
+                            Circle()
+                                .fill(.green)
+                                .frame(width: 50)
+                            Image(systemName: "pencil")
+                                .foregroundColor(.white)
+                        }
+                        .frame(height: 50)
+                    }.padding(.trailing, 30)
+                }
+            }
+        }.onAppear{
             
             if Reachability.isConnectedToNetwork(){
                 isConnected = true
@@ -134,17 +134,17 @@ struct ChatsView: View{
             print("rad 134")
             storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
             print("rad 136")
-              //  imageChangeQueueRU {
-                    print("registeredUsers.count = \(FirestoreContactDao.firestoreContactDao.registeredUsers.count)")
-                    storage.loadChatProfilePics()
-                    print("rad 140")
-
-              //  }
+            //  imageChangeQueueRU {
+            print("registeredUsers.count = \(FirestoreContactDao.firestoreContactDao.registeredUsers.count)")
+            storage.loadChatProfilePics()
+            print("rad 140")
+            
+            //  }
             
             //Realm
             realmChat.loadChats()
             realmMessage.loadMessages()
-                
+            
             state.chatRealm = realmChat
             state.messageRealm = realmMessage
             

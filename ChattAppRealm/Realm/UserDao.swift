@@ -19,7 +19,7 @@ class UserDao{
         var userLoginData : [String:String] = [:]
         
         print(users.count)
-
+        
         if !users.isEmpty{
             
             UserManager.userManager.currentUser = users[0]
@@ -47,25 +47,25 @@ class UserDao{
         }.first
         
         if user == nil{
-                        
+            
             try! realm.write({
                 
                 realm.add(newUser)
                 
             })
         }
-
+        
     }
     
     func eraseUserData(){
         
         let realm = try! Realm()
         let users = realm.objects(User.self)
-                    
-            try! realm.write({
-                realm.delete(users)
-            })
-            
+        
+        try! realm.write({
+            realm.delete(users)
+        })
+        
         
     }
 }

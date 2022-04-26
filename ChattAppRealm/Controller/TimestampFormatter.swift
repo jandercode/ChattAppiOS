@@ -11,8 +11,6 @@ struct TimestampFormatter {
     
     func formatChatRowTimestampString(timestamp: Date) -> String {
         
-        let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: timestamp)
-
         let timeFormatter = DateFormatter()
         timeFormatter.timeStyle = .short
         let timeString = timeFormatter.string(from: timestamp)
@@ -21,22 +19,17 @@ struct TimestampFormatter {
         dateFormatter.dateFormat = "d MMMM yyyy"
         let dateString = dateFormatter.string(from: timestamp)
         
-        let currentMinute = Calendar.current.component(.minute, from: Date())
-        
         let isToday = Calendar.current.isDateInToday(timestamp)
         let isYesterday = Calendar.current.isDateInYesterday(timestamp)
-        let isThisMinute = components.minute == currentMinute
-                
-            switch true {
-            case isThisMinute:
-                return "just now"
-            case isToday:
-                return timeString
-            case isYesterday:
-                return "Yesterday"
-            default:
-                return dateString
-            }
+        
+        switch true {
+        case isToday:
+            return timeString
+        case isYesterday:
+            return "Yesterday"
+        default:
+            return dateString
+        }
     }
     
     func formatMessageRowTimestampString(timestamp: Date) -> String {
