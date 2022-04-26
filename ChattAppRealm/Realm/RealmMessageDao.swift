@@ -68,5 +68,18 @@ class RealmMessageDao{
         
     }
     
+    func deleteAllMessages(){
+        
+        let messages = realm.objects(Message.self)
+        
+        try! realm.write({
+            
+            realm.delete(messages)
+            
+        })
+        
+        
+    }
+    
     
 }

@@ -63,4 +63,13 @@ class RealmChatDao{
         })
     }
     
+    func deleteAllChats(){
+        
+        let chats = realm.objects(Chat.self)
+        
+        try! realm.write({
+            realm.delete(chats)
+        })
+    }
+    
 }

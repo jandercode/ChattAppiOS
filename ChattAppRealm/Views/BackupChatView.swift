@@ -35,16 +35,19 @@ struct BackupChatView: View {
                     proxy.scrollTo((filteredMessages.count) - 1, anchor: .bottom)
                 }
             }
-            
-            Button {
+            HStack{
                 
-                state.appState = .BackupPage
-                
-            } label: {
-                
-                Image(systemName: "chevron.left")
-                Text("Back")
+                Button {
+                    
+                    state.appState = .BackupPage
+                    
+                } label: {
+                    
+                    Image(systemName: "chevron.left")
+                    Text("Back")
+                }
             }
+            
             
         }.onAppear{
             

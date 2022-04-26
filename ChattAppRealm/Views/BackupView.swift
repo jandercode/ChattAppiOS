@@ -12,6 +12,7 @@ struct BackupView: View {
     @ObservedObject var state: StateController
     
     @State var showChat = false
+    @State var presentationArray = [Chat]()
     
     var body: some View {
         
@@ -20,7 +21,7 @@ struct BackupView: View {
                 
                 List{
                     
-                    ForEach (state.chatRealm!.chatsArray){ chat in
+                    ForEach (presentationArray){ chat in
                         
                         
                         ChatRow(chat: chat, chatName: FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: UIImage(systemName: "person.circle")! ,read: false)
@@ -37,15 +38,37 @@ struct BackupView: View {
                     }
                 }
                 
-                Button {
+                HStack{
                     
-                    state.appState = .Chats
+                    Button {
+                        
+                        state.appState = .Chats
+                        
+                    } label: {
+                        
+                        Image(systemName: "chevron.left")
+                        Text("Exit")
+                    }
+                    .padding()
                     
-                } label: {
                     
-                    Image(systemName: "chevron.left")
-                    Text("Exit")
+                    Button {
+                        
+                        state.chatRealm?.chatsArray.removeAll()
+                        state.messageRealm?.allMessages.removeAll()
+                        presentationArray.removeAll()
+                        state.messageRealm?.deleteAllMessages()
+                        state.chatRealm?.deleteAllChats()
+                        state.appState = .Chats
+                        
+                    } label: {
+                        Text("Erase All")
+                            .foregroundColor(.red)
+                    }
+                    .padding()
                 }
+                
+                
                 
             }.onAppear{
                 
@@ -57,9 +80,9 @@ struct BackupView: View {
                     state.messageRealm = RealmMessageDao()
                     state.messageRealm?.loadMessages()
                 }
+                
+                presentationArray = state.chatRealm!.chatsArray
             }
-        
-        
     }
 }
 
