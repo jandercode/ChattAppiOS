@@ -27,9 +27,10 @@ struct MessagesView: View {
     
     let chatDao = RealmChatDao()
     let messageDao = RealmMessageDao()
-    @State var userImage = UIImage(systemName: "person.circle")
+   // @State var userImage = UIImage(systemName: "person.circle")
+   // @State var userImage = getProfilePic(usersInChat: usersInChat)
+
     @State var showUsernames = false
-   // @State var isGroupChat = usersInChat.count > 2 ? true : false
     
     @State var newChat : Chat? = nil
     
@@ -50,7 +51,7 @@ struct MessagesView: View {
                     Button {
                         showUsernames.toggle()
                     } label: {
-                        ProfilePic(size: 30, image: userImage!)
+                        ProfilePic(size: 30, image: getProfilePic(usersInChat: usersInChat))
                         Text(firestoreChatDao.removeCurrentFromChatName(chatName: chatName))
                             .foregroundColor(Color.black)
                             .lineLimit(1)
@@ -120,7 +121,8 @@ struct MessagesView: View {
                         firestoreMessageDao.saveMessage(message: message, chatId: chatId)
                         messageDao.saveMessage(message: message)
                         messageText = ""
-                        //firestoreMessageDao.listenToFirestore(chatId: chatId)
+                        firestoreMessageDao.listenToFirestore(chatId: chatId)
+                     //   getProfilePic(usersInChat: usersInChat)
                     }
                 } label: {
                     Text("Send")
@@ -144,7 +146,7 @@ struct MessagesView: View {
                 print("name \(chatName)")
                 print("users \(usersInChat)")
                 firestoreMessageDao.messages.removeAll()
-                
+                firestoreMessageDao.stopListen()
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
                 
 //                imageChangeQueue {
@@ -155,6 +157,7 @@ struct MessagesView: View {
         }.onDisappear{
             
             //messageDao.saveRecievedMessage()
+            
             
         }
     }
@@ -170,6 +173,21 @@ struct MessagesView: View {
         }
         
         return UIImage(systemName: "person.circle")!
+        
+    }
+
+    
+    func getProfilePic(usersInChat: [String]) -> UIImage{
+        
+        let usersInChatMinusCurrent = usersInChat.index(of: UserManager.userManager.currentUser?.id ?? User().id)
+        
+        let ind = usersInChat.firstIndex(of:UserManager.userManager.currentUser?.id ?? User().id)
+//        usersInChat.remove(at: ind)
+        
+        
+        print("usersInChatMinusCurrent:\(String(describing: usersInChatMinusCurrent))")
+        let userId = usersInChat[1]
+        return userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!
         
     }
 }
