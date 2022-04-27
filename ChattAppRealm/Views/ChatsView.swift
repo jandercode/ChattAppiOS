@@ -56,7 +56,8 @@ struct ChatsView: View{
                                 state.appState = .Message
                             }
                     
-                }.refreshable{
+                }
+                .task{
                     
                     do{
                         try await storage.reload()
@@ -147,7 +148,7 @@ struct ChatsView: View{
             
             if ManageLoginInfo.loadLogin(){
                 
-                userDao.saveUser(newUser: userManager.currentUser!)
+                realmUser.saveUser(newUser: UserManager.userManager.currentUser!)
                 ManageLoginInfo.saveLogin(saveInfo: true)
             }
             imageChangeQueue {
@@ -156,7 +157,7 @@ struct ChatsView: View{
             
             //Firestore
             firestoreChatDao.listenToFirestore()
-            FirestoreContactDao.firestoreContactDao.removeCurrentUser()
+            FirestoreUserDao.firestoreContactDao.removeCurrentUser()
             
             //Storage
             storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
