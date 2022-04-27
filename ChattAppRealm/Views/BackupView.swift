@@ -48,6 +48,20 @@ struct BackupView: View {
                 Text("Exit")
             }
             .padding()
+            
+            Button {
+                
+                presentationArray.removeAll()
+                state.chatRealm?.deleteAllChats()
+                state.messageRealm?.deleteAllMessages()
+                state.appState = .Chats
+                
+            } label: {
+                Text("Delete All")
+                    .foregroundColor(.red)
+            }
+            .padding()
+
                                 
             }.onAppear{
                 

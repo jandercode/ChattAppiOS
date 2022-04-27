@@ -77,6 +77,7 @@ struct ChatsView: View{
                     }catch{
                         let _ = error
                     }
+                    
                 }
                 
                 .listStyle(.plain)
