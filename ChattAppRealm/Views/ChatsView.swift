@@ -23,7 +23,6 @@ struct ChatsView: View{
     @State var chatNameMinusCurrent = ""
     @State var presentUserInfo = false
     @State var userImage = UIImage(systemName: "person.circle")
-    @State var imageChanged = false
     @State var isConnected = false
     
     let storage = StorageManager()
@@ -53,10 +52,8 @@ struct ChatsView: View{
                 }
                 .padding(.top, 40)
                 
-                List{
-                    
-                    ForEach(firestoreChatDao.chats) { chat in
-                        
+                List(firestoreChatDao.chats){ chat in
+                                            
                         ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: storage.getProfilePics(usersInChatList: chat.users_in_chat))
                         
                             .listRowSeparator(.hidden)
@@ -68,8 +65,6 @@ struct ChatsView: View{
                                 state.chatName = chat.chat_name
                                 state.appState = .Message
                             }
-                        
-                    }.onDelete(perform: firestoreChatDao.deleteChat(at:))
                     
                 }.refreshable{
                     
@@ -78,7 +73,6 @@ struct ChatsView: View{
                     }catch{
                         let _ = error
                     }
-                    
                 }
                 
                 .listStyle(.plain)
@@ -86,12 +80,9 @@ struct ChatsView: View{
                 Spacer()
                 
             }.sheet(isPresented: $presentUserInfo){
-                UserInfoView(storage: storage, imageChanged: $imageChanged, state: state, userImage: $userImage)
                 
-            }.onDisappear(){
-                if imageChanged{
-                    changeUserImage()
-                }
+                UserInfoView(storage: storage, state: state, userImage: $userImage)
+                
             }
             
             VStack {

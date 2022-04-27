@@ -10,7 +10,6 @@ import SwiftUI
 struct UserInfoView: View {
     
     var storage: StorageManager
-    @Binding var imageChanged: Bool
     @ObservedObject var state: StateController
     @Binding var userImage : UIImage?
     
@@ -52,7 +51,6 @@ struct UserInfoView: View {
                                     UserManager.userManager.userImage = selectedImage
                                     userImage = selectedImage!
                                     storage.upload(image: selectedImage!, id: UserManager.userManager.currentUser!.id)
-                                    imageChanged = true
                                     
                                 }
                             }
