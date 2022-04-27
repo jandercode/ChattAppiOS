@@ -7,30 +7,32 @@
 import SwiftUI
 
 struct ChatRow: View {
-    var chat: String
-    var time: String
-    var read: Bool
+    var chat: Chat
+    var chatName: String
+    var profilePic: [UIImage]
+    var timestampFormatter = TimestampFormatter()
+    @State var formattedTime = ""
     
     var body: some View {
         HStack {
             ZStack {
-                Circle()
-                    .fill(Color.green)
-                    .frame(width: 50, height: 50)
-                Image(systemName: "person")
-                    .foregroundColor(.white)
+                ProfilePic(size: 45, images: profilePic)
             }
-            Text(chat)
+            VStack(alignment: .leading) {
+                Text(chatName)
+                    .lineLimit(1)
+                Text(chat.last_message)
+                    .lineLimit(1)
+                    .font(.system(size: 15))
+            }
+            
             Spacer()
-            Text(time)
-            Image(systemName: read ? "circle" : "circle.fill")
+            Text(formattedTime)
+                .font(.system(size: 12))
         }
-        .padding()
-    }
-}
-
-struct ChatRow_Previews: PreviewProvider {
-    static var previews: some View {
-        ChatRow(chat: "Betty Sanders", time: "timestamp", read: false)
+        .padding(3)
+        .onAppear{
+            formattedTime = timestampFormatter.formatChatRowTimestampString(timestamp: chat.timestamp ?? Date())
+        }
     }
 }

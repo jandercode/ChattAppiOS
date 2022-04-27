@@ -9,47 +9,36 @@ import SwiftUI
 import Firebase
 
 struct ContentView: View {
-    @State private var showNewChatView = false
-   // let db = Firestore.firestore()
+    
+    @State var showNewChatView = false
+    @State var isLoggedIn = false
+    @ObservedObject var state : StateController
+    
+    init() {
+        
+        state = StateController()
+    }
+    
+    
+    let storage = StorageManager()
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color.white
-                    .ignoresSafeArea()
-                VStack {
-                    Text("Chats")
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Button {
-                            showNewChatView = true
-                           
-                        } label: {
-                            ZStack {
-                                Circle()
-                                    .fill(.green)
-                                    .frame(width: 50)
-                                Image(systemName: "pencil")
-                                    .foregroundColor(.white)
-                            }
-                            .frame(height: 50)
-                        }.padding(.trailing, 30)
-//                        .onTapGesture {
-//                            self.showNewChatView = true
-//                        }
-                    }
-                    NavigationLink(destination: NewChatView(), isActive: $showNewChatView) {
-                        EmptyView()
-                    }.isDetailLink(false)
-                }
-            }
+        
+        switch state.appState {
+            
+        case .Login:
+            LoginView(state: state)
+        case .Chats:
+            ChatsView(isLoggedIn: $isLoggedIn, showNewChatView: $showNewChatView, state: state)
+        case .Message:
+            MessagesView(state: state ,chatId: state.chatId, usersInChat: state.usersInChat, chatName: state.chatName)
+        case .CreateChat:
+            NewChatView(state: state)
+        case .BackupPage:
+            BackupView(state: state)
+        case .BackupChat:
+            BackupChatView(state: state)
+            
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }
