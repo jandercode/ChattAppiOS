@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+// Enumerators needed for flow control in the app
 
 enum ActionType: Int{
     

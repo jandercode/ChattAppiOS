@@ -50,7 +50,7 @@ struct MessagesView: View {
                     Button {
                         showUsernames.toggle()
                     } label: {
-                        // ProfilePic(size: 30, image: getProfilePic(usersInChat: usersInChat))
+
                         ProfilePic(size: 30, images: storage.getProfilePics(usersInChatList: usersInChat) )
                         Text(firestoreChatDao.removeCurrentFromChatName(chatName: chatName))
                             .foregroundColor(Color.black)

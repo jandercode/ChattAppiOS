@@ -8,9 +8,12 @@
 import Foundation
 import UIKit
 
+// @Main Actor forces it to run on the main thread.
+// this class contains the app state variable that controls the view flow, changing what view gets presented based on the value
+// that it has. It also stores references to variables thet needs to move between views.
+
 @MainActor class StateController: ObservableObject{
     
-    //static let stateController = StateController()
     @Published var appState: AppState = .Login
     
     var chatId: String = ""

@@ -8,7 +8,7 @@
 import Foundation
 
 class Validators{
-    
+    //takes in a String and checks if it has a valid e-mail pattern
     static func textFieldValidatorEmail(_ string: String) -> Bool {
         
         if string.count > 100 {
@@ -21,7 +21,7 @@ class Validators{
         return emailPredicate.evaluate(with: string)
         
     }
-    
+    // takes in a string and checks if it corresponds to every password limitation 
     static func textFieldValidatorPassword(_ password: String, _ repeatePassword: String) -> Bool{
         
         if password == "" || password.contains(" ") || password != repeatePassword || password.count < 5{
