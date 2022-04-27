@@ -16,7 +16,6 @@ struct LoginView: View {
     @State var eMail: String = ""
     @State var password: String = ""
     @State private var showRegisterAccount = false
-    //@State private var loginErrorAlert = false
     @State var saveLogin = false
     @State var isLoading = false
     @State private var error: ErrorInfo?
@@ -29,14 +28,11 @@ struct LoginView: View {
             Text("LOGIN")
                 .font(.largeTitle)
             
-            
             TextField("E-mail", text: $eMail)
                 .padding()
                 .textFieldStyle(.roundedBorder)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
-            
-            
             
             SecureInputView("Password", text: $password)
                 .padding()
@@ -52,7 +48,7 @@ struct LoginView: View {
                     
                     if isConnected{
                         
-                        let userDao = UserDao()
+                        let userDao = RealmUserDao()
                         userDao.eraseUserData()
                         ManageLoginInfo.saveLogin(saveInfo: saveLogin)
                         login()
@@ -61,8 +57,6 @@ struct LoginView: View {
                         
                         error = ErrorInfo(id: 1, title: "Offline", description: "Connection error, check your internet connection")
                     }
-                    
-                    
                     
                 }, label: {
                     
@@ -86,9 +80,6 @@ struct LoginView: View {
                     }else{
                         error = ErrorInfo(id: 1, title: "Offline", description: "Connection error, check your internet connection")
                     }
-                    
-                    
-                    
                 }, label: {
                     
                     Text("Register")
@@ -128,7 +119,7 @@ struct LoginView: View {
         })
         .onAppear(){
             
-            FirestoreContactDao.firestoreContactDao.getUsers()
+            FirestoreUserDao.firestoreContactDao.getUsers()
             userManager.currentUser = nil
             saveLogin = ManageLoginInfo.loadLogin()
             print("save login \(saveLogin)")
@@ -142,13 +133,12 @@ struct LoginView: View {
             } else {
                 isConnected = false
             }
-            
         }
     }
     
     func loadUserData(){
         
-        let realmUser = UserDao()
+        let realmUser = RealmUserDao()
         realmUser.getUser()
         let userLoginData = realmUser.user
         
@@ -170,14 +160,11 @@ struct LoginView: View {
         
         isLoading = true
         
-        FirestoreContactDao.firestoreContactDao.checkLogin(mail: eMail, password: password)
+        FirestoreUserDao.firestoreContactDao.checkLogin(mail: eMail, password: password)
         
         loginQueue {
             moveToChats()
         }
-        
-        
-        
     }
     
     func moveToChats(){
@@ -192,7 +179,6 @@ struct LoginView: View {
             isLoading = false
             
         }
-        
     }
     
     func loginQueue(onComplete: @escaping () -> Void){

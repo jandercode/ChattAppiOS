@@ -94,7 +94,7 @@ class StorageManager: ObservableObject{
     
     func loadChatProfilePics() async{
         
-        let allUsers = FirestoreContactDao.firestoreContactDao.registeredUsers
+        let allUsers = FirestoreUserDao.firestoreContactDao.registeredUsers
             for user in allUsers{
 
                 let imageRef = storage.reference().child("images/\(user.id)")
@@ -128,11 +128,13 @@ class StorageManager: ObservableObject{
             usersInChatMinusCurrent.remove(at: index)
         }
         
-        print("usersInChatMinusCurrent:\(usersInChatMinusCurrent))")
         
         var profilePicArray = [UIImage]()
+        
         for userId in usersInChatMinusCurrent {
+
             profilePicArray.append(UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!)
+            
         }
         
         return profilePicArray
@@ -161,7 +163,7 @@ class StorageManager: ObservableObject{
     
     func reload() async throws{
         
-        try await loadChatProfilePics()
+        await loadChatProfilePics()
     }
     
 

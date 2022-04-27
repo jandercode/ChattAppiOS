@@ -10,16 +10,15 @@ import SwiftUI
 struct UserInfoView: View {
     
     var storage: StorageManager
-    @Binding var imageChanged: Bool
     @ObservedObject var state: StateController
+    @Binding var userImage : UIImage?
     
     @Environment(\.dismiss) var dismiss
-    let userName = UserManager.userManager.currentUser!.username
-    @State var eMail = UserManager.userManager.currentUser!.email
+    let username = UserManager.userManager.currentUser!.username
+    @State var email = UserManager.userManager.currentUser!.email
     
     @State private var showPhotoPicker = false
     @State private var selectedImage: UIImage? = nil
-    @State private var userImage: UIImage = UIImage(systemName: "person.circle")!
     @State private var changePassword: Bool = false
     
     let firstName = UserManager.userManager.currentUser?.firstName
@@ -35,7 +34,10 @@ struct UserInfoView: View {
                     showPhotoPicker = true
                     
                 } label: {
-                    ProfilePic(size: 50, images: [userImage])
+                    Image(uiImage: userImage!)
+                        .resizable()
+                        .frame(width: 50, height: 50, alignment: .center)
+                        .cornerRadius(50/2)
                 }
                 .fullScreenCover(isPresented: $showPhotoPicker) {
                     PhotoPicker(filter: .images, limit: 1){results in
@@ -49,7 +51,6 @@ struct UserInfoView: View {
                                     UserManager.userManager.userImage = selectedImage
                                     userImage = selectedImage!
                                     storage.upload(image: selectedImage!, id: UserManager.userManager.currentUser!.id)
-                                    imageChanged = true
                                     
                                 }
                             }
@@ -62,7 +63,7 @@ struct UserInfoView: View {
                     
                     Spacer()
                     
-                    Text(userName)
+                    Text(username)
                         .padding()
                     
                     Spacer()
@@ -85,7 +86,7 @@ struct UserInfoView: View {
                     Spacer()
                     
                     Text("Email:")
-                    TextField("Email", text: $eMail)
+                    TextField("Email", text: $email)
                         .textFieldStyle(.roundedBorder)
                     
                     Spacer()
@@ -150,11 +151,11 @@ struct UserInfoView: View {
     
     func updateUser(){
         
-        if eMail != UserManager.userManager.currentUser!.email{
+        if email != UserManager.userManager.currentUser!.email{
             
-            if Validators.textFieldValidatorEmail(eMail){
+            if Validators.textFieldValidatorEmail(email){
                 
-                FirestoreContactDao.firestoreContactDao.upadateCurrentUserData(data: eMail, operation: ActionType.email)
+                FirestoreUserDao.firestoreContactDao.upadateCurrentUserData(data: email, operation: ActionType.email)
                 ManageLoginInfo.saveLogin(saveInfo: false)
             }
         }

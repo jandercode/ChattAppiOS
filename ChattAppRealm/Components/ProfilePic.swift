@@ -12,7 +12,7 @@ struct ProfilePic: View {
     var images: [UIImage]
     var body: some View {
         
-        if images.count <= 1 {
+        if images.count == 1 {
             Image(uiImage: images[0])
                 .resizable()
                 .frame(width: size, height: size, alignment: .center)

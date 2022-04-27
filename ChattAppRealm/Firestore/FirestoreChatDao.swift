@@ -41,7 +41,7 @@ class FirestoreChatDao : ObservableObject {
         var chatNameArray = [String]()
         
         chatNameArray.append(UserManager.userManager.currentUser?.username ?? "current user")
-        for user in FirestoreContactDao.firestoreContactDao.registeredUsers {
+        for user in FirestoreUserDao.firestoreContactDao.registeredUsers {
             for userId in usersInChat {
                 if user.id == userId {
                     chatNameArray.append(user.username)
@@ -83,6 +83,23 @@ class FirestoreChatDao : ObservableObject {
             let chat = chats[index]
             db.collection(CHATS_COLLECTION).document(chat.id).delete()
         }
+    }
+    
+    func removeUserFromChat(at indexSet: IndexSet){
+        
+        var i : Int = -1
+        for index in indexSet {
+            let chat = chats[index]
+            for user in chat.users_in_chat{
+                if user == UserManager.userManager.currentUser?.id{
+                    i = chat.users_in_chat.firstIndex(of: user)!
+                }
+            }
+            chat.users_in_chat.remove(at: i)
+            let list = [USERS_IN_CHAT_KEY : chat.users_in_chat]
+            db.collection(CHATS_COLLECTION).document(chat.id).updateData(list)
+        }
+        
     }
     
     func checkIfExists(chatId: String) -> Bool{
