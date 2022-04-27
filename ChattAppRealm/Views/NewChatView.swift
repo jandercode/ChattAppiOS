@@ -9,17 +9,13 @@ import SwiftUI
 import Firebase
 
 struct NewChatView: View {
-    
-    @State var showChatView = false
-    
+        
     @State var usersInChat : [String] = [UserManager.userManager.currentUser?.id ?? User().id]
     
     @State private var searchTerm: String = ""
     @State private var selection = Set<User>()
     @State private var isEditMode: EditMode = .active
-    @State private var label = "Add Contact"
     @State var newChatName : String = ""
-    @State var profilePicArray : UIImage? = nil
     
     @ObservedObject var state: StateController
     
@@ -78,7 +74,6 @@ struct NewChatView: View {
                     newChatName = FirestoreChatDao.firestoreChatDao.createChatName(usersInChat: usersInChat)
                     state.chatName = FirestoreChatDao.firestoreChatDao.removeCurrentFromChatName(chatName: newChatName)
                     
-                    
                 }else{
                     
                     var chat: Chat?
@@ -94,7 +89,6 @@ struct NewChatView: View {
                     print("exists!!")
                 }
                 state.appState = .Message
-                
                 
             } label: {
                 
@@ -152,8 +146,8 @@ struct NewChatView: View {
         
         if !searchTerm.isEmpty {
             
-            FirestoreContactDao.firestoreContactDao.removeCurrentUser()
-            for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
+            FirestoreUserDao.firestoreContactDao.removeCurrentUser()
+            for user in FirestoreUserDao.firestoreContactDao.registeredUsers{
                 
                 if user.username.localizedCaseInsensitiveContains(searchTerm) {
                     

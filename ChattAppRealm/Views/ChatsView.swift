@@ -9,29 +9,19 @@ import SwiftUI
 
 struct ChatsView: View{
     
-    @Binding var isLoggedIn: Bool
-    @Binding var showNewChatView: Bool
-    
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     @ObservedObject var state: StateController
     
-    let userManager = UserManager.userManager
-    @State private var showChatView = false
-    @State var usersInChat = [String]()
-    @State var chatId = ""
-    @State var chatName = ""
-    @State var chatNameMinusCurrent = ""
     @State var presentUserInfo = false
     @State var userImage = UIImage(systemName: "person.circle")
     @State var isConnected = false
     
     let storage = StorageManager()
-    let userDao = UserDao()
+    let realmUser = RealmUserDao()
     let realmMessage = RealmMessageDao()
     let realmChat = RealmChatDao()
     
     @State private var error: ErrorInfo?
-    
     
     var body: some View{
         
@@ -209,5 +199,4 @@ struct ChatsView: View{
             onComplete()
         }
     }
-    
 }

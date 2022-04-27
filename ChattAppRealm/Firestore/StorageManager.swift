@@ -94,7 +94,7 @@ class StorageManager: ObservableObject{
     
     func loadChatProfilePics() async{
         
-        let allUsers = FirestoreContactDao.firestoreContactDao.registeredUsers
+        let allUsers = FirestoreUserDao.firestoreContactDao.registeredUsers
             for user in allUsers{
 
                 let imageRef = storage.reference().child("images/\(user.id)")
@@ -163,7 +163,7 @@ class StorageManager: ObservableObject{
     
     func reload() async throws{
         
-        try await loadChatProfilePics()
+        await loadChatProfilePics()
     }
     
 

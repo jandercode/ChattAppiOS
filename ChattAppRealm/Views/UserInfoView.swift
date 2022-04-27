@@ -14,8 +14,8 @@ struct UserInfoView: View {
     @Binding var userImage : UIImage?
     
     @Environment(\.dismiss) var dismiss
-    let userName = UserManager.userManager.currentUser!.username
-    @State var eMail = UserManager.userManager.currentUser!.email
+    let username = UserManager.userManager.currentUser!.username
+    @State var email = UserManager.userManager.currentUser!.email
     
     @State private var showPhotoPicker = false
     @State private var selectedImage: UIImage? = nil
@@ -63,7 +63,7 @@ struct UserInfoView: View {
                     
                     Spacer()
                     
-                    Text(userName)
+                    Text(username)
                         .padding()
                     
                     Spacer()
@@ -86,7 +86,7 @@ struct UserInfoView: View {
                     Spacer()
                     
                     Text("Email:")
-                    TextField("Email", text: $eMail)
+                    TextField("Email", text: $email)
                         .textFieldStyle(.roundedBorder)
                     
                     Spacer()
@@ -151,11 +151,11 @@ struct UserInfoView: View {
     
     func updateUser(){
         
-        if eMail != UserManager.userManager.currentUser!.email{
+        if email != UserManager.userManager.currentUser!.email{
             
-            if Validators.textFieldValidatorEmail(eMail){
+            if Validators.textFieldValidatorEmail(email){
                 
-                FirestoreContactDao.firestoreContactDao.upadateCurrentUserData(data: eMail, operation: ActionType.email)
+                FirestoreUserDao.firestoreContactDao.upadateCurrentUserData(data: email, operation: ActionType.email)
                 ManageLoginInfo.saveLogin(saveInfo: false)
             }
         }

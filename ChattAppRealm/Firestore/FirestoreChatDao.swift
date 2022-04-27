@@ -41,7 +41,7 @@ class FirestoreChatDao : ObservableObject {
         var chatNameArray = [String]()
         
         chatNameArray.append(UserManager.userManager.currentUser?.username ?? "current user")
-        for user in FirestoreContactDao.firestoreContactDao.registeredUsers {
+        for user in FirestoreUserDao.firestoreContactDao.registeredUsers {
             for userId in usersInChat {
                 if user.id == userId {
                     chatNameArray.append(user.username)

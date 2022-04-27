@@ -23,7 +23,7 @@ struct RegisterView: View{
     @State var showFailureAlert = false
     @State var showSameMailAlert = false
     
-    @ObservedObject var firestore = FirestoreContactDao.firestoreContactDao
+    @ObservedObject var firestore = FirestoreUserDao.firestoreContactDao
     
     @State private var error: ErrorInfo?
     
@@ -83,9 +83,9 @@ struct RegisterView: View{
                                 user.lastName = lastName
                                 user.password = password
                                 
-                                let userDao = UserDao()
+                                let userDao = RealmUserDao()
                                 userDao.saveUser(newUser: user)
-                                FirestoreContactDao.firestoreContactDao.saveNewUser(user: user)
+                                FirestoreUserDao.firestoreContactDao.saveNewUser(user: user)
                                 
                                 error = ErrorInfo(id: 1, title: "Account Created", description: "Your account has been created successfully \(userName)")
                                 

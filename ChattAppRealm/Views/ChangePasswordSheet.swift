@@ -22,7 +22,7 @@ struct changePasswordSheet: View {
     
     @State private var error: ErrorInfo?
     
-    let firestore = FirestoreContactDao.firestoreContactDao
+    let firestore = FirestoreUserDao.firestoreContactDao
     
     var body: some View {
         

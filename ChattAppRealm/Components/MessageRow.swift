@@ -56,7 +56,7 @@ struct MessageRow: View {
     }
     
     func getUsername(userId : String) -> String {
-        for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
+        for user in FirestoreUserDao.firestoreContactDao.registeredUsers{
             
             if userId == user.id {
                 

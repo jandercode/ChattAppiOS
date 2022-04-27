@@ -29,7 +29,7 @@ struct ContentView: View {
         case .Login:
             LoginView(state: state)
         case .Chats:
-            ChatsView(isLoggedIn: $isLoggedIn, showNewChatView: $showNewChatView, state: state)
+            ChatsView(state: state)
         case .Message:
             MessagesView(state: state ,chatId: state.chatId, usersInChat: state.usersInChat, chatName: state.chatName)
         case .CreateChat:
