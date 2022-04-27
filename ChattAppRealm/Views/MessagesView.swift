@@ -158,10 +158,13 @@ struct MessagesView: View {
     
     func getUserImage(message: Message) -> UIImage{
         
+        var img: UIImage
+        
         if !userManager.imageArray.isEmpty{
             for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
                 if user.id == message.sender{
-                    return userManager.imageArray[user.id]!
+                    img = userManager.imageArray[user.id] ?? UIImage(systemName: "person.circle")!
+                    return img
                 }
             }
         }

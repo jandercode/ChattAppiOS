@@ -15,6 +15,8 @@ class RealmChatDao{
     
     func saveChat(chat: Chat){
         
+        chat.last_message = "First Backup"
+
         try! realm.write({
             realm.add(chat)
         })
