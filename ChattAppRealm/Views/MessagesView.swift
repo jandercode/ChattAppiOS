@@ -141,9 +141,6 @@ struct MessagesView: View {
                     
                 }
                 
-                print("id \(chatId)")
-                print("name \(chatName)")
-                print("users \(usersInChat)")
                 firestoreMessageDao.messages.removeAll()
                 firestoreMessageDao.listenToFirestore(chatId: chatId)
                 
