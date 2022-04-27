@@ -128,11 +128,13 @@ class StorageManager: ObservableObject{
             usersInChatMinusCurrent.remove(at: index)
         }
         
-        print("usersInChatMinusCurrent:\(usersInChatMinusCurrent))")
         
         var profilePicArray = [UIImage]()
+        
         for userId in usersInChatMinusCurrent {
+
             profilePicArray.append(UserManager.userManager.imageArray[userId] ?? UIImage(systemName: "person.circle")!)
+            
         }
         
         return profilePicArray

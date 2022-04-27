@@ -10,8 +10,8 @@ import SwiftUI
 struct UserInfoView: View {
     
     var storage: StorageManager
-    @Binding var imageChanged: Bool
     @ObservedObject var state: StateController
+    @Binding var userImage : UIImage?
     
     @Environment(\.dismiss) var dismiss
     let username = UserManager.userManager.currentUser!.username
@@ -19,7 +19,6 @@ struct UserInfoView: View {
     
     @State private var showPhotoPicker = false
     @State private var selectedImage: UIImage? = nil
-    @State private var userImage: UIImage = UIImage(systemName: "person.circle")!
     @State private var changePassword: Bool = false
     
     let firstName = UserManager.userManager.currentUser?.firstName
@@ -35,7 +34,10 @@ struct UserInfoView: View {
                     showPhotoPicker = true
                     
                 } label: {
-                    ProfilePic(size: 50, images: [userImage])
+                    Image(uiImage: userImage!)
+                        .resizable()
+                        .frame(width: 50, height: 50, alignment: .center)
+                        .cornerRadius(50/2)
                 }
                 .fullScreenCover(isPresented: $showPhotoPicker) {
                     PhotoPicker(filter: .images, limit: 1){results in
@@ -49,7 +51,6 @@ struct UserInfoView: View {
                                     UserManager.userManager.userImage = selectedImage
                                     userImage = selectedImage!
                                     storage.upload(image: selectedImage!, id: UserManager.userManager.currentUser!.id)
-                                    imageChanged = true
                                     
                                 }
                             }

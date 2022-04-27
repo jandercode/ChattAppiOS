@@ -14,7 +14,6 @@ struct ChatsView: View{
     
     @State var presentUserInfo = false
     @State var userImage = UIImage(systemName: "person.circle")
-    @State var imageChanged = false
     @State var isConnected = false
     
     let storage = StorageManager()
@@ -43,10 +42,8 @@ struct ChatsView: View{
                 }
                 .padding(.top, 40)
                 
-                List{
-                    
-                    ForEach(firestoreChatDao.chats) { chat in
-                        
+                List(firestoreChatDao.chats){ chat in
+                                            
                         ChatRow(chat: chat, chatName: firestoreChatDao.removeCurrentFromChatName(chatName: chat.chat_name), profilePic: storage.getProfilePics(usersInChatList: chat.users_in_chat))
                         
                             .listRowSeparator(.hidden)
@@ -58,8 +55,6 @@ struct ChatsView: View{
                                 state.chatName = chat.chat_name
                                 state.appState = .Message
                             }
-                        
-                    }.onDelete(perform: firestoreChatDao.deleteChat(at:))
                     
                 }.refreshable{
                     
@@ -68,20 +63,16 @@ struct ChatsView: View{
                     }catch{
                         let _ = error
                     }
-                    
                 }
                 
                 .listStyle(.plain)
                 
                 Spacer()
                 
-            }.sheet(isPresented: $presentUserInfo, content: {
-                UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
+            }.sheet(isPresented: $presentUserInfo){
                 
-            }).onDisappear(){
-                if imageChanged{
-                    changeUserImage()
-                }
+                UserInfoView(storage: storage, state: state, userImage: $userImage)
+                
             }
             
             VStack {
@@ -126,9 +117,6 @@ struct ChatsView: View{
                     .padding(.trailing, 30)
                 }
             }
-            .sheet(isPresented: $presentUserInfo, content: {
-                UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
-            })
             
             VStack {
                 Spacer()
@@ -147,50 +135,47 @@ struct ChatsView: View{
                         .frame(height: 50)
                     }.padding(.trailing, 30)
                 }
-            }.onAppear{
-                
-                if Reachability.isConnectedToNetwork(){
-                    isConnected = true
-                } else {
-                    isConnected = false
-                }
-                
-                if ManageLoginInfo.loadLogin(){
-                    
-                    realmUser.saveUser(newUser: UserManager.userManager.currentUser!)
-                    ManageLoginInfo.saveLogin(saveInfo: true)
-                }
-                imageChangeQueue {
-                    changeUserImage()
-                }
-                
-                //Firestore
-                firestoreChatDao.listenToFirestore()
-                FirestoreUserDao.firestoreContactDao.removeCurrentUser()
-                
-                //Storage
-                storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)                
-                
-                //Realm
-                realmChat.loadChats()
-                realmMessage.loadMessages()
-                
-                state.chatRealm = realmChat
-                state.messageRealm = realmMessage
                 
             }
-            .onDisappear{
-                
-                firestoreChatDao.removeChatListener()
-                realmChat.saveRemoteChats()
-                
+        }.onAppear{
+            
+            if Reachability.isConnectedToNetwork(){
+                isConnected = true
+            } else {
+                isConnected = false
             }
             
-        }.onChange(of: presentUserInfo, perform: { newValue in
-            if newValue{
+            if ManageLoginInfo.loadLogin(){
+                
+                userDao.saveUser(newUser: userManager.currentUser!)
+                ManageLoginInfo.saveLogin(saveInfo: true)
+            }
+            imageChangeQueue {
                 changeUserImage()
             }
-        })
+            
+            //Firestore
+            firestoreChatDao.listenToFirestore()
+            FirestoreContactDao.firestoreContactDao.removeCurrentUser()
+            
+            //Storage
+            storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
+            
+            //Realm
+            realmChat.loadChats()
+            realmMessage.loadMessages()
+            
+            state.chatRealm = realmChat
+            state.messageRealm = realmMessage
+            
+        }
+        .onDisappear{
+            
+            firestoreChatDao.removeChatListener()
+            realmChat.saveRemoteChats()
+            
+        }
+
     }
     
     func changeUserImage(){
