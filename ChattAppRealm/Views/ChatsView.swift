@@ -48,9 +48,11 @@ struct ChatsView: View{
                         presentUserInfo.toggle()
                     } label: {
                         ProfilePic(size: 30, images: [userImage!])
+                        
                     }.padding()
                 }
                 .padding(.top, 40)
+                
                 List{
                     
                     ForEach(firestoreChatDao.chats) { chat in
@@ -137,11 +139,7 @@ struct ChatsView: View{
             }
             .sheet(isPresented: $presentUserInfo, content: {
                 UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
-            }).onDisappear(){
-                if imageChanged{
-                    changeUserImage()
-                }
-            }
+            })
             
             VStack {
                 Spacer()
@@ -198,7 +196,12 @@ struct ChatsView: View{
                 realmChat.saveRemoteChats()
                 
             }
-        }
+            
+        }.onChange(of: presentUserInfo, perform: { newValue in
+            if newValue{
+                changeUserImage()
+            }
+        })
     }
     
     func changeUserImage(){
