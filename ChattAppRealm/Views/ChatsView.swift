@@ -67,7 +67,6 @@ struct ChatsView: View{
                                 state.chatId = chat.id
                                 state.chatName = chat.chat_name
                                 state.appState = .Message
-                                print(usersInChat)
                             }
                         
                     }.onDelete(perform: firestoreChatDao.deleteChat(at:))
@@ -86,10 +85,10 @@ struct ChatsView: View{
                 
                 Spacer()
                 
-            }.sheet(isPresented: $presentUserInfo, content: {
-                UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
+            }.sheet(isPresented: $presentUserInfo){
+                UserInfoView(storage: storage, imageChanged: $imageChanged, state: state, userImage: $userImage)
                 
-            }).onDisappear(){
+            }.onDisappear(){
                 if imageChanged{
                     changeUserImage()
                 }
@@ -137,9 +136,6 @@ struct ChatsView: View{
                     .padding(.trailing, 30)
                 }
             }
-            .sheet(isPresented: $presentUserInfo, content: {
-                UserInfoView(storage: storage, imageChanged: $imageChanged, state: state)
-            })
             
             VStack {
                 Spacer()
@@ -158,50 +154,47 @@ struct ChatsView: View{
                         .frame(height: 50)
                     }.padding(.trailing, 30)
                 }
-            }.onAppear{
-                
-                if Reachability.isConnectedToNetwork(){
-                    isConnected = true
-                } else {
-                    isConnected = false
-                }
-                
-                if ManageLoginInfo.loadLogin(){
-                    
-                    userDao.saveUser(newUser: userManager.currentUser!)
-                    ManageLoginInfo.saveLogin(saveInfo: true)
-                }
-                imageChangeQueue {
-                    changeUserImage()
-                }
-                
-                //Firestore
-                firestoreChatDao.listenToFirestore()
-                FirestoreContactDao.firestoreContactDao.removeCurrentUser()
-                
-                //Storage
-                storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)                
-                
-                //Realm
-                realmChat.loadChats()
-                realmMessage.loadMessages()
-                
-                state.chatRealm = realmChat
-                state.messageRealm = realmMessage
                 
             }
-            .onDisappear{
-                
-                firestoreChatDao.removeChatListener()
-                realmChat.saveRemoteChats()
-                
+        }.onAppear{
+            
+            if Reachability.isConnectedToNetwork(){
+                isConnected = true
+            } else {
+                isConnected = false
             }
             
-        }.onChange(of: presentUserInfo, perform: { newValue in
-            if newValue{
+            if ManageLoginInfo.loadLogin(){
+                
+                userDao.saveUser(newUser: userManager.currentUser!)
+                ManageLoginInfo.saveLogin(saveInfo: true)
+            }
+            imageChangeQueue {
                 changeUserImage()
             }
-        })
+            
+            //Firestore
+            firestoreChatDao.listenToFirestore()
+            FirestoreContactDao.firestoreContactDao.removeCurrentUser()
+            
+            //Storage
+            storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)
+            
+            //Realm
+            realmChat.loadChats()
+            realmMessage.loadMessages()
+            
+            state.chatRealm = realmChat
+            state.messageRealm = realmMessage
+            
+        }
+        .onDisappear{
+            
+            firestoreChatDao.removeChatListener()
+            realmChat.saveRemoteChats()
+            
+        }
+
     }
     
     func changeUserImage(){
