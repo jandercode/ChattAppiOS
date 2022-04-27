@@ -10,9 +10,9 @@ import Firebase
 import FirebaseFirestoreSwift
 import SwiftUI
 
-class FirestoreContactDao : ObservableObject {
+class FirestoreUserDao : ObservableObject {
     
-    static let firestoreContactDao = FirestoreContactDao()
+    static let firestoreContactDao = FirestoreUserDao()
     
     private init(){}
     

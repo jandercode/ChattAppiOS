@@ -12,18 +12,14 @@ struct MessagesView: View {
     
     @ObservedObject var state: StateController
     
-    let db = Firestore.firestore()
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     @ObservedObject var firestoreMessageDao = FirestoreMessageDao.firestoreMessageDao
-    @ObservedObject var userManager = UserManager.userManager
     @ObservedObject var keyboardManager = KeyboardManager()
-    @State private var keyboardHeight: CGFloat = 0
     
     @State private var messageText: String = ""
     @State var chatId : String
     @State var usersInChat : [String]
     @State var chatName : String
-    @State var isNewDay = true
     
     let chatDao = RealmChatDao()
     let messageDao = RealmMessageDao()
@@ -103,7 +99,6 @@ struct MessagesView: View {
                 TextField("Aa", text: $messageText)
                 Button {
                     // create a new chat in firestore if it doesn't already exist
-                    
                     if !firestoreChatDao.checkIfExists(chatId: chatId){
                         firestoreChatDao.saveNewChat(chat: newChat!)
                     }
@@ -160,10 +155,10 @@ struct MessagesView: View {
         
         var img: UIImage
         
-        if !userManager.imageArray.isEmpty{
-            for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
+        if !UserManager.userManager.imageArray.isEmpty{
+            for user in FirestoreUserDao.firestoreContactDao.registeredUsers{
                 if user.id == message.sender{
-                    img = userManager.imageArray[user.id] ?? UIImage(systemName: "person.circle")!
+                    img = UserManager.userManager.imageArray[user.id] ?? UIImage(systemName: "person.circle")!
                     return img
                 }
             }

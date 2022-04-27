@@ -22,7 +22,7 @@ class UserManager: ObservableObject{
     
     func loadStandardProfilePicture(){
         
-        for user in FirestoreContactDao.firestoreContactDao.registeredUsers{
+        for user in FirestoreUserDao.firestoreContactDao.registeredUsers{
             
             imageArray[user.id] = UIImage(systemName: "person.circle")
             

@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class UserDao{
+class RealmUserDao{
     
     var user: [String:String] = [:]
     

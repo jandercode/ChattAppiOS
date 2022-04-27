@@ -9,30 +9,20 @@ import SwiftUI
 
 struct ChatsView: View{
     
-    @Binding var isLoggedIn: Bool
-    @Binding var showNewChatView: Bool
-    
     @ObservedObject var firestoreChatDao = FirestoreChatDao.firestoreChatDao
     @ObservedObject var state: StateController
     
-    let userManager = UserManager.userManager
-    @State private var showChatView = false
-    @State var usersInChat = [String]()
-    @State var chatId = ""
-    @State var chatName = ""
-    @State var chatNameMinusCurrent = ""
     @State var presentUserInfo = false
     @State var userImage = UIImage(systemName: "person.circle")
     @State var imageChanged = false
     @State var isConnected = false
     
     let storage = StorageManager()
-    let userDao = UserDao()
+    let realmUser = RealmUserDao()
     let realmMessage = RealmMessageDao()
     let realmChat = RealmChatDao()
     
     @State private var error: ErrorInfo?
-    
     
     var body: some View{
         
@@ -67,7 +57,6 @@ struct ChatsView: View{
                                 state.chatId = chat.id
                                 state.chatName = chat.chat_name
                                 state.appState = .Message
-                                print(usersInChat)
                             }
                         
                     }.onDelete(perform: firestoreChatDao.deleteChat(at:))
@@ -168,7 +157,7 @@ struct ChatsView: View{
                 
                 if ManageLoginInfo.loadLogin(){
                     
-                    userDao.saveUser(newUser: userManager.currentUser!)
+                    realmUser.saveUser(newUser: UserManager.userManager.currentUser!)
                     ManageLoginInfo.saveLogin(saveInfo: true)
                 }
                 imageChangeQueue {
@@ -177,7 +166,7 @@ struct ChatsView: View{
                 
                 //Firestore
                 firestoreChatDao.listenToFirestore()
-                FirestoreContactDao.firestoreContactDao.removeCurrentUser()
+                FirestoreUserDao.firestoreContactDao.removeCurrentUser()
                 
                 //Storage
                 storage.loadImageFromStorage(id: UserManager.userManager.currentUser!.id)                
@@ -225,5 +214,4 @@ struct ChatsView: View{
             onComplete()
         }
     }
-    
 }
