@@ -68,7 +68,7 @@ struct ChatsView: View{
                                 print(usersInChat)
                             }
                         
-                    }.onDelete(perform: firestoreChatDao.deleteChat(at:))
+                    }.onDelete(perform: firestoreChatDao.removeUserFromChat(at:))
                     
                 }.refreshable{
                     

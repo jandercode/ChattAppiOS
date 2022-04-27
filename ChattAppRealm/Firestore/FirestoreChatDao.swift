@@ -85,6 +85,23 @@ class FirestoreChatDao : ObservableObject {
         }
     }
     
+    func removeUserFromChat(at indexSet: IndexSet){
+        
+        var i : Int = -1
+        for index in indexSet {
+            let chat = chats[index]
+            for user in chat.users_in_chat{
+                if user == UserManager.userManager.currentUser?.id{
+                    i = chat.users_in_chat.firstIndex(of: user)!
+                }
+            }
+            chat.users_in_chat.remove(at: i)
+            let list = [USERS_IN_CHAT_KEY : chat.users_in_chat]
+            db.collection(CHATS_COLLECTION).document(chat.id).updateData(list)
+        }
+        
+    }
+    
     func checkIfExists(chatId: String) -> Bool{
         
         for chat in chats{
