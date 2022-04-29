@@ -19,9 +19,7 @@ struct ContentView: View {
         state = StateController()
     }
     
-    
-    let storage = StorageManager()
-    
+        
     var body: some View {
         
         switch state.appState {
